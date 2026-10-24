@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ButterFix - Comparateur & Configurateur PC</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        royal: '#1F0063',
+                        royalDark: '#12003b',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col font-sans selection:bg-purple-600 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-purple-900/40 bg-royalDark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🦋</span>
+                <span class="font-bold text-xl tracking-wider bg-gradient-to-r from-purple-400 to-indigo-300 bg-clip-text text-transparent">BUTTERFIX</span>
+            </div>
+            <div class="text-xs px-3 py-1 rounded-full bg-royal border border-purple-500/30 text-purple-200 font-medium">
+                Butterfly Gang Edition ⚡
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Section Configurateur / Composants -->
+        <div class="lg:col-span-2 space-y-6">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight mb-2">Configurateur PC</h1>
+                <p class="text-gray-400 text-sm">Sélectionne tes composants au meilleur prix actualisé automatiquement.</p>
+            </div>
+
+            <!-- Liste des composants chargés depuis Supabase -->
+            <div id="components-list" class="space-y-4">
+                <div class="p-6 rounded-xl bg-gray-900/60 border border-purple-900/30 flex items-center justify-center text-gray-500">
+                    Chargement des composants depuis Supabase... 🔄
+                </div>
+            </div>
+        </div>
+
+        <!-- Panneau Résumé / Total -->
+        <div class="space-y-6">
+            <div class="bg-gray-900/80 border border-purple-900/40 rounded-2xl p-6 shadow-xl sticky top-24">
+                <h2 class="text-xl font-bold mb-4 pb-3 border-b border-purple-900/40 flex items-center justify-between">
+                    <span>Ta Configuration</span>
+                    <span class="text-sm font-normal text-purple-400">0 composants</span>
+                </h2>
+                
+                <div id="config-summary" class="space-y-3 text-sm text-gray-400 mb-6">
+                    <p>Aucun composant sélectionné pour le moment.</p>
+                </div>
+
+                <div class="pt-4 border-t border-purple-900/40 flex items-center justify-between mb-6">
+                    <span class="font-semibold text-gray-300">Total estimé</span>
+                    <span id="total-price" class="text-2xl font-black text-purple-400">0.00 €</span>
+                </div>
+
+                <button class="w-full py-3 px-4 rounded-xl bg-royal hover:bg-purple-800 transition font-bold text-white shadow-lg shadow-purple-900/30 border border-purple-500/30 flex items-center justify-center space-x-2">
+                    <span>Partager la configuration</span>
+                    <span>🔗</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-purple-900/30 bg-royalDark/40 py-6 text-center text-xs text-gray-500">
+        ButterFix © 2026 - Conçu pour le Butterfly Gang 🦋
+    </footer>
+
+    <!-- Script de connexion Supabase & Affichage -->
+    <script>
+        // Utilise tes clés publiques / anonymes (ou service key pour le test local)
+        const SUPABASE_URL = "https://kiivmmtqekfhmqwaglmr.supabase.co";
+        // Note: Pour le front-end public, on utilise normalement la clé 'anon', mais ici on met ta clé ou une clé valide
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpaXZtbXRxZWtmaG1xd2FnbG1yIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5Mjg2MDQ0NSwiZXhwIjoyMTA4NDM2NDQ1fQ.1cEzGdeXNePYnYKNwI0F5kCtUkYfOmE0c1l4sZgu8Kc"; 
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadComponents() {
+            const container = document.getElementById('components-list');
+            
+            // Récupérer les composants avec leurs offres de prix
+            const { data, error } = await supabaseClient
+                .from('components')
+                .select(`
+                    id,
+                    name,
+                    component_offers (
+                        price,
+                        last_updated
+                    )
+                `);
+
+            if (error) {
+                container.innerHTML = `<div class="p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-red-400 text-sm">Erreur de chargement : ${error.message}</div>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="p-4 rounded-xl bg-gray-900/60 border border-purple-900/30 text-gray-400 text-sm">Aucun composant trouvé dans la base de données.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(comp => {
+                const offer = comp.component_offers && comp.component_offers[0] ? comp.component_offers[0] : { price: 'N/A' };
+                
+                const card = document.createElement('div');
+                card.className = "p-5 rounded-xl bg-gray-900/60 border border-purple-900/30 hover:border-purple-600/50 transition flex items-center justify-between";
+                card.innerHTML = `
+                    <div>
+                        <span class="text-xs text-purple-400 font-semibold uppercase tracking-wider">Processeur</span>
+                        <h3 class="font-bold text-lg text-gray-200">${comp.name}</h3>
+                        <span class="text-xs text-gray-500">Mis à jour par le robot 🤖</span>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-black text-white">${offer.price} €</div>
+                        <button onclick="alert('Composant sélectionné !')" class="mt-2 px-3 py-1.5 rounded-lg bg-royal/80 hover:bg-royal text-xs font-semibold text-purple-200 border border-purple-500/30 transition">
+                            Ajouter ⚡
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        loadComponents();
+    </script>
+</body>
+</html>
