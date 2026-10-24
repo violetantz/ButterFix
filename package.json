@@ -1,0 +1,9 @@
+{
+  "name": "butterfix",
+  "version": "1.0.0",
+  "description": "Comparateur de prix ButterFix pour le Butterfly Gang",
+  "main": "index.js",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
