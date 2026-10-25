@@ -157,7 +157,7 @@
             background: #08080c;
             border: 1px solid #1f2937;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 0.8rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -178,8 +178,9 @@
         }
 
         .component-card img {
-            width: 48px;
-            height: 48px;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
             margin-bottom: 0.6rem;
         }
 
@@ -324,7 +325,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Interface ultra-rapide</p>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Catalogue interactif</p>
         </div>
     </section>
 
@@ -371,13 +372,46 @@
         </div>
     </section>
 
-    <!-- SCRIPT AVEC ICÔNES SVG INTÉGRÉES -->
+    <!-- SCRIPT DE CHARGEMENT SÉCURISÉ -->
     <script>
-        var iconCpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>';
-        var iconMb = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2310b981" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M6 6h4v4H6zM14 6h4v4h-4zM6 14h4v4H6zM14 14h2v2h-2zM18 14h2v2h-2z"/></svg>';
-        var iconGpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M2 10h20"/></svg>';
-        var iconRam = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2"/></svg>';
-        var iconStorage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>';
-        var iconCooling = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2306b6d4" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>';
-        var iconCase = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%238b5cf6" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M4 16h16M9 6h6"/></svg>';
-        var iconPsu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23eab308" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h2M10 12h
+        try {
+            var iconCpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>';
+            var iconMb = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2310b981" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M6 6h4v4H6zM14 6h4v4h-4zM6 14h4v4H6zM14 14h2v2h-2zM18 14h2v2h-2z"/></svg>';
+            var iconGpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M2 10h20"/></svg>';
+            var iconRam = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2"/></svg>';
+            var iconStorage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>';
+            var iconCooling = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2306b6d4" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>';
+            var iconCase = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%238b5cf6" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M4 16h16M9 6h6"/></svg>';
+            var iconPsu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23eab308" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h2M10 12h8M6 9v6"/></svg>';
+
+            var cpusData = [
+                { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: iconCpu },
+                { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: iconCpu },
+                { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: iconCpu },
+                { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: iconCpu },
+                { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: iconCpu },
+                { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: iconCpu },
+                { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: iconCpu },
+                { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: iconCpu },
+                { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: iconCpu }
+            ];
+
+            var motherboardsData = [
+                { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: iconMb },
+                { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: iconMb },
+                { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", img: iconMb },
+                { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", img: iconMb },
+                { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", img: iconMb }
+            ];
+
+            var gpusData = [
+                { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20, img: iconGpu },
+                { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50, img: iconGpu },
+                { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62, img: iconGpu },
+                { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85, img: iconGpu },
+                { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100, img: iconGpu },
+                { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82, img: iconGpu }
+            ];
+
+            var ramsData = [
+                { id: "r1", name: "16GB (2x8) DDR4 3200MHz",
