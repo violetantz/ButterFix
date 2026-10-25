@@ -178,10 +178,12 @@
         }
 
         .component-card img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
             margin-bottom: 0.6rem;
+            border: 1px solid #374151;
         }
 
         .component-name {
@@ -372,46 +374,249 @@
         </div>
     </section>
 
-    <!-- SCRIPT DE CHARGEMENT SÉCURISÉ -->
+    <!-- SCRIPT DIRECT -->
     <script>
-        try {
-            var iconCpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>';
-            var iconMb = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2310b981" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M6 6h4v4H6zM14 6h4v4h-4zM6 14h4v4H6zM14 14h2v2h-2zM18 14h2v2h-2z"/></svg>';
-            var iconGpu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M2 10h20"/></svg>';
-            var iconRam = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2"/></svg>';
-            var iconStorage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>';
-            var iconCooling = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2306b6d4" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>';
-            var iconCase = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%238b5cf6" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M4 16h16M9 6h6"/></svg>';
-            var iconPsu = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23eab308" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h2M10 12h8M6 9v6"/></svg>';
+        var imgCpu = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80";
+        var imgMb = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&auto=format&fit=crop&q=80";
+        var imgGpu = "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80";
+        var imgRam = "https://images.unsplash.com/photo-1562976540-1e02c414c1c9?w=200&auto=format&fit=crop&q=80";
+        var imgStorage = "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=200&auto=format&fit=crop&q=80";
+        var imgCooling = "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=200&auto=format&fit=crop&q=80";
+        var imgCase = "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200&auto=format&fit=crop&q=80";
+        var imgPsu = "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80";
 
-            var cpusData = [
-                { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: iconCpu },
-                { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: iconCpu },
-                { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: iconCpu },
-                { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: iconCpu },
-                { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: iconCpu },
-                { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: iconCpu },
-                { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: iconCpu },
-                { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: iconCpu },
-                { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: iconCpu }
-            ];
+        var cpusData = [
+            { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: imgCpu },
+            { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: imgCpu },
+            { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: imgCpu },
+            { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: imgCpu },
+            { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: imgCpu },
+            { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: imgCpu },
+            { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: imgCpu },
+            { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: imgCpu },
+            { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: imgCpu }
+        ];
 
-            var motherboardsData = [
-                { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: iconMb },
-                { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: iconMb },
-                { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", img: iconMb },
-                { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", img: iconMb },
-                { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", img: iconMb }
-            ];
+        var motherboardsData = [
+            { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
+            { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
+            { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", img: imgMb },
+            { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", img: imgMb },
+            { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", img: imgMb }
+        ];
 
-            var gpusData = [
-                { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20, img: iconGpu },
-                { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50, img: iconGpu },
-                { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62, img: iconGpu },
-                { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85, img: iconGpu },
-                { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100, img: iconGpu },
-                { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82, img: iconGpu }
-            ];
+        var gpusData = [
+            { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20, img: imgGpu },
+            { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50, img: imgGpu },
+            { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62, img: imgGpu },
+            { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85, img: imgGpu },
+            { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100, img: imgGpu },
+            { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82, img: imgGpu }
+        ];
 
-            var ramsData = [
-                { id: "r1", name: "16GB (2x8) DDR4 3200MHz",
+        var ramsData = [
+            { id: "r1", name: "16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4", img: imgRam },
+            { id: "r2", name: "32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4", img: imgRam },
+            { id: "r3", name: "32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5", img: imgRam },
+            { id: "r4", name: "64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5", img: imgRam }
+        ];
+
+        var storagesData = [
+            { id: "s1", name: "SSD NVMe 500GB", price: 40, power: 5, img: imgStorage },
+            { id: "s2", name: "Crucial P3 1TB NVMe", price: 70, power: 6, img: imgStorage },
+            { id: "s3", name: "Samsung 990 PRO 2TB", price: 175, power: 8, img: imgStorage },
+            { id: "s4", name: "Seagate Barracuda 4TB HDD", price: 95, power: 8, img: imgStorage }
+        ];
+
+        var coolingsData = [
+            { id: "cl1", name: "Ventirad Standard", price: 25, power: 4, img: imgCooling },
+            { id: "cl2", name: "Thermalright Assassin 120", price: 40, power: 5, img: imgCooling },
+            { id: "cl3", name: "Watercooling AIO 240mm", price: 90, power: 15, img: imgCooling },
+            { id: "cl4", name: "Watercooling AIO 360mm", price: 160, power: 20, img: imgCooling }
+        ];
+
+        var casesData = [
+            { id: "cs1", name: "Micro-ATX Mini Tower", price: 75, power: 8, img: imgCase },
+            { id: "cs2", name: "NZXT H5 Flow RGB", price: 110, power: 10, img: imgCase },
+            { id: "cs3", name: "Corsair 4000D Airflow", price: 95, power: 10, img: imgCase },
+            { id: "cs4", name: "Lian Li O11 Dynamic EVO", price: 165, power: 15, img: imgCase }
+        ];
+
+        var psusData = [
+            { id: "p1", name: "MSI MAG 650W Bronze", price: 70, capacity: 650, img: imgPsu },
+            { id: "p2", name: "Corsair RM750e 750W Gold", price: 115, capacity: 750, img: imgPsu },
+            { id: "p3", name: "Seasonic Focus 850W Gold", price: 145, capacity: 850, img: imgPsu }
+        ];
+
+        var selectedState = {
+            cpu: null,
+            motherboard: null,
+            gpu: null,
+            ram: null,
+            storage: null,
+            cooling: null,
+            pcCase: null,
+            psu: null
+        };
+
+        function render() {
+            var container = document.getElementById('catalog-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            function createSection(titleText, items, categoryKey) {
+                var section = document.createElement('div');
+                section.className = 'category-section';
+
+                var title = document.createElement('div');
+                title.className = 'category-title';
+                title.textContent = titleText;
+                section.appendChild(title);
+
+                var grid = document.createElement('div');
+                grid.className = 'cards-grid';
+
+                if (categoryKey === 'motherboard') {
+                    if (!selectedState.cpu) {
+                        var msg = document.createElement('div');
+                        msg.className = 'info-msg';
+                        msg.textContent = '⚠️ Veuillez d’abord sélectionner un Processeur (CPU) pour afficher les cartes mères compatibles.';
+                        grid.appendChild(msg);
+                        section.appendChild(grid);
+                        container.appendChild(section);
+                        return;
+                    } else {
+                        items = items.filter(function(mb) {
+                            return mb.socket === selectedState.cpu.socket;
+                        });
+                        if (items.length === 0) {
+                            var msg = document.createElement('div');
+                            msg.className = 'info-msg';
+                            msg.textContent = '❌ Aucune carte mère compatible pour le socket ' + selectedState.cpu.socket;
+                            grid.appendChild(msg);
+                            section.appendChild(grid);
+                            container.appendChild(section);
+                            return;
+                        }
+                    }
+                }
+
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var card = document.createElement('div');
+                    card.className = 'component-card';
+
+                    if (selectedState[categoryKey] === item) {
+                        card.classList.add('selected');
+                    }
+
+                    card.innerHTML = 
+                        '<img src="' + item.img + '" alt="' + item.name + '">' +
+                        '<div class="component-name">' + item.name + '</div>' +
+                        '<div class="component-price">' + item.price + ' €</div>';
+
+                    (function(cat, itm) {
+                        card.onclick = function() {
+                            if (selectedState[cat] === itm) {
+                                selectedState[cat] = null;
+                            } else {
+                                selectedState[cat] = itm;
+                                if (cat === 'cpu' && selectedState.motherboard) {
+                                    if (selectedState.motherboard.socket !== itm.socket) {
+                                        selectedState.motherboard = null;
+                                    }
+                                }
+                            }
+                            render();
+                            updateStats();
+                        };
+                    })(categoryKey, item);
+
+                    grid.appendChild(card);
+                }
+
+                section.appendChild(grid);
+                container.appendChild(section);
+            }
+
+            createSection("1. Processeur (CPU)", cpusData, 'cpu');
+            createSection("2. Carte Mère", motherboardsData, 'motherboard');
+            createSection("3. Carte Graphique (GPU)", gpusData, 'gpu');
+            createSection("4. Mémoire RAM", ramsData, 'ram');
+            createSection("5. Stockage SSD & HDD", storagesData, 'storage');
+            createSection("6. Refroidissement", coolingsData, 'cooling');
+            createSection("7. Boîtier PC", casesData, 'pcCase');
+            createSection("8. Alimentation (PSU)", psusData, 'psu');
+        }
+
+        function updateStats() {
+            var totalPrice = 0;
+            var totalPower = 0;
+
+            var keys = Object.keys(selectedState);
+            for (var i = 0; i < keys.length; i++) {
+                var item = selectedState[keys[i]];
+                if (item) {
+                    totalPrice += item.price;
+                    if (item.power) totalPower += item.power;
+                }
+            }
+
+            document.getElementById('total-price').innerHTML = totalPrice + ' €';
+            document.getElementById('power-val').innerHTML = totalPower + ' W';
+
+            var badge = document.getElementById('compatibility-badge');
+            var cpu = selectedState.cpu;
+            var mb = selectedState.motherboard;
+            var ram = selectedState.ram;
+            var psu = selectedState.psu;
+
+            var error = null;
+
+            if (cpu && mb && cpu.socket !== mb.socket) {
+                error = 'Socket Incompatible (' + cpu.socket + ' vs ' + mb.socket + ')';
+            } else if (mb && ram && mb.ramType !== ram.ramType) {
+                error = 'RAM Incompatible (' + mb.ramType + ' vs ' + ram.ramType + ')';
+            } else if (psu && psu.capacity < totalPower) {
+                error = 'Alimentation insuffisante (' + psu.capacity + 'W pour ' + totalPower + 'W)';
+            }
+
+            if (error) {
+                badge.className = 'status-badge status-error';
+                badge.innerHTML = '❌ ' + error;
+            } else {
+                badge.className = 'status-badge status-ok';
+                badge.innerHTML = '✓ Configuration Compatible (100%)';
+            }
+
+            var gpu = selectedState.gpu;
+            var bBar = document.getElementById('bottleneck-bar');
+            var bVal = document.getElementById('bottleneck-val');
+            var bDesc = document.getElementById('bottleneck-desc');
+
+            if (cpu && gpu) {
+                var diff = Math.abs(cpu.score - gpu.score);
+                var bPercent = Math.min(Math.round(diff), 100);
+
+                bBar.style.width = bPercent + '%';
+                bVal.innerHTML = bPercent + '%';
+
+                if (bPercent < 15) {
+                    bDesc.innerHTML = 'Excellent équilibre entre le CPU et le GPU.';
+                } else if (cpu.score < gpu.score) {
+                    bDesc.innerHTML = 'Le processeur bridera la carte graphique.';
+                } else {
+                    bDesc.innerHTML = 'La carte graphique sera limitée par le CPU en haute résolution.';
+                }
+            } else {
+                bBar.style.width = '0%';
+                bVal.innerHTML = '0%';
+                bDesc.innerHTML = 'Sélectionnez un CPU et un GPU.';
+            }
+        }
+
+        render();
+        updateStats();
+    </script>
+</body>
+</html>
