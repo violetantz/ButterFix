@@ -61,6 +61,7 @@
             transition: color 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            cursor: pointer;
         }
 
         .nav-links a:hover {
@@ -210,7 +211,7 @@
     <header>
         <a href="#" class="nav-logo">ButterFix</a>
         <ul class="nav-links">
-            <li><a href="#configurateur">Configurateur</a></li>
+            <li><a href="#configurateur" class="scroll-link">Configurateur</a></li>
             <li><a href="#comparateur">Comparateur</a></li>
             <li><a href="#abonnements">Abonnements</a></li>
         </ul>
@@ -220,7 +221,7 @@
     <section class="hero">
         <div class="hero-content">
             <div class="cta-group">
-                <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
+                <a href="#configurateur" class="btn btn-primary scroll-link">Lancer le Configurateur</a>
                 <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
             </div>
         </div>
@@ -270,7 +271,7 @@
         </div>
     </section>
 
-    <!-- Script JavaScript corrigé -->
+    <!-- Script JavaScript -->
     <script>
         const pcCatalogComplete = {
             gpus: [
@@ -334,81 +335,4 @@
             cpus: [
                 { id: "cpu_i3_10100f", brand: "Intel", model: "Core i3-10100F (4C/8T)", price: 75, socket: "LGA1200", power: 65, type: "CPU" },
                 { id: "cpu_i5_10400f", brand: "Intel", model: "Core i5-10400F (6C/12T)", price: 100, socket: "LGA1200", power: 65, type: "CPU" },
-                { id: "cpu_i7_10700k", brand: "Intel", model: "Core i7-10700K (8C/16T)", price: 160, socket: "LGA1200", power: 125, type: "CPU" },
-                { id: "cpu_i3_12100f", brand: "Intel", model: "Core i3-12100F (4C/8T)", price: 90, socket: "LGA1700", power: 60, type: "CPU" },
-                { id: "cpu_i5_12400f", brand: "Intel", model: "Core i5-12400F (6C/12T)", price: 130, socket: "LGA1700", power: 65, type: "CPU" },
-                { id: "cpu_i5_12600k", brand: "Intel", model: "Core i5-12600K (10C/16T)", price: 180, socket: "LGA1700", power: 125, type: "CPU" },
-                { id: "cpu_i3_13100f", brand: "Intel", model: "Core i3-13100F (4C/8T)", price: 110, socket: "LGA1700", power: 60, type: "CPU" },
-                { id: "cpu_i5_13400f", brand: "Intel", model: "Core i5-13400F (10C/16T)", price: 195, socket: "LGA1700", power: 65, type: "CPU" },
-                { id: "cpu_i5_13600k", brand: "Intel", model: "Core i5-13600K (14C/20T)", price: 290, socket: "LGA1700", power: 125, type: "CPU" },
-                { id: "cpu_i7_13700k", brand: "Intel", model: "Core i7-13700K (16C/24T)", price: 370, socket: "LGA1700", power: 125, type: "CPU" },
-                { id: "cpu_i9_13900k", brand: "Intel", model: "Core i9-13900K (24C/32T)", price: 520, socket: "LGA1700", power: 150, type: "CPU" },
-                { id: "cpu_i5_14400f", brand: "Intel", model: "Core i5-14400F (10C/16T)", price: 205, socket: "LGA1700", power: 65, type: "CPU" },
-                { id: "cpu_i5_14600k", brand: "Intel", model: "Core i5-14600K (14C/20T)", price: 310, socket: "LGA1700", power: 125, type: "CPU" },
-                { id: "cpu_i7_14700k", brand: "Intel", model: "Core i7-14700K (20C/28T)", price: 410, socket: "LGA1700", power: 125, type: "CPU" },
-                { id: "cpu_i9_14900k", brand: "Intel", model: "Core i9-14900K (24C/32T)", price: 560, socket: "LGA1700", power: 150, type: "CPU" },
-                { id: "cpu_ultra5_245k", brand: "Intel", model: "Core Ultra 5 245K", price: 330, socket: "LGA1851", power: 125, type: "CPU" },
-                { id: "cpu_ultra7_265k", brand: "Intel", model: "Core Ultra 7 265K", price: 440, socket: "LGA1851", power: 125, type: "CPU" },
-                { id: "cpu_ultra9_285k", brand: "Intel", model: "Core Ultra 9 285K", price: 620, socket: "LGA1851", power: 125, type: "CPU" },
-                { id: "cpu_r3_3100", brand: "AMD", model: "Ryzen 3 3100 (4C/8T)", price: 70, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r5_3600", brand: "AMD", model: "Ryzen 5 3600 (6C/12T)", price: 85, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r7_3700x", brand: "AMD", model: "Ryzen 7 3700X (8C/16T)", price: 130, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r5_5600", brand: "AMD", model: "Ryzen 5 5600 (6C/12T)", price: 110, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r5_5600x", brand: "AMD", model: "Ryzen 5 5600X (6C/12T)", price: 135, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r7_5700x", brand: "AMD", model: "Ryzen 7 5700X (8C/16T)", price: 170, socket: "AM4", power: 65, type: "CPU" },
-                { id: "cpu_r7_5800x3d", brand: "AMD", model: "Ryzen 7 5800X3D (Gaming Legend)", price: 280, socket: "AM4", power: 105, type: "CPU" },
-                { id: "cpu_r9_5950x", brand: "AMD", model: "Ryzen 9 5950X (16C/32T)", price: 390, socket: "AM4", power: 105, type: "CPU" },
-                { id: "cpu_r5_7600", brand: "AMD", model: "Ryzen 5 7600 (6C/12T)", price: 190, socket: "AM5", power: 65, type: "CPU" },
-                { id: "cpu_r5_7600x", brand: "AMD", model: "Ryzen 5 7600X (6C/12T)", price: 210, socket: "AM5", power: 105, type: "CPU" },
-                { id: "cpu_r7_7700x", brand: "AMD", model: "Ryzen 7 7700X (8C/16T)", price: 310, socket: "AM5", power: 105, type: "CPU" },
-                { id: "cpu_r7_7800x3d", brand: "AMD", model: "Ryzen 7 7800X3D (Le Roi du Gaming)", price: 420, socket: "AM5", power: 120, type: "CPU" },
-                { id: "cpu_r9_7900x", brand: "AMD", model: "Ryzen 9 7900X (12C/24T)", price: 430, socket: "AM5", power: 170, type: "CPU" },
-                { id: "cpu_r9_7950x", brand: "AMD", model: "Ryzen 9 7950X (16C/32T)", price: 540, socket: "AM5", power: 170, type: "CPU" },
-                { id: "cpu_r5_9600x", brand: "AMD", model: "Ryzen 5 9600X (Zen 5)", price: 270, socket: "AM5", power: 65, type: "CPU" },
-                { id: "cpu_r7_9700x", brand: "AMD", model: "Ryzen 7 9700X (Zen 5)", price: 360, socket: "AM5", power: 65, type: "CPU" },
-                { id: "cpu_r7_9800x3d", brand: "AMD", model: "Ryzen 7 9800X3D (Zen 5 Gaming)", price: 490, socket: "AM5", power: 120, type: "CPU" },
-                { id: "cpu_r9_9950x", brand: "AMD", model: "Ryzen 9 9950X (Zen 5 Ultimate)", price: 680, socket: "AM5", power: 170, type: "CPU" }
-            ],
-            rams: [
-                { id: "ram_8gb_2666", brand: "Generic", model: "8GB (1x8) DDR4 2666MHz", price: 25, type: "RAM" },
-                { id: "ram_16gb_2666", brand: "Corsair", model: "16GB (2x8) DDR4 2666MHz", price: 45, type: "RAM" },
-                { id: "ram_16gb_3200", brand: "Corsair Vengeance", model: "16GB (2x8) DDR4 3200MHz", price: 52, type: "RAM" },
-                { id: "ram_32gb_3200", brand: "Kingston Fury", model: "32GB (2x16) DDR4 3200MHz", price: 72, type: "RAM" },
-                { id: "ram_32gb_3600", brand: "Corsair Vengeance", model: "32GB (2x16) DDR4 3600MHz CL18", price: 79, type: "RAM" },
-                { id: "ram_16gb_ddr5_5600", brand: "Crucial", model: "16GB (2x8) DDR5 5600MHz", price: 75, type: "RAM" },
-                { id: "ram_32gb_ddr5_5600", brand: "Kingston Fury", model: "32GB (2x16) DDR5 5600MHz", price: 110, type: "RAM" },
-                { id: "ram_32gb_ddr5_6000", brand: "Corsair Vengeance RGB", model: "32GB (2x16) DDR5 6000MHz CL30", price: 125, type: "RAM" },
-                { id: "ram_64gb_ddr5_6000", brand: "G.Skill Trident Z5", model: "64GB (2x32) DDR5 6000MHz CL30", price: 210, type: "RAM" },
-                { id: "ram_64gb_ddr5_6400", brand: "Corsair Dominator", model: "64GB (2x32) DDR5 6400MHz CL32", price: 230, type: "RAM" }
-            ]
-        };
-
-        const cpuSelect = document.getElementById('select-cpu');
-        const gpuSelect = document.getElementById('select-gpu');
-        const ramSelect = document.getElementById('select-ram');
-
-        pcCatalogComplete.cpus.forEach(cpu => {
-            let opt = document.createElement('option');
-            opt.value = cpu.price;
-            opt.dataset.power = cpu.power;
-            opt.textContent = `${cpu.brand} ${cpu.model} (${cpu.socket}) — ${cpu.price}€`;
-            cpuSelect.appendChild(opt);
-        });
-
-        pcCatalogComplete.gpus.forEach(gpu => {
-            let opt = document.createElement('option');
-            opt.value = gpu.price;
-            opt.dataset.power = gpu.power;
-            opt.textContent = `${gpu.brand} ${gpu.model} — ${gpu.price}€`;
-            gpuSelect.appendChild(opt);
-        });
-
-        pcCatalogComplete.rams.forEach(ram => {
-            let opt = document.createElement('option');
-            opt.value = ram.price;
-            opt.dataset.power = 15;
-            opt.textContent = `${ram.brand} ${ram.model} — ${ram.price}€`;
-            ramSelect.appendChild(opt);
-        });
-
-        function updateConfig
+                { id: "cpu_i7_10700k",
