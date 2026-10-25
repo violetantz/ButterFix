@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Visual PC Builder Exhaustif</title>
+    <title>ButterFix — Visual PC Builder</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -119,6 +119,7 @@
             padding: 2rem;
             border-radius: 12px;
             backdrop-filter: blur(10px);
+            min-height: 400px;
         }
 
         .category-section {
@@ -326,7 +327,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Catalogue interactif</p>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Catalogue interactif sécurisé</p>
         </div>
     </section>
 
@@ -334,7 +335,9 @@
         <div class="builder-grid">
             
             <!-- CONTENEUR DU CATALOGUE -->
-            <div class="components-panel" id="catalog-container"></div>
+            <div class="components-panel" id="catalog-container">
+                <p style="color: #9ca3af; text-align: center; padding: 2rem;">Chargement du catalogue en cours...</p>
+            </div>
 
             <!-- APERÇU + STATS -->
             <div class="preview-panel">
@@ -373,9 +376,9 @@
         </div>
     </section>
 
-    <!-- SCRIPT JS ROBUSTE AVEC IMAGES DISTINCTES -->
+    <!-- SCRIPT AVEC GESTION D'ERREUR INTÉGRÉE -->
     <script>
-        (function() {
+        try {
             var cpusData = [
                 { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80" },
                 { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80" },
@@ -467,7 +470,6 @@
                     var grid = document.createElement('div');
                     grid.className = 'cards-grid';
 
-                    // Filtrage intelligent des cartes mères selon le CPU
                     if (categoryKey === 'motherboard') {
                         if (!selectedState.cpu) {
                             var msg = document.createElement('div');
@@ -609,7 +611,9 @@
 
             render();
             updateStats();
-        })();
+        } catch (err) {
+            document.getElementById('catalog-container').innerHTML = '<div style="color: #ef4444; padding: 2rem; text-align: center;">Erreur critique du script : ' + err.message + '</div>';
+        }
     </script>
 </body>
 </html>
