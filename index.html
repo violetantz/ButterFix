@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ButterFix — Le comparateur de prix & Configurateur PC</title>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -152,118 +156,4 @@
         }
 
         .config-card {
-            background: rgba(15, 15, 25, 0.85);
-            border: 1px solid #374151;
-            padding: 2.5rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .form-group {
-            margin-bottom: 1.8rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.6rem;
-            font-weight: 600;
-            color: #e5e7eb;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .form-group select {
-            width: 100%;
-            padding: 0.85rem;
-            background: #08080c;
-            color: #fff;
-            border: 1px solid #4b5563;
-            border-radius: 6px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group select:focus {
-            border-color: #a855f7;
-        }
-
-        .config-summary {
-            border-top: 1px solid #374151;
-            padding-top: 1.8rem;
-            margin-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navbar -->
-    <header>
-        <a href="#" class="nav-logo">ButterFix</a>
-        <ul class="nav-links">
-            <li><a href="#configurateur">Configurateur</a></li>
-            <li><a href="#comparateur">Comparateur</a></li>
-            <li><a href="#abonnements">Abonnements</a></li>
-        </ul>
-    </header>
-
-    <!-- Hero Section avec l'image en fond -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="cta-group">
-                <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
-                <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Configurateur PC -->
-    <section id="configurateur">
-        <h2 style="text-align: center; margin-bottom: 2.5rem; color: #a855f7; text-transform: uppercase; letter-spacing: 2px;">Configurateur PC ButterFix</h2>
-        
-        <div class="config-card">
-            
-            <!-- Choix Processeur (CPU) -->
-            <div class="form-group">
-                <label for="select-cpu">Processeur (CPU)</label>
-                <select id="select-cpu">
-                    <option value="">-- Choisir un processeur --</option>
-                </select>
-            </div>
-
-            <!-- Choix Carte Graphique (GPU) -->
-            <div class="form-group">
-                <label for="select-gpu">Carte Graphique (GPU)</label>
-                <select id="select-gpu">
-                    <option value="">-- Choisir une carte graphique --</option>
-                </select>
-            </div>
-
-            <!-- Choix Mémoire RAM -->
-            <div class="form-group">
-                <label for="select-ram">Mémoire RAM</label>
-                <select id="select-ram">
-                    <option value="">-- Choisir de la RAM --</option>
-                </select>
-            </div>
-
-            <!-- Résumé Prix et Puissance -->
-            <div class="config-summary">
-                <div>
-                    <p style="font-size: 0.9rem; color: #9ca3af;">Consommation estimée : <span id="total-power" style="color: #fff; font-weight: bold;">0 W</span></p>
-                </div>
-                <div style="text-align: right;">
-                    <span style="font-size: 0.85rem; color: #9ca3af; display: block; text-transform: uppercase; letter-spacing: 1px;">Total estimé</span>
-                    <span id="total-price" style="font-size: 2rem; font-weight: 800; color: #a855f7;">0 €</span>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Script
+            background: rgba(15, 15, 25,
