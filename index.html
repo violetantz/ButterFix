@@ -12,97 +12,101 @@
         }
 
         body {
-            background-color: #0d0d12;
+            background-color: #08080c;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Filigrane géant en arrière-plan (lignes fines violet clair/gris) */
-        .bg-watermark {
+        /* Navbar épurée en haut */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            width: 100%;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
+            top: 0;
+            z-index: 10;
+            background: linear-gradient(to bottom, rgba(8,8,12,0.8), transparent);
         }
 
-        /* Conteneur principal */
-        .hero-container {
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #a855f7;
+        }
+
+        /* Hero Section avec ton image en arrière-plan */
+        .hero {
             position: relative;
-            z-index: 1;
+            width: 100%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 2rem;
+            /* Remplace 'background-logo.jpg' par le nom exact de ton image sur ton repo */
+            background-image: url('background-logo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 0 1rem;
         }
 
-        /* Style du logo pour le fondre proprement (pas de carré brutal) */
-        .logo-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-            padding: 15px;
-        }
-
-        .logo-wrapper::after {
+        /* Voile assombrissant léger pour garder le contraste */
+        .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, rgba(31,0,99,0.4) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            filter: blur(20px);
+            background: rgba(8, 8, 12, 0.45);
+            z-index: 1;
         }
 
-        .brand-logo {
-            width: 280px;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            filter: drop-shadow(0 10px 25px rgba(31, 0, 99, 0.6));
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15vh; /* Pour caler les boutons sous le logo de l'image */
         }
 
-        /* Titre de la marque */
-        h1.brand-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #ffffff 30%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Slogan officiel */
-        .brand-slogan {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #8b5cf6;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-        }
-
-        /* Boutons d'action épurés */
+        /* CTA / Boutons d'action */
         .cta-group {
             display: flex;
             gap: 1rem;
-            margin-top: 1rem;
         }
 
         .btn {
-            padding: 0.8rem 2rem;
+            padding: 0.85rem 2.2rem;
             font-size: 0.95rem;
             font-weight: 600;
             border-radius: 6px;
@@ -116,55 +120,52 @@
         .btn-primary {
             background-color: #1F0063;
             color: #ffffff;
-            border: 1px solid #4c1d95;
-            box-shadow: 0 4px 15px rgba(31, 0, 99, 0.4);
+            border: 1px solid #7c3aed;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
         }
 
         .btn-primary:hover {
             background-color: #2e008a;
-            border-color: #8b5cf6;
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            border-color: #a855f7;
+            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
             transform: translateY(-2px);
         }
 
         .btn-secondary {
-            background-color: transparent;
+            background-color: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(10px);
             color: #d1d5db;
             border: 1px solid #374151;
         }
 
         .btn-secondary:hover {
-            border-color: #8b5cf6;
+            border-color: #a855f7;
             color: #ffffff;
-            background-color: rgba(31, 0, 99, 0.1);
+            background-color: rgba(31, 0, 99, 0.3);
         }
     </style>
 </head>
 <body>
 
-    <!-- Filigrane géant en arrière-plan (lignes fines) -->
-    <svg class="bg-watermark" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M250 100 C200 50, 50 80, 50 200 C50 300, 150 350, 250 450 C350 350, 450 300, 450 200 C450 80, 300 50, 250 100 Z" stroke="#9333ea" stroke-width="2" stroke-opacity="0.3"/>
-        <path d="M250 120 C220 80, 100 100, 100 200 C100 280, 180 330, 250 410 C320 330, 400 280, 400 200 C400 100, 280 80, 250 120 Z" stroke="#cbd5e1" stroke-width="1" stroke-opacity="0.2"/>
-    </svg>
+    <!-- Navbar -->
+    <header>
+        <a href="#" class="nav-logo">ButterFix</a>
+        <ul class="nav-links">
+            <li><a href="#configurateur">Configurateur</a></li>
+            <li><a href="#comparateur">Comparateur</a></li>
+            <li><a href="#abonnements">Abonnements</a></li>
+        </ul>
+    </header>
 
-    <div class="hero-container">
-        <!-- Logo officiel -->
-        <div class="logo-wrapper">
-            <!-- Remplace "logo.png" par le nom exact de ton fichier image sur ton repo GitHub -->
-            <img src="logo.png" alt="ButterFix Logo" class="brand-logo">
+    <!-- Hero Section avec ton image en fond -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="cta-group">
+                <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
+                <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
+            </div>
         </div>
-
-        <!-- Titre & Slogan -->
-        <h1 class="brand-title">ButterFix</h1>
-        <div class="brand-slogan">#BUILDWITHUS</div>
-
-        <!-- Actions principales -->
-        <div class="cta-group">
-            <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
-            <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
-        </div>
-    </div>
+    </section>
 
 </body>
 </html>
