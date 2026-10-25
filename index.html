@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Le comparateur de prix & Configurateur PC</title>
+    <title>ButterFix — 3D PC Builder & Comparateur</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -25,7 +25,7 @@
             overflow-x: hidden;
         }
 
-        /* Navbar épurée en haut */
+        /* Navbar */
         header {
             display: flex;
             justify-content: space-between;
@@ -35,11 +35,11 @@
             position: absolute;
             top: 0;
             z-index: 10;
-            background: linear-gradient(to bottom, rgba(8,8,12,0.8), transparent);
+            background: linear-gradient(to bottom, rgba(8,8,12,0.9), transparent);
         }
 
         .nav-logo {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -61,18 +61,17 @@
             transition: color 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            cursor: pointer;
         }
 
         .nav-links a:hover {
             color: #a855f7;
         }
 
-        /* Hero Section avec l'image en fond */
+        /* Hero */
         .hero {
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: 60vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -82,94 +81,54 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            padding: 0 1rem;
         }
 
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(8, 8, 12, 0.35);
+            background: linear-gradient(to bottom, rgba(8, 8, 12, 0.4), #08080c);
             z-index: 1;
         }
 
         .hero-content {
             position: relative;
             z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 45vh;
+            margin-top: 15vh;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.85rem 2.2rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background-color: #1F0063;
-            color: #ffffff;
-            border: 1px solid #7c3aed;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
-        }
-
-        .btn-primary:hover {
-            background-color: #2e008a;
-            border-color: #a855f7;
-            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: rgba(15, 15, 25, 0.6);
-            backdrop-filter: blur(10px);
-            color: #d1d5db;
-            border: 1px solid #374151;
-        }
-
-        .btn-secondary:hover {
-            border-color: #a855f7;
-            color: #ffffff;
-            background-color: rgba(31, 0, 99, 0.3);
-        }
-
-        /* Section du Configurateur PC */
+        /* Layout Configurateur 2 Colonnes */
         #configurateur {
-            padding: 6rem 2rem;
-            max-width: 900px;
+            padding: 2rem 2rem 6rem;
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
         }
 
-        .config-card {
+        .builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Colonne Formulaire / Composants */
+        .components-panel {
             background: rgba(15, 15, 25, 0.85);
             border: 1px solid #374151;
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 12px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
             font-weight: 600;
             color: #e5e7eb;
             text-transform: uppercase;
@@ -184,7 +143,7 @@
             color: #fff;
             border: 1px solid #4b5563;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: border-color 0.3s ease;
         }
@@ -193,95 +152,234 @@
             border-color: #a855f7;
         }
 
-        .config-summary {
-            border-top: 1px solid #374151;
-            padding-top: 1.8rem;
-            margin-top: 2rem;
+        /* Colonne Rendu 3D & Stats */
+        .preview-panel {
+            position: sticky;
+            top: 100px;
+            background: rgba(15, 15, 25, 0.9);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .pc-case-preview {
+            width: 100%;
+            height: 320px;
+            background: #000;
+            border: 2px dashed #374151;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(124, 58, 237, 0.1);
+        }
+
+        .pc-case-preview img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            transition: all 0.5s ease;
+        }
+
+        .rgb-effect {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Badges & Compatibility Indicators */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .status-ok {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .status-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        /* Bottleneck Bar */
+        .metric-card {
+            background: #08080c;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #1f2937;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #1f2937;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, #a855f7);
+            transition: width 0.4s ease;
+        }
+
+        .total-price-box {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-top: 1px solid #374151;
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .builder-grid {
+                grid-template-columns: 1fr;
+            }
+            .preview-panel {
+                position: static;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <header>
         <a href="#" class="nav-logo">ButterFix</a>
         <ul class="nav-links">
             <li><a href="#configurateur">Configurateur</a></li>
             <li><a href="#comparateur">Comparateur</a></li>
-            <li><a href="#abonnements">Abonnements</a></li>
         </ul>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="cta-group">
-                <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
-                <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
-            </div>
+            <h1 style="font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem;">CONFIGURATEUR PC 3D</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">#BUILDWITHUS — Testez la compatibilité & le bottleneck en direct</p>
         </div>
     </section>
 
-    <!-- Section Configurateur PC -->
     <section id="configurateur">
-        <h2 style="text-align: center; margin-bottom: 2.5rem; color: #a855f7; text-transform: uppercase; letter-spacing: 2px;">Configurateur PC ButterFix</h2>
-        
-        <div class="config-card">
+        <div class="builder-grid">
             
-            <!-- Choix Processeur (CPU) -->
-            <div class="form-group">
-                <label for="select-cpu">Processeur (CPU)</label>
-                <select id="select-cpu">
-                    <option value="">-- Choisir un processeur --</option>
-                </select>
-            </div>
-
-            <!-- Choix Carte Graphique (GPU) -->
-            <div class="form-group">
-                <label for="select-gpu">Carte Graphique (GPU)</label>
-                <select id="select-gpu">
-                    <option value="">-- Choisir une carte graphique --</option>
-                </select>
-            </div>
-
-            <!-- Choix Mémoire RAM -->
-            <div class="form-group">
-                <label for="select-ram">Mémoire RAM</label>
-                <select id="select-ram">
-                    <option value="">-- Choisir de la RAM --</option>
-                </select>
-            </div>
-
-            <!-- Résumé Prix et Puissance -->
-            <div class="config-summary">
-                <div>
-                    <p style="font-size: 0.9rem; color: #9ca3af;">Consommation estimée : <span id="total-power" style="color: #fff; font-weight: bold;">0 W</span></p>
+            <!-- FORMULAIRE COMPOSANTS -->
+            <div class="components-panel">
+                
+                <div class="form-group">
+                    <label>Processeur (CPU) <span id="cpu-socket-tag" style="color:#a855f7;"></span></label>
+                    <select id="select-cpu"><option value="">-- Sélectionner un CPU --</option></select>
                 </div>
-                <div style="text-align: right;">
-                    <span style="font-size: 0.85rem; color: #9ca3af; display: block; text-transform: uppercase; letter-spacing: 1px;">Total estimé</span>
+
+                <div class="form-group">
+                    <label>Carte Mère <span id="mb-socket-tag" style="color:#a855f7;"></span></label>
+                    <select id="select-motherboard"><option value="">-- Sélectionner une Carte Mère --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Carte Graphique (GPU)</label>
+                    <select id="select-gpu"><option value="">-- Sélectionner une Carte Graphique --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Mémoire RAM</label>
+                    <select id="select-ram"><option value="">-- Sélectionner la RAM --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Stockage SSD</label>
+                    <select id="select-storage"><option value="">-- Sélectionner le Stockage --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Refroidissement</label>
+                    <select id="select-cooling"><option value="">-- Sélectionner le Refroidissement --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Boîtier PC</label>
+                    <select id="select-case"><option value="">-- Sélectionner le Boîtier --</option></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Alimentation (PSU)</label>
+                    <select id="select-psu"><option value="">-- Sélectionner l'Alimentation --</option></select>
+                </div>
+
+            </div>
+
+            <!-- APERÇU RENDU + STATS COMPATIBILITÉ & BOTTLENECK -->
+            <div class="preview-panel">
+                
+                <div class="pc-case-preview">
+                    <div class="rgb-effect"></div>
+                    <img id="case-visual" src="logo.jpg" alt="Aperçu Boîtier" style="opacity: 0.5;">
+                    <p id="preview-text" style="position: absolute; bottom: 10px; font-size: 0.75rem; color: #9ca3af;">Aperçu du Montage</p>
+                </div>
+
+                <!-- Badge Compatibilité -->
+                <div id="compatibility-badge" class="status-badge status-ok">
+                    ✓ Configuration Compatible (100%)
+                </div>
+
+                <!-- Indicateur de Bottleneck -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span>Bottleneck Estimé (Goulot d'étranglement)</span>
+                        <span id="bottleneck-val" style="color: #a855f7; font-weight: bold;">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="bottleneck-bar" class="progress-bar-fill"></div>
+                    </div>
+                    <p id="bottleneck-desc" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.4rem;">Sélectionnez un CPU et un GPU pour calculer le bottleneck.</p>
+                </div>
+
+                <!-- Puissance / Consommation -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span>Consommation Électrique</span>
+                        <span id="power-val" style="color: #fff; font-weight: bold;">0 W</span>
+                    </div>
+                </div>
+
+                <!-- Prix Total -->
+                <div class="total-price-box">
+                    <span style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem;">Total Estimé</span>
                     <span id="total-price" style="font-size: 2rem; font-weight: 800; color: #a855f7;">0 €</span>
                 </div>
+
             </div>
 
         </div>
     </section>
 
-    <!-- SCRIPT DE CHARGEMENT DIRECT DES COMPOSANTS -->
-    <script>
-        (function() {
-            var cpus = [
-                { name: "Intel Core i3-10100F (LGA1200)", price: 75, power: 65 },
-                { name: "Intel Core i5-12400F (LGA1700)", price: 130, power: 65 },
-                { name: "Intel Core i5-13600K (LGA1700)", price: 290, power: 125 },
-                { name: "Intel Core i7-14700K (LGA1700)", price: 410, power: 125 },
-                { name: "Intel Core Ultra 7 265K (LGA1851)", price: 440, power: 125 },
-                { name: "AMD Ryzen 5 3600 (AM4)", price: 85, power: 65 },
-                { name: "AMD Ryzen 5 5600X (AM4)", price: 135, power: 65 },
-                { name: "AMD Ryzen 7 5800X3D (AM4)", price: 280, power: 105 },
-                { name: "AMD Ryzen 5 7600X (AM5)", price: 210, power: 105 },
-                { name: "AMD Ryzen 7 7800X3D (AM5)", price: 420, power: 120 },
-                { name: "AMD Ryzen 7 9800X3D (AM5)", price: 490, power: 120 },
-                { name: "AMD Ryzen 9 9950X (AM5)", price: 680, power: 170 }
+    <!-- SCRIPT LOGIQUE AVANCÉE -->
