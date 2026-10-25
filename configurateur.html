@@ -327,10 +327,10 @@ function reason(cat,item){
 // ---- Goulot d’étranglement : le CPU bride-t-il le GPU, selon la résolution ? ----
 function bottleneck(){
   var c=S.cpu,g=S.gpu;
-  if(!c||!g)return {v:null,txt:'Choisissez un processeur et une carte graphique.'};
-  var cpuEff=c.s*RES[res],pct=cpuEff>=g.s?0:Math.round((1-cpuEff/g.s)*100);
-  if(pct>=10)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+'. Un CPU plus puissant débloquerait des images par seconde.'};
-  if(cpuEff>g.s*1.6)return {v:0,txt:'Le processeur est largement au-dessus de la carte graphique : un GPU plus puissant serait mieux exploité.'};
+  if(!c||!g)return {v:null,txt:'Choisissez un processeur et une carte graphique (avec sa marque).'};
+  var need=25+0.75*g.s,eff=c.s*RES[res],pct=eff>=need?0:Math.round((1-eff/need)*100);
+  if(pct>=10)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+' : environ '+pct+' % de ses performances ne seront pas exploitées.'};
+  if(eff>need*1.5)return {v:pct,txt:'Aucun goulot. Le processeur est très au-dessus des besoins de cette carte en '+res+' : une carte plus puissante serait mieux exploitée.'};
   return {v:pct,txt:'Bon équilibre entre processeur et carte graphique en '+res+'.'};
 }
 
@@ -380,7 +380,12 @@ function drawList(){
     var price=vs?'dès '+fmt(Math.min.apply(null,vs.map(function(v){return v.p}))):fmt(it.p);
     b.className='card';b.setAttribute('aria-pressed',!!on);if(vs)b.setAttribute('aria-expanded',opened[tab]===it.id);
     b.innerHTML='<span class="l"><img src="'+(it.img||'images/'+slug(it.n)+'.webp')+'" alt="" loading="lazy" onerror="this.remove()"><span><span class="n">'+it.n+'</span><br><span class="s">'+it.sp+(vs?' · '+vs.length+' '+(it.vl||'marques')+' au choix':'')+'</span>'+(why?'<div class="r">Incompatible : '+why+'</div>':'')+'</span></span><span class="p">'+price+'</span>';
-    b.onclick=function(){if(vs){opened[tab]=opened[tab]===it.id?null:it.id}else{S[tab]=(S[tab]===it)?null:it;update();drawTabs()}drawList()};
+    b.onclick=function(){
+      if(vs){
+        if(!(S[tab]&&S[tab].base===it.id)){S[tab]=vs.slice().sort(function(a,b){return a.p-b.p})[0];opened[tab]=it.id;update();drawTabs()}
+        else opened[tab]=opened[tab]===it.id?null:it.id;
+      }else{S[tab]=(S[tab]===it)?null:it;update();drawTabs()}
+      drawList()};
     box.appendChild(b);
     if(vs&&opened[tab]===it.id){
       var d=document.createElement('div');d.className='vars';
