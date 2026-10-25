@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Visual PC Builder Exhaustif</title>
+    <title>ButterFix — Visual PC Builder Intelligent</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -200,6 +200,18 @@
             margin-top: auto;
         }
 
+        .info-msg {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-style: italic;
+            padding: 1.5rem;
+            background: #08080c;
+            border: 1px dashed #374151;
+            border-radius: 6px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
         /* Aperçu et Panneau latéral */
         .preview-panel {
             position: sticky;
@@ -314,7 +326,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Composants illustrés</p>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Filtrage intelligent & composants illustrés</p>
         </div>
     </section>
 
@@ -361,10 +373,9 @@
         </div>
     </section>
 
-    <!-- SCRIPT JS AVEC IMAGES PAR CATÉGORIE -->
+    <!-- SCRIPT JS AVEC IMAGES DÉDIÉES ET FILTRAGE CARTES MÈRES -->
     <script>
         (function() {
-            // Liens d'illustrations adaptées par catégorie pour chaque composant
             var imgCpu = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80";
             var imgMb = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&auto=format&fit=crop&q=80";
             var imgGpu = "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80";
@@ -390,7 +401,7 @@
                     ]
                 },
                 motherboards: {
-                    title: "2. Carte Mère",
+                    title: "2. Carte Mère (Compatible selon le CPU)",
                     items: [
                         { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
                         { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
@@ -486,7 +497,36 @@
                     var grid = document.createElement('div');
                     grid.className = 'cards-grid';
 
-                    category.items.forEach(function(item) {
+                    var itemsToDisplay = category.items;
+
+                    // FILTRAGE INTELLIGENT DES CARTES MÈRES SELON LE CPU
+                    if (catKey === 'motherboards') {
+                        if (!selectedState.cpus) {
+                            var msg = document.createElement('div');
+                            msg.className = 'info-msg';
+                            msg.innerHTML = '⚠️ Veuillez d’abord sélectionner un Processeur (CPU) pour afficher les cartes mères compatibles.';
+                            grid.appendChild(msg);
+                            section.appendChild(grid);
+                            container.appendChild(section);
+                            return;
+                        } else {
+                            itemsToDisplay = category.items.filter(function(mb) {
+                                return mb.socket === selectedState.cpus.socket;
+                            });
+
+                            if (itemsToDisplay.length === 0) {
+                                var msg = document.createElement('div');
+                                msg.className = 'info-msg';
+                                msg.innerHTML = '❌ Aucune carte mère compatible trouvée pour le socket ' + selectedState.cpus.socket + '.';
+                                grid.appendChild(msg);
+                                section.appendChild(grid);
+                                container.appendChild(section);
+                                return;
+                            }
+                        }
+                    }
+
+                    itemsToDisplay.forEach(function(item) {
                         var card = document.createElement('div');
                         card.className = 'component-card';
 
@@ -504,6 +544,12 @@
                                 selectedState[catKey] = null;
                             } else {
                                 selectedState[catKey] = item;
+                                // Réinitialiser la carte mère si elle devient incompatible suite à un changement de CPU
+                                if (catKey === 'cpus' && selectedState.motherboards) {
+                                    if (selectedState.motherboards.socket !== item.socket) {
+                                        selectedState.motherboards = null;
+                                    }
+                                }
                             }
                             renderCatalog();
                             updateBuildStats();
