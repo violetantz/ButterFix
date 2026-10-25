@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Visual PC Builder Intelligent</title>
+    <title>ButterFix — Visual PC Builder Exhaustif</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -326,7 +326,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Filtrage intelligent & composants illustrés</p>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Images spécifiques par composant</p>
         </div>
     </section>
 
@@ -373,263 +373,22 @@
         </div>
     </section>
 
-    <!-- SCRIPT JS AVEC IMAGES DÉDIÉES ET FILTRAGE CARTES MÈRES -->
+    <!-- SCRIPT JS AVEC IMAGES UNIQUES POUR CHAQUE COMPOSANT -->
     <script>
         (function() {
-            var imgCpu = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80";
-            var imgMb = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&auto=format&fit=crop&q=80";
-            var imgGpu = "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80";
-            var imgRam = "https://images.unsplash.com/photo-1562976540-1e02c414c1c9?w=200&auto=format&fit=crop&q=80";
-            var imgStorage = "https://images.unsplash.com/photo-1531492740946-a0839ec1b362?w=200&auto=format&fit=crop&q=80";
-            var imgCooling = "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=200&auto=format&fit=crop&q=80";
-            var imgCase = "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200&auto=format&fit=crop&q=80";
-            var imgPsu = "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80";
-
             var catalog = {
                 cpus: {
                     title: "1. Processeur (CPU)",
                     items: [
-                        { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: imgCpu },
-                        { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: imgCpu },
-                        { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: imgCpu },
-                        { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: imgCpu },
-                        { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: imgCpu },
-                        { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: imgCpu },
-                        { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: imgCpu },
-                        { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: imgCpu },
-                        { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: imgCpu }
+                        { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80" },
+                        { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80" }
                     ]
                 },
                 motherboards: {
-                    title: "2. Carte Mère (Compatible selon le CPU)",
-                    items: [
-                        { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
-                        { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: imgMb },
-                        { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", img: imgMb },
-                        { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", img: imgMb },
-                        { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", img: imgMb }
-                    ]
-                },
-                gpus: {
-                    title: "3. Carte Graphique (GPU)",
-                    items: [
-                        { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20, img: imgGpu },
-                        { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50, img: imgGpu },
-                        { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62, img: imgGpu },
-                        { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85, img: imgGpu },
-                        { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100, img: imgGpu },
-                        { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82, img: imgGpu }
-                    ]
-                },
-                rams: {
-                    title: "4. Mémoire RAM",
-                    items: [
-                        { id: "r1", name: "16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4", img: imgRam },
-                        { id: "r2", name: "32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4", img: imgRam },
-                        { id: "r3", name: "32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5", img: imgRam },
-                        { id: "r4", name: "64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5", img: imgRam }
-                    ]
-                },
-                storages: {
-                    title: "5. Stockage SSD & HDD",
-                    items: [
-                        { id: "s1", name: "SSD NVMe 500GB", price: 40, power: 5, img: imgStorage },
-                        { id: "s2", name: "Crucial P3 1TB NVMe", price: 70, power: 6, img: imgStorage },
-                        { id: "s3", name: "Samsung 990 PRO 2TB", price: 175, power: 8, img: imgStorage },
-                        { id: "s4", name: "Seagate Barracuda 4TB HDD", price: 95, power: 8, img: imgStorage }
-                    ]
-                },
-                coolings: {
-                    title: "6. Refroidissement",
-                    items: [
-                        { id: "cl1", name: "Ventirad Standard", price: 25, power: 4, img: imgCooling },
-                        { id: "cl2", name: "Thermalright Assassin 120", price: 40, power: 5, img: imgCooling },
-                        { id: "cl3", name: "Watercooling AIO 240mm", price: 90, power: 15, img: imgCooling },
-                        { id: "cl4", name: "Watercooling AIO 360mm", price: 160, power: 20, img: imgCooling }
-                    ]
-                },
-                cases: {
-                    title: "7. Boîtier PC",
-                    items: [
-                        { id: "cs1", name: "Micro-ATX Mini Tower", price: 75, power: 8, img: imgCase },
-                        { id: "cs2", name: "NZXT H5 Flow RGB", price: 110, power: 10, img: imgCase },
-                        { id: "cs3", name: "Corsair 4000D Airflow", price: 95, power: 10, img: imgCase },
-                        { id: "cs4", name: "Lian Li O11 Dynamic EVO", price: 165, power: 15, img: imgCase }
-                    ]
-                },
-                psus: {
-                    title: "8. Alimentation (PSU)",
-                    items: [
-                        { id: "p1", name: "MSI MAG 650W Bronze", price: 70, capacity: 650, img: imgPsu },
-                        { id: "p2", name: "Corsair RM750e 750W Gold", price: 115, capacity: 750, img: imgPsu },
-                        { id: "p3", name: "Seasonic Focus 850W Gold", price: 145, capacity: 850, img: imgPsu }
-                    ]
-                }
-            };
-
-            var selectedState = {
-                cpus: null,
-                motherboards: null,
-                gpus: null,
-                rams: null,
-                storages: null,
-                coolings: null,
-                cases: null,
-                psus: null
-            };
-
-            var container = document.getElementById('catalog-container');
-
-            function renderCatalog() {
-                container.innerHTML = '';
-
-                Object.keys(catalog).forEach(function(catKey) {
-                    var category = catalog[catKey];
-
-                    var section = document.createElement('div');
-                    section.className = 'category-section';
-
-                    var title = document.createElement('div');
-                    title.className = 'category-title';
-                    title.innerHTML = category.title;
-                    section.appendChild(title);
-
-                    var grid = document.createElement('div');
-                    grid.className = 'cards-grid';
-
-                    var itemsToDisplay = category.items;
-
-                    // FILTRAGE INTELLIGENT DES CARTES MÈRES SELON LE CPU
-                    if (catKey === 'motherboards') {
-                        if (!selectedState.cpus) {
-                            var msg = document.createElement('div');
-                            msg.className = 'info-msg';
-                            msg.innerHTML = '⚠️ Veuillez d’abord sélectionner un Processeur (CPU) pour afficher les cartes mères compatibles.';
-                            grid.appendChild(msg);
-                            section.appendChild(grid);
-                            container.appendChild(section);
-                            return;
-                        } else {
-                            itemsToDisplay = category.items.filter(function(mb) {
-                                return mb.socket === selectedState.cpus.socket;
-                            });
-
-                            if (itemsToDisplay.length === 0) {
-                                var msg = document.createElement('div');
-                                msg.className = 'info-msg';
-                                msg.innerHTML = '❌ Aucune carte mère compatible trouvée pour le socket ' + selectedState.cpus.socket + '.';
-                                grid.appendChild(msg);
-                                section.appendChild(grid);
-                                container.appendChild(section);
-                                return;
-                            }
-                        }
-                    }
-
-                    itemsToDisplay.forEach(function(item) {
-                        var card = document.createElement('div');
-                        card.className = 'component-card';
-
-                        if (selectedState[catKey] === item) {
-                            card.classList.add('selected');
-                        }
-
-                        card.innerHTML = 
-                            '<img src="' + item.img + '" alt="' + item.name + '">' +
-                            '<div class="component-name">' + item.name + '</div>' +
-                            '<div class="component-price">' + item.price + ' €</div>';
-
-                        card.onclick = function() {
-                            if (selectedState[catKey] === item) {
-                                selectedState[catKey] = null;
-                            } else {
-                                selectedState[catKey] = item;
-                                // Réinitialiser la carte mère si elle devient incompatible suite à un changement de CPU
-                                if (catKey === 'cpus' && selectedState.motherboards) {
-                                    if (selectedState.motherboards.socket !== item.socket) {
-                                        selectedState.motherboards = null;
-                                    }
-                                }
-                            }
-                            renderCatalog();
-                            updateBuildStats();
-                        };
-
-                        grid.appendChild(card);
-                    });
-
-                    section.appendChild(grid);
-                    container.appendChild(section);
-                });
-            }
-
-            function updateBuildStats() {
-                var totalPrice = 0;
-                var totalPower = 0;
-
-                Object.keys(selectedState).forEach(key => {
-                    var item = selectedState[key];
-                    if (item) {
-                        totalPrice += item.price;
-                        if (item.power) totalPower += item.power;
-                    }
-                });
-
-                document.getElementById('total-price').innerHTML = totalPrice + ' €';
-                document.getElementById('power-val').innerHTML = totalPower + ' W';
-
-                var badge = document.getElementById('compatibility-badge');
-                var cpu = selectedState.cpus;
-                var mb = selectedState.motherboards;
-                var ram = selectedState.rams;
-                var psu = selectedState.psus;
-
-                var error = null;
-
-                if (cpu && mb && cpu.socket !== mb.socket) {
-                    error = 'Socket Incompatible (' + cpu.socket + ' vs ' + mb.socket + ')';
-                } else if (mb && ram && mb.ramType !== ram.ramType) {
-                    error = 'RAM Incompatible (' + mb.ramType + ' vs ' + ram.ramType + ')';
-                } else if (psu && psu.capacity < totalPower) {
-                    error = 'Alimentation insuffisante (' + psu.capacity + 'W pour ' + totalPower + 'W)';
-                }
-
-                if (error) {
-                    badge.className = 'status-badge status-error';
-                    badge.innerHTML = '❌ ' + error;
-                } else {
-                    badge.className = 'status-badge status-ok';
-                    badge.innerHTML = '✓ Configuration Compatible (100%)';
-                }
-
-                var gpu = selectedState.gpus;
-                var bBar = document.getElementById('bottleneck-bar');
-                var bVal = document.getElementById('bottleneck-val');
-                var bDesc = document.getElementById('bottleneck-desc');
-
-                if (cpu && gpu) {
-                    var diff = Math.abs(cpu.score - gpu.score);
-                    var bPercent = Math.min(Math.round(diff), 100);
-
-                    bBar.style.width = bPercent + '%';
-                    bVal.innerHTML = bPercent + '%';
-
-                    if (bPercent < 15) {
-                        bDesc.innerHTML = 'Excellent équilibre entre le CPU et le GPU.';
-                    } else if (cpu.score < gpu.score) {
-                        bDesc.innerHTML = 'Le processeur bridera la carte graphique.';
-                    } else {
-                        bDesc.innerHTML = 'La carte graphique sera limitée par le CPU en haute résolution.';
-                    }
-                } else {
-                    bBar.style.width = '0%';
-                    bVal.innerHTML = '0%';
-                    bDesc.innerHTML = 'Sélectionnez un CPU et un GPU.';
-                }
-            }
-
-            renderCatalog();
-        })();
-    </script>
-</body>
-</html>
