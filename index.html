@@ -85,7 +85,6 @@
             padding: 0 1rem;
         }
 
-        /* Voile assombrissant léger pour garder le contraste */
         .hero::before {
             content: '';
             position: absolute;
@@ -103,7 +102,6 @@
             margin-top: 45vh;
         }
 
-        /* CTA / Boutons d'action */
         .cta-group {
             display: flex;
             gap: 1rem;
@@ -211,17 +209,17 @@
     <header>
         <a href="#" class="nav-logo">ButterFix</a>
         <ul class="nav-links">
-            <li><a href="#configurateur" class="scroll-link">Configurateur</a></li>
+            <li><a href="#configurateur">Configurateur</a></li>
             <li><a href="#comparateur">Comparateur</a></li>
             <li><a href="#abonnements">Abonnements</a></li>
         </ul>
     </header>
 
-    <!-- Hero Section avec l'image en fond -->
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <div class="cta-group">
-                <a href="#configurateur" class="btn btn-primary scroll-link">Lancer le Configurateur</a>
+                <a href="#configurateur" class="btn btn-primary">Lancer le Configurateur</a>
                 <a href="#comparateur" class="btn btn-secondary">Comparer les prix</a>
             </div>
         </div>
@@ -271,136 +269,19 @@
         </div>
     </section>
 
-    <!-- Script JavaScript Sécurisé -->
+    <!-- SCRIPT DE CHARGEMENT DIRECT DES COMPOSANTS -->
     <script>
-        const pcCatalogComplete = {
-            gpus: [
-                { id: "gpu_gtx1650", brand: "Nvidia", model: "GeForce GTX 1650 4GB", price: 150, power: 75 },
-                { id: "gpu_gtx1650s", brand: "Nvidia", model: "GeForce GTX 1650 Super 4GB", price: 170, power: 100 },
-                { id: "gpu_gtx1660", brand: "Nvidia", model: "GeForce GTX 1660 6GB", price: 190, power: 120 },
-                { id: "gpu_gtx1660s", brand: "Nvidia", model: "GeForce GTX 1660 Super 6GB", price: 210, power: 125 },
-                { id: "gpu_gtx1660ti", brand: "Nvidia", model: "GeForce GTX 1660 Ti 6GB", price: 230, power: 120 },
-                { id: "gpu_rtx2060", brand: "Nvidia", model: "GeForce RTX 2060 6GB", price: 240, power: 160 },
-                { id: "gpu_rtx2060s", brand: "Nvidia", model: "GeForce RTX 2060 Super 8GB", price: 270, power: 175 },
-                { id: "gpu_rtx2070", brand: "Nvidia", model: "GeForce RTX 2070 8GB", price: 300, power: 175 },
-                { id: "gpu_rtx2070s", brand: "Nvidia", model: "GeForce RTX 2070 Super 8GB", price: 330, power: 215 },
-                { id: "gpu_rtx2080", brand: "Nvidia", model: "GeForce RTX 2080 8GB", price: 360, power: 215 },
-                { id: "gpu_rtx2080ti", brand: "Nvidia", model: "GeForce RTX 2080 Ti 11GB", price: 450, power: 250 },
-                { id: "gpu_rtx3060", brand: "Nvidia", model: "GeForce RTX 3060 12GB", price: 290, power: 170 },
-                { id: "gpu_rtx3060ti", brand: "Nvidia", model: "GeForce RTX 3060 Ti 8GB", price: 340, power: 200 },
-                { id: "gpu_rtx3070", brand: "Nvidia", model: "GeForce RTX 3070 8GB", price: 380, power: 220 },
-                { id: "gpu_rtx3070ti", brand: "Nvidia", model: "GeForce RTX 3070 Ti 8GB", price: 420, power: 290 },
-                { id: "gpu_rtx3080", brand: "Nvidia", model: "GeForce RTX 3080 10GB", price: 520, power: 320 },
-                { id: "gpu_rtx3080ti", brand: "Nvidia", model: "GeForce RTX 3080 Ti 12GB", price: 650, power: 350 },
-                { id: "gpu_rtx3090", brand: "Nvidia", model: "GeForce RTX 3090 24GB", price: 850, power: 350 },
-                { id: "gpu_rtx4060", brand: "Nvidia", model: "GeForce RTX 4060 8GB", price: 330, power: 115 },
-                { id: "gpu_rtx4060ti", brand: "Nvidia", model: "GeForce RTX 4060 Ti 16GB", price: 410, power: 160 },
-                { id: "gpu_rtx4070", brand: "Nvidia", model: "GeForce RTX 4070 12GB", price: 580, power: 200 },
-                { id: "gpu_rtx4070super", brand: "Nvidia", model: "GeForce RTX 4070 Super", price: 650, power: 220 },
-                { id: "gpu_rtx4070tis", brand: "Nvidia", model: "GeForce RTX 4070 Ti Super", price: 830, power: 285 },
-                { id: "gpu_rtx4080", brand: "Nvidia", model: "GeForce RTX 4080 16GB", price: 950, power: 320 },
-                { id: "gpu_rtx4080super", brand: "Nvidia", model: "GeForce RTX 4080 Super", price: 1050, power: 320 },
-                { id: "gpu_rtx4090", brand: "Nvidia", model: "GeForce RTX 4090 24GB", price: 1850, power: 450 },
-                { id: "gpu_rtx5070", brand: "Nvidia", model: "GeForce RTX 5070", price: 720, power: 250 },
-                { id: "gpu_rtx5080", brand: "Nvidia", model: "GeForce RTX 5080", price: 1200, power: 400 },
-                { id: "gpu_rtx5090", brand: "Nvidia", model: "GeForce RTX 5090", price: 2200, power: 550 },
-                { id: "gpu_rx580", brand: "AMD", model: "Radeon RX 580 8GB", price: 120, power: 185 },
-                { id: "gpu_rx5700xt", brand: "AMD", model: "Radeon RX 5700 XT", price: 260, power: 225 },
-                { id: "gpu_rx6700xt", brand: "AMD", model: "Radeon RX 6700 XT", price: 340, power: 230 },
-                { id: "gpu_rx6800xt", brand: "AMD", model: "Radeon RX 6800 XT", price: 460, power: 300 },
-                { id: "gpu_rx7700xt", brand: "AMD", model: "Radeon RX 7700 XT", price: 450, power: 245 },
-                { id: "gpu_rx7800xt", brand: "AMD", model: "Radeon RX 7800 XT", price: 540, power: 263 },
-                { id: "gpu_rx7900xtx", brand: "AMD", model: "Radeon RX 7900 XTX", price: 990, power: 355 }
-            ],
-            cpus: [
-                { id: "cpu_i3_10100f", brand: "Intel", model: "Core i3-10100F", price: 75, socket: "LGA1200", power: 65 },
-                { id: "cpu_i5_12400f", brand: "Intel", model: "Core i5-12400F", price: 130, socket: "LGA1700", power: 65 },
-                { id: "cpu_i5_13600k", brand: "Intel", model: "Core i5-13600K", price: 290, socket: "LGA1700", power: 125 },
-                { id: "cpu_i7_14700k", brand: "Intel", model: "Core i7-14700K", price: 410, socket: "LGA1700", power: 125 },
-                { id: "cpu_ultra7_265k", brand: "Intel", model: "Core Ultra 7 265K", price: 440, socket: "LGA1851", power: 125 },
-                { id: "cpu_r5_3600", brand: "AMD", model: "Ryzen 5 3600", price: 85, socket: "AM4", power: 65 },
-                { id: "cpu_r5_5600x", brand: "AMD", model: "Ryzen 5 5600X", price: 135, socket: "AM4", power: 65 },
-                { id: "cpu_r7_5800x3d", brand: "AMD", model: "Ryzen 7 5800X3D", price: 280, socket: "AM4", power: 105 },
-                { id: "cpu_r5_7600x", brand: "AMD", model: "Ryzen 5 7600X", price: 210, socket: "AM5", power: 105 },
-                { id: "cpu_r7_7800x3d", brand: "AMD", model: "Ryzen 7 7800X3D", price: 420, socket: "AM5", power: 120 },
-                { id: "cpu_r7_9800x3d", brand: "AMD", model: "Ryzen 7 9800X3D", price: 490, socket: "AM5", power: 120 },
-                { id: "cpu_r9_9950x", brand: "AMD", model: "Ryzen 9 9950X", price: 680, socket: "AM5", power: 170 }
-            ],
-            rams: [
-                { id: "ram_8gb_2666", brand: "Generic", model: "8GB DDR4 2666MHz", price: 25 },
-                { id: "ram_16gb_3200", brand: "Corsair", model: "16GB (2x8) DDR4 3200MHz", price: 52 },
-                { id: "ram_32gb_3600", brand: "Kingston", model: "32GB (2x16) DDR4 3600MHz", price: 79 },
-                { id: "ram_32gb_ddr5_6000", brand: "Corsair", model: "32GB (2x16) DDR5 6000MHz", price: 125 },
-                { id: "ram_64gb_ddr5_6400", brand: "G.Skill", model: "64GB (2x32) DDR5 6400MHz", price: 230 }
-            ]
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const cpuSelect = document.getElementById('select-cpu');
-            const gpuSelect = document.getElementById('select-gpu');
-            const ramSelect = document.getElementById('select-ram');
-
-            if (cpuSelect && pcCatalogComplete.cpus) {
-                pcCatalogComplete.cpus.forEach(cpu => {
-                    let opt = document.createElement('option');
-                    opt.value = cpu.price;
-                    opt.dataset.power = cpu.power;
-                    opt.textContent = `${cpu.brand} ${cpu.model} (${cpu.socket}) - ${cpu.price} EUR`;
-                    cpuSelect.appendChild(opt);
-                });
-            }
-
-            if (gpuSelect && pcCatalogComplete.gpus) {
-                pcCatalogComplete.gpus.forEach(gpu => {
-                    let opt = document.createElement('option');
-                    opt.value = gpu.price;
-                    opt.dataset.power = gpu.power;
-                    opt.textContent = `${gpu.brand} ${gpu.model} - ${gpu.price} EUR`;
-                    gpuSelect.appendChild(opt);
-                });
-            }
-
-            if (ramSelect && pcCatalogComplete.rams) {
-                pcCatalogComplete.rams.forEach(ram => {
-                    let opt = document.createElement('option');
-                    opt.value = ram.price;
-                    opt.dataset.power = 15;
-                    opt.textContent = `${ram.brand} ${ram.model} - ${ram.price} EUR`;
-                    ramSelect.appendChild(opt);
-                });
-            }
-
-            function updateConfig() {
-                let cpuPrice = parseFloat(cpuSelect.value) || 0;
-                let gpuPrice = parseFloat(gpuSelect.value) || 0;
-                let ramPrice = parseFloat(ramSelect.value) || 0;
-
-                let cpuPower = cpuSelect.selectedIndex > 0 ? parseInt(cpuSelect.options[cpuSelect.selectedIndex].dataset.power) : 0;
-                let gpuPower = gpuSelect.selectedIndex > 0 ? parseInt(gpuSelect.options[gpuSelect.selectedIndex].dataset.power) : 0;
-                let ramPower = ramSelect.selectedIndex > 0 ? 15 : 0;
-
-                let totalPrice = cpuPrice + gpuPrice + ramPrice;
-                let totalPower = cpuPower + gpuPower + ramPower + 50;
-
-                document.getElementById('total-price').textContent = totalPrice + ' EUR';
-                document.getElementById('total-power').textContent = totalPower + ' W';
-            }
-
-            if(cpuSelect) cpuSelect.addEventListener('change', updateConfig);
-            if(gpuSelect) gpuSelect.addEventListener('change', updateConfig);
-            if(ramSelect) ramSelect.addEventListener('change', updateConfig);
-        });
-
-        // Défilement fluide
-        document.addEventListener('click', function(e) {
-            if(e.target.matches('.scroll-link')) {
-                e.preventDefault();
-                const target = document.querySelector(e.target.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+        (function() {
+            var cpus = [
+                { name: "Intel Core i3-10100F (LGA1200)", price: 75, power: 65 },
+                { name: "Intel Core i5-12400F (LGA1700)", price: 130, power: 65 },
+                { name: "Intel Core i5-13600K (LGA1700)", price: 290, power: 125 },
+                { name: "Intel Core i7-14700K (LGA1700)", price: 410, power: 125 },
+                { name: "Intel Core Ultra 7 265K (LGA1851)", price: 440, power: 125 },
+                { name: "AMD Ryzen 5 3600 (AM4)", price: 85, power: 65 },
+                { name: "AMD Ryzen 5 5600X (AM4)", price: 135, power: 65 },
+                { name: "AMD Ryzen 7 5800X3D (AM4)", price: 280, power: 105 },
+                { name: "AMD Ryzen 5 7600X (AM5)", price: 210, power: 105 },
+                { name: "AMD Ryzen 7 7800X3D (AM5)", price: 420, power: 120 },
+                { name: "AMD Ryzen 7 9800X3D (AM5)", price: 490, power: 120 },
+                { name: "AMD Ryzen 9 9950X (AM5)", price: 680, power: 170 }
