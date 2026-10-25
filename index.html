@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Visual PC Builder Exhaustif & Intelligent</title>
+    <title>ButterFix — Visual PC Builder</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -133,16 +133,13 @@
             margin-bottom: 1rem;
             padding-bottom: 0.4rem;
             border-bottom: 1px solid #374151;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 1rem;
-            max-height: 350px;
+            max-height: 320px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -180,10 +177,10 @@
         }
 
         .component-card img {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             object-fit: contain;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
         }
 
         .component-name {
@@ -199,18 +196,6 @@
             font-weight: 800;
             color: #a855f7;
             margin-top: auto;
-        }
-
-        .info-msg {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            font-style: italic;
-            padding: 1rem;
-            background: #08080c;
-            border: 1px dashed #374151;
-            border-radius: 6px;
-            text-align: center;
-            grid-column: 1 / -1;
         }
 
         /* Aperçu et Panneau latéral */
@@ -326,8 +311,8 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR EXHAUSTIF BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Filtrage intelligent & compatible</p>
+            <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Sélectionnez vos composants</p>
         </div>
     </section>
 
@@ -374,7 +359,7 @@
         </div>
     </section>
 
-    <!-- SCRIPT COMPLET ET FILTRAGE INTELLIGENT -->
+    <!-- SCRIPT JS SÉCURISÉ -->
     <script>
         (function() {
             var defImg = "logo.jpg";
@@ -383,126 +368,80 @@
                 cpus: {
                     title: "1. Processeur (CPU)",
                     items: [
-                        { id: "cpu_1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, img: defImg },
-                        { id: "cpu_2", name: "Core i5-10400F", price: 100, power: 65, socket: "LGA1200", ramType: "DDR4", score: 42, img: defImg },
-                        { id: "cpu_3", name: "Core i7-10700K", price: 160, power: 125, socket: "LGA1200", ramType: "DDR4", score: 55, img: defImg },
-                        { id: "cpu_4", name: "Core i3-12100F", price: 90, power: 60, socket: "LGA1700", ramType: "DDR4", score: 48, img: defImg },
-                        { id: "cpu_5", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, img: defImg },
-                        { id: "cpu_6", name: "Core i5-12600K", price: 180, power: 125, socket: "LGA1700", ramType: "DDR4", score: 72, img: defImg },
-                        { id: "cpu_7", name: "Core i3-13100F", price: 110, power: 60, socket: "LGA1700", ramType: "DDR4", score: 50, img: defImg },
-                        { id: "cpu_8", name: "Core i5-13400F", price: 195, power: 65, socket: "LGA1700", ramType: "DDR5", score: 70, img: defImg },
-                        { id: "cpu_9", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, img: defImg },
-                        { id: "cpu_10", name: "Core i7-13700K", price: 370, power: 125, socket: "LGA1700", ramType: "DDR5", score: 89, img: defImg },
-                        { id: "cpu_11", name: "Core i9-13900K", price: 520, power: 150, socket: "LGA1700", ramType: "DDR5", score: 95, img: defImg },
-                        { id: "cpu_12", name: "Core i5-14400F", price: 205, power: 65, socket: "LGA1700", ramType: "DDR5", score: 73, img: defImg },
-                        { id: "cpu_13", name: "Core i5-14600K", price: 310, power: 125, socket: "LGA1700", ramType: "DDR5", score: 85, img: defImg },
-                        { id: "cpu_14", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, img: defImg },
-                        { id: "cpu_15", name: "Core i9-14900K", price: 560, power: 150, socket: "LGA1700", ramType: "DDR5", score: 96, img: defImg },
-                        { id: "cpu_16", name: "Core Ultra 5 245K", price: 330, power: 125, socket: "LGA1851", ramType: "DDR5", score: 88, img: defImg },
-                        { id: "cpu_17", name: "Core Ultra 7 265K", price: 440, power: 125, socket: "LGA1851", ramType: "DDR5", score: 94, img: defImg },
-                        { id: "cpu_18", name: "Core Ultra 9 285K", price: 620, power: 125, socket: "LGA1851", ramType: "DDR5", score: 97, img: defImg },
-                        { id: "cpu_19", name: "Ryzen 3 3100", price: 70, power: 65, socket: "AM4", ramType: "DDR4", score: 32, img: defImg },
-                        { id: "cpu_20", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, img: defImg },
-                        { id: "cpu_21", name: "Ryzen 7 3700X", price: 130, power: 65, socket: "AM4", ramType: "DDR4", score: 52, img: defImg },
-                        { id: "cpu_22", name: "Ryzen 5 5600", price: 110, power: 65, socket: "AM4", ramType: "DDR4", score: 58, img: defImg },
-                        { id: "cpu_23", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, img: defImg },
-                        { id: "cpu_24", name: "Ryzen 7 5700X", price: 170, power: 65, socket: "AM4", ramType: "DDR4", score: 65, img: defImg },
-                        { id: "cpu_25", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, img: defImg },
-                        { id: "cpu_26", name: "Ryzen 9 5950X", price: 390, power: 105, socket: "AM4", ramType: "DDR4", score: 88, img: defImg },
-                        { id: "cpu_27", name: "Ryzen 5 7600", price: 190, power: 65, socket: "AM5", ramType: "DDR5", score: 75, img: defImg },
-                        { id: "cpu_28", name: "Ryzen 5 7600X", price: 210, power: 105, socket: "AM5", ramType: "DDR5", score: 78, img: defImg },
-                        { id: "cpu_29", name: "Ryzen 7 7700X", price: 310, power: 105, socket: "AM5", ramType: "DDR5", score: 86, img: defImg },
-                        { id: "cpu_30", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, img: defImg },
-                        { id: "cpu_31", name: "Ryzen 9 7900X", price: 430, power: 170, socket: "AM5", ramType: "DDR5", score: 90, img: defImg },
-                        { id: "cpu_32", name: "Ryzen 9 7950X", price: 540, power: 170, socket: "AM5", ramType: "DDR5", score: 95, img: defImg },
-                        { id: "cpu_33", name: "Ryzen 5 9600X", price: 270, power: 65, socket: "AM5", ramType: "DDR5", score: 82, img: defImg },
-                        { id: "cpu_34", name: "Ryzen 7 9700X", price: 360, power: 65, socket: "AM5", ramType: "DDR5", score: 90, img: defImg },
-                        { id: "cpu_35", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, img: defImg },
-                        { id: "cpu_36", name: "Ryzen 9 9950X", price: 680, power: 170, socket: "AM5", ramType: "DDR5", score: 99, img: defImg }
+                        { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35 },
+                        { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55 },
+                        { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82 },
+                        { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92 },
+                        { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45 },
+                        { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60 },
+                        { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85 },
+                        { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98 },
+                        { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100 }
                     ]
                 },
                 motherboards: {
-                    title: "2. Carte Mère (Compatible CPU & RAM)",
+                    title: "2. Carte Mère",
                     items: [
-                        { id: "mb_1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", img: defImg },
-                        { id: "mb_2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", img: defImg },
-                        { id: "mb_3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", img: defImg },
-                        { id: "mb_4", name: "MSI MAG X670E TOMAHAWK", price: 290, power: 35, socket: "AM5", ramType: "DDR5", img: defImg },
-                        { id: "mb_5", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", img: defImg },
-                        { id: "mb_6", name: "MSI MAG Z790 TOMAHAWK DDR4", price: 240, power: 35, socket: "LGA1700", ramType: "DDR4", img: defImg },
-                        { id: "mb_7", name: "MSI MAG Z790 TOMAHAWK DDR5", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", img: defImg },
-                        { id: "mb_8", name: "ASUS ROG STRIX B760-F", price: 230, power: 30, socket: "LGA1700", ramType: "DDR5", img: defImg },
-                        { id: "mb_9", name: "ASUS ROG MAXIMUS Z890 HERO", price: 650, power: 45, socket: "LGA1851", ramType: "DDR5", img: defImg },
-                        { id: "mb_10", name: "GIGABYTE B460M DS3H", price: 85, power: 20, socket: "LGA1200", ramType: "DDR4", img: defImg },
-                        { id: "mb_11", name: "MSI MPG Z490 GAMING PLUS", price: 150, power: 30, socket: "LGA1200", ramType: "DDR4", img: defImg }
+                        { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4" },
+                        { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4" },
+                        { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5" },
+                        { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4" },
+                        { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5" }
                     ]
                 },
                 gpus: {
                     title: "3. Carte Graphique (GPU)",
                     items: [
-                        { id: "gpu_1", name: "GTX 1650 4GB", price: 150, power: 75, score: 20, img: defImg },
-                        { id: "gpu_2", name: "RTX 3060 12GB", price: 290, power: 170, score: 50, img: defImg },
-                        { id: "gpu_3", name: "RTX 4060 8GB", price: 330, power: 115, score: 62, img: defImg },
-                        { id: "gpu_4", name: "RTX 4070 Super 12GB", price: 650, power: 220, score: 85, img: defImg },
-                        { id: "gpu_5", name: "RTX 4080 Super", price: 1050, power: 320, score: 95, img: defImg },
-                        { id: "gpu_6", name: "RTX 4090 24GB", price: 1850, power: 450, score: 100, img: defImg },
-                        { id: "gpu_7", name: "RTX 5070 12GB", price: 720, power: 250, score: 88, img: defImg },
-                        { id: "gpu_8", name: "RTX 5080 16GB", price: 1200, power: 400, score: 96, img: defImg },
-                        { id: "gpu_9", name: "RTX 5090 32GB", price: 2200, power: 550, score: 105, img: defImg },
-                        { id: "gpu_10", name: "RX 6700 XT", price: 340, power: 230, score: 60, img: defImg },
-                        { id: "gpu_11", name: "RX 7800 XT", price: 540, power: 263, score: 82, img: defImg },
-                        { id: "gpu_12", name: "RX 7900 XTX", price: 990, power: 355, score: 94, img: defImg }
+                        { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20 },
+                        { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50 },
+                        { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62 },
+                        { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85 },
+                        { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100 },
+                        { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82 }
                     ]
                 },
                 rams: {
                     title: "4. Mémoire RAM",
                     items: [
-                        { id: "ram_1", name: "16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4", img: defImg },
-                        { id: "ram_2", name: "32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4", img: defImg },
-                        { id: "ram_3", name: "32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5", img: defImg },
-                        { id: "ram_4", name: "64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5", img: defImg }
+                        { id: "r1", name: "16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4" },
+                        { id: "r2", name: "32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4" },
+                        { id: "r3", name: "32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5" },
+                        { id: "r4", name: "64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5" }
                     ]
                 },
                 storages: {
                     title: "5. Stockage SSD & HDD",
                     items: [
-                        { id: "st_1", name: "SSD NVMe 500GB M.2", price: 40, power: 5, img: defImg },
-                        { id: "st_2", name: "Crucial P3 1TB NVMe M.2", price: 70, power: 6, img: defImg },
-                        { id: "st_3", name: "Samsung 990 PRO 2TB NVMe M.2", price: 175, power: 8, img: defImg },
-                        { id: "st_4", name: "Corsair MP700 PRO 2TB PCIe 5.0", price: 290, power: 11, img: defImg },
-                        { id: "st_5", name: "Crucial MX500 1TB SATA SSD", price: 65, power: 3, img: defImg },
-                        { id: "st_6", name: "Seagate Barracuda 4TB HDD 3.5\"", price: 95, power: 8, img: defImg }
+                        { id: "s1", name: "SSD NVMe 500GB", price: 40, power: 5 },
+                        { id: "s2", name: "Crucial P3 1TB NVMe", price: 70, power: 6 },
+                        { id: "s3", name: "Samsung 990 PRO 2TB", price: 175, power: 8 },
+                        { id: "s4", name: "Seagate Barracuda 4TB HDD", price: 95, power: 8 }
                     ]
                 },
                 coolings: {
-                    title: "6. Refroidissement (Ventirad, AIO, Ventilateurs)",
+                    title: "6. Refroidissement",
                     items: [
-                        { id: "cl_1", name: "Ventirad Standard 120mm", price: 25, power: 4, img: defImg },
-                        { id: "cl_2", name: "Thermalright Assassin 120 SE", price: 40, power: 5, img: defImg },
-                        { id: "cl_3", name: "Be Quiet! Dark Rock 4 Pro", price: 85, power: 7, img: defImg },
-                        { id: "cl_4", name: "Watercooling AIO 240mm ARGB", price: 90, power: 15, img: defImg },
-                        { id: "cl_5", name: "Watercooling AIO 360mm RGB", price: 160, power: 20, img: defImg },
-                        { id: "cl_6", name: "Pack 3x Ventilateurs Boîtier ARGB", price: 35, power: 9, img: defImg }
+                        { id: "cl1", name: "Ventirad Standard", price: 25, power: 4 },
+                        { id: "cl2", name: "Thermalright Assassin 120", price: 40, power: 5 },
+                        { id: "cl3", name: "Watercooling AIO 240mm", price: 90, power: 15 },
+                        { id: "cl4", name: "Watercooling AIO 360mm", price: 160, power: 20 }
                     ]
                 },
                 cases: {
-                    title: "7. Boîtier PC (Tous types)",
+                    title: "7. Boîtier PC",
                     items: [
-                        { id: "cs_1", name: "Mini-ITX Compact Case", price: 95, power: 5, img: defImg },
-                        { id: "cs_2", name: "Micro-ATX Mini Tower Airflow", price: 75, power: 8, img: defImg },
-                        { id: "cs_3", name: "Fractal Pop Air RGB (Mid Tower)", price: 85, power: 10, img: defImg },
-                        { id: "cs_4", name: "NZXT H5 Flow RGB (Mid Tower)", price: 110, power: 10, img: defImg },
-                        { id: "cs_5", name: "Lian Li O11 Dynamic EVO (Aquarium)", price: 165, power: 15, img: defImg },
-                        { id: "cs_6", name: "Corsair 7000D Airflow (Full Tower)", price: 240, power: 20, img: defImg }
+                        { id: "cs1", name: "Micro-ATX Mini Tower", price: 75, power: 8 },
+                        { id: "cs2", name: "NZXT H5 Flow RGB", price: 110, power: 10 },
+                        { id: "cs3", name: "Corsair 4000D Airflow", price: 95, power: 10 },
+                        { id: "cs4", name: "Lian Li O11 Dynamic EVO", price: 165, power: 15 }
                     ]
                 },
                 psus: {
                     title: "8. Alimentation (PSU)",
                     items: [
-                        { id: "psu_1", name: "MSI MAG 650W 80+ Bronze", price: 70, capacity: 650, img: defImg },
-                        { id: "psu_2", name: "Corsair RM750e 750W Gold Modular", price: 115, capacity: 750, img: defImg },
-                        { id: "psu_3", name: "Seasonic Focus 850W Gold", price: 145, capacity: 850, img: defImg },
-                        { id: "psu_4", name: "Be Quiet! 1000W Titanium", price: 240, capacity: 1000, img: defImg }
+                        { id: "p1", name: "MSI MAG 650W Bronze", price: 70, capacity: 650 },
+                        { id: "p2", name: "Corsair RM750e 750W Gold", price: 115, capacity: 750 },
+                        { id: "p3", name: "Seasonic Focus 850W Gold", price: 145, capacity: 850 }
                     ]
                 }
             };
@@ -531,45 +470,13 @@
 
                     var title = document.createElement('div');
                     title.className = 'category-title';
-                    title.innerHTML = '<span>' + category.title + '</span>';
+                    title.innerHTML = category.title;
                     section.appendChild(title);
 
                     var grid = document.createElement('div');
                     grid.className = 'cards-grid';
 
-                    var itemsToDisplay = category.items;
-
-                    // FILTRAGE INTELLIGENT DES CARTES MÈRES
-                    if (catKey === 'motherboards') {
-                        if (!selectedState.cpus) {
-                            var msg = document.createElement('div');
-                            msg.className = 'info-msg';
-                            msg.innerHTML = '⚠️ Veuillez d’abord sélectionner un Processeur (CPU) pour afficher les cartes mères compatibles.';
-                            grid.appendChild(msg);
-                            section.appendChild(grid);
-                            container.appendChild(section);
-                            return;
-                        } else {
-                            // Filtrer par socket du CPU et optionnellement par RAM si sélectionnée
-                            itemsToDisplay = category.items.filter(function(mb) {
-                                var matchSocket = mb.socket === selectedState.cpus.socket;
-                                var matchRam = !selectedState.rams || mb.ramType === selectedState.rams.ramType;
-                                return matchSocket && matchRam;
-                            });
-
-                            if (itemsToDisplay.length === 0) {
-                                var msg = document.createElement('div');
-                                msg.className = 'info-msg';
-                                msg.innerHTML = '❌ Aucune carte mère compatible trouvée pour ce CPU / cette RAM.';
-                                grid.appendChild(msg);
-                                section.appendChild(grid);
-                                container.appendChild(section);
-                                return;
-                            }
-                        }
-                    }
-
-                    itemsToDisplay.forEach(function(item) {
+                    category.items.forEach(function(item) {
                         var card = document.createElement('div');
                         card.className = 'component-card';
 
@@ -578,7 +485,7 @@
                         }
 
                         card.innerHTML = 
-                            '<img src="' + item.img + '" alt="' + item.name + '">' +
+                            '<img src="' + defImg + '" alt="' + item.name + '">' +
                             '<div class="component-name">' + item.name + '</div>' +
                             '<div class="component-price">' + item.price + ' €</div>';
 
@@ -587,19 +494,7 @@
                                 selectedState[catKey] = null;
                             } else {
                                 selectedState[catKey] = item;
-                                // Si la carte mère sélectionnée n'est plus compatible suite à un changement, on la réinitialise
-                                if (catKey === 'cpus' && selectedState.motherboards) {
-                                    if (selectedState.motherboards.socket !== item.socket) {
-                                        selectedState.motherboards = null;
-                                    }
-                                }
-                                if (catKey === 'rams' && selectedState.motherboards) {
-                                    if (selectedState.motherboards.ramType !== item.ramType) {
-                                        selectedState.motherboards = null;
-                                    }
-                                }
                             }
-
                             renderCatalog();
                             updateBuildStats();
                         };
@@ -677,7 +572,6 @@
                 }
             }
 
-            // Initialisation
             renderCatalog();
         })();
     </script>
