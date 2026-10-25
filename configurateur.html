@@ -328,8 +328,8 @@ function reason(cat,item){
 function bottleneck(){
   var c=S.cpu,g=S.gpu;
   if(!c||!g)return {v:null,txt:'Choisissez un processeur et une carte graphique (avec sa marque).'};
-  var need=25+0.75*g.s,eff=c.s*RES[res],pct=eff>=need?0:Math.round((1-eff/need)*100);
-  if(pct>=10)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+' : environ '+pct+' % de ses performances ne seront pas exploitées.'};
+  var need=30+0.7*g.s,eff=c.s*RES[res],pct=eff>=need?0:Math.round((1-eff/need)*100);
+  if(pct>=5)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+' : environ '+pct+' % de ses performances ne seront pas exploitées.'};
   if(eff>need*1.5)return {v:pct,txt:'Aucun goulot. Le processeur est très au-dessus des besoins de cette carte en '+res+' : une carte plus puissante serait mieux exploitée.'};
   return {v:pct,txt:'Bon équilibre entre processeur et carte graphique en '+res+'.'};
 }
