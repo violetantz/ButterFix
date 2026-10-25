@@ -3,126 +3,441 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ButterFix — Configure ton PC sans mauvaise surprise</title>
-<meta name="description" content="Configurateur PC avec vérification de compatibilité, goulot d'étranglement par résolution et lien de partage.">
-<script>try{if(sessionStorage.getItem('bf'))document.documentElement.className='seen'}catch(e){}</script>
+<title>ButterFix — Configurateur PC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0e0c16; --panel:#140b30; --line:#37296b; --brand:#1f0063;
-  --text:#f3f0fa; --mut:#b4adca; --violet:#6d3df0; --accent:#b8a4ff;
+  --bg:#0e0c16; --panel:#140b30; --raise:#1c1045; --line:#37296b; --brand:#1f0063;
+  --text:#f3f0fa; --mut:#a9a2c0; --violet:#6d3df0; --violet-t:#b8a4ff;
+  --accent:#b8a4ff; --ok:#4ade80; --err:#ff8a8a;
   --display:'Bricolage Grotesque','Trebuchet MS',sans-serif;
   --body:'Figtree','Segoe UI',system-ui,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.55}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-
-/* Papillon animé : les deux ailes battent, puis il se pose en fond */
-:root{--sx:-24vw;--fo:.4}
-.bg{position:fixed;inset:0;z-index:-1;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;overflow:hidden}
-.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 6%,rgba(14,12,22,.45) 52%,transparent 80%)}
-.fly{position:relative;width:min(860px,110vw);aspect-ratio:775/521;margin-right:-4vw;perspective:1400px;opacity:var(--fo);filter:drop-shadow(0 0 26px rgba(109,61,240,.55));animation:settle 3.4s cubic-bezier(.3,.1,.2,1) both}
-.wing{position:absolute;top:0;height:100%;width:50.2%;will-change:transform}
-.wing.l{left:0;transform-origin:100% 55%;animation:flapL .55s ease-in-out .3s 4,idleL 8s ease-in-out 3s infinite}
-.wing.r{right:0;transform-origin:0% 55%;animation:flapR .55s ease-in-out .3s 4,idleR 8s ease-in-out 3s infinite}
-@keyframes flapL{0%,100%{transform:rotateY(0)}50%{transform:rotateY(62deg)}}
-@keyframes flapR{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-62deg)}}
-@keyframes idleL{0%,100%{transform:rotateY(0)}50%{transform:rotateY(14deg)}}
-@keyframes idleR{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-14deg)}}
-@keyframes settle{0%{opacity:0;transform:translateX(var(--sx)) scale(1.25)}12%{opacity:1}62%{opacity:1;transform:translateX(var(--sx)) scale(1.25)}100%{opacity:var(--fo);transform:none}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.hero>div{animation:fadeUp .9s ease-out 2.3s both}
-.tag{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,2.6vw,2rem);color:var(--accent);margin-bottom:.8rem;letter-spacing:.02em;text-shadow:0 0 22px rgba(109,61,240,.9);animation:tagIn 1s cubic-bezier(.2,.8,.2,1) 3.2s both}
-@keyframes tagIn{from{opacity:0;transform:scale(.8);letter-spacing:.35em}to{opacity:1;transform:none;letter-spacing:.02em}}
-.seen .fly,.seen .wing,.seen .hero>div,.seen .tag{animation:none}
-
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.5;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 header{display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;padding:1.2rem 1.5rem}
-.logo{font-family:var(--display);font-weight:800;font-size:1.4rem;text-decoration:none}
+.logo{font-family:var(--display);font-weight:800;font-size:1.4rem}
 .logo span{color:var(--accent)}
-nav a{color:var(--mut);text-decoration:none;font-weight:600;margin-left:1.5rem}
-nav a:hover{color:var(--text)}
-.hero{max-width:1280px;margin:0 auto;padding:1rem 1.5rem 3rem;display:flex;align-items:center;min-height:calc(100vh - 80px)}
-.hero>div{max-width:620px}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.02em}
-.lead{color:var(--mut);font-size:1.15rem;margin-top:1.2rem;max-width:46ch}
-.cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-top:2rem}
-.btn{background:var(--brand);color:#fff;border:1px solid var(--accent);font-weight:700;font-size:1.05rem;padding:.9rem 1.6rem;border-radius:10px;text-decoration:none}
-.btn:hover{background:#2c0b8a}
-.link{color:var(--accent);font-weight:600}
-.points{max-width:1280px;margin:0 auto;padding:3rem 1.5rem 4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;border-top:1px solid var(--line)}
-.points h2{font-family:var(--display);font-size:1.35rem;margin-bottom:.5rem}
-.points div{border-left:3px solid var(--violet);padding-left:1.1rem}
-.points p{color:var(--mut)}
-.band{max-width:1280px;margin:0 auto;padding:0 1.5rem 4rem}
-.band div{background:var(--brand);border:1px solid var(--violet);border-radius:16px;padding:2.2rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
-.band .btn{background:var(--accent);color:#14061f}
-.band .btn:hover{background:#d3c6ff}
-.band h2{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);max-width:22ch;line-height:1.1}
-footer{max-width:1280px;margin:0 auto;padding:1.5rem;color:var(--mut);border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-@media(max-width:900px){
-  :root{--sx:0;--fo:.28}
-  .bg{justify-content:center;align-items:flex-start;padding-top:10vh}
-  .fly{width:140vw;margin-right:0}
-  .bg::after{background:linear-gradient(180deg,rgba(14,12,22,.2),var(--bg) 85%)}
-  .points{grid-template-columns:1fr}
-}
-@media(prefers-reduced-motion:reduce){.fly,.wing,.hero>div,.tag{animation:none}}
+a.logo{text-decoration:none;color:var(--text)}
+.back{color:var(--mut);text-decoration:none;font-weight:600}
+.back:hover{color:var(--text)}
+.intro{max-width:1280px;margin:0 auto;padding:1rem 1.5rem 1.5rem}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4.5vw,3.2rem);line-height:1.05;max-width:18ch}
+.intro p{color:var(--mut);margin-top:.6rem;max-width:56ch}
+main{max-width:1280px;margin:0 auto;padding:0 1.5rem 4rem;display:grid;grid-template-columns:1fr 380px;gap:1.5rem;align-items:start}
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.tab{padding:.5rem .9rem;border-radius:999px;border:1px solid var(--line);color:var(--mut);font-weight:600;font-size:.9rem;display:flex;gap:.5rem;align-items:center}
+.tab:hover{border-color:var(--violet);color:var(--text)}
+.tab[aria-current="true"]{background:var(--brand);border-color:var(--accent);color:#fff}
+.tab i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.tab i.done{background:var(--ok)}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
+.chip{padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);color:var(--mut);font-size:.82rem;font-weight:600}
+.chip:hover{color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--accent)}
+.tools input,.tools select{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:.35rem .7rem;font:inherit;font-size:.85rem}
+.grp{font-family:var(--display);font-size:.95rem;color:var(--accent);margin:1rem 0 .1rem;padding-bottom:.3rem;border-bottom:1px solid var(--line)}
+.grp:first-child{margin-top:0}
+.vars{display:grid;gap:.4rem;margin:-.2rem 0 .4rem 1rem;padding-left:1rem;border-left:2px solid var(--violet)}
+.var{display:flex;justify-content:space-between;align-items:center;gap:1rem;text-align:left;padding:.55rem .9rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:.9rem}
+.var:hover{border-color:var(--violet)}
+.var[aria-pressed="true"]{border-color:var(--accent);background:var(--raise)}
+.var .l{display:flex;align-items:center}
+.var img{width:32px;height:32px;object-fit:contain;margin-right:.6rem}
+.var b{font-family:var(--display);white-space:nowrap}
+.list{display:flex;flex-direction:column;gap:.6rem}
+.card{display:flex;justify-content:space-between;align-items:center;gap:1rem;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.9rem 1.1rem}
+.card:hover{border-color:var(--violet)}
+.card[aria-pressed="true"]{border-color:var(--accent);background:var(--raise)}
+.card .n{font-weight:700}
+.card .s{color:var(--mut);font-size:.86rem}
+.card .r{color:var(--err);font-size:.82rem;font-weight:600;margin-top:.15rem}
+.card .p{font-family:var(--display);font-weight:800;font-size:1.2rem;white-space:nowrap}
+.card img{width:52px;height:52px;object-fit:contain;border-radius:6px;margin-right:.9rem}
+.card .l{display:flex;align-items:center}
+aside{position:sticky;top:1rem;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:1.1rem}
+svg.pc{width:100%;height:auto;background:var(--bg);border-radius:10px;border:1px solid var(--line)}
+svg.pc .p{fill:none;stroke:var(--line);stroke-width:2;transition:fill .25s,stroke .25s}
+svg.pc .p.on{fill:rgba(109,61,240,.6);stroke:var(--violet-t)}
+.status{border-radius:10px;padding:.8rem 1rem;font-weight:600;font-size:.92rem;border:1px solid var(--line);background:var(--bg)}
+.status.ok{border-color:var(--ok)} .status.bad{border-color:var(--err)}
+.status b{display:block;margin-bottom:.2rem}
+.status.ok b{color:var(--ok)} .status.bad b{color:var(--err)}
+.status ul{list-style:none;font-weight:400;color:var(--mut);font-size:.88rem}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;padding:.45rem;font-weight:600;font-size:.85rem;color:var(--mut)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:#fff;box-shadow:inset 0 0 0 1px var(--accent)}
+.meter .h{display:flex;justify-content:space-between;font-size:.9rem;margin:.7rem 0 .35rem}
+.bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bar div{height:100%;width:0;background:var(--violet);transition:width .4s}
+.meter p{color:var(--mut);font-size:.85rem;margin-top:.4rem}
+.build{list-style:none;font-size:.9rem;border-top:1px solid var(--line);padding-top:.8rem}
+.build li{display:flex;justify-content:space-between;gap:.6rem;padding:.2rem 0}
+.build li span:first-child{color:var(--mut);min-width:0;overflow-wrap:anywhere}
+.build button{color:var(--mut);padding:0 .3rem}
+.build button:hover{color:var(--err)}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:.9rem}
+.total strong{font-family:var(--display);font-size:2rem;color:var(--accent)}
+.share{background:var(--brand);color:#fff;border:1px solid var(--accent);font-weight:700;padding:.7rem;border-radius:8px}
+.share:hover{background:#2c0b8a}
+@media(max-width:900px){main{grid-template-columns:1fr}aside{position:static}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true">
-  <div class="fly"><img class="wing l" src="papillon-gauche.webp" alt=""><img class="wing r" src="papillon-droite.webp" alt=""></div>
-</div>
-
-<header>
-  <a class="logo" href="./">Butter<span>Fix</span></a>
-  <nav aria-label="Navigation principale"><a href="#avantages">Avantages</a><a href="configurateur.html">Configurateur</a></nav>
-</header>
-
+<header><a class="logo" href="./">Butter<span>Fix</span></a><a class="back" href="./">Accueil</a></header>
+<section class="intro">
+  <h1>Monte ton PC, pièce par pièce</h1>
+  <p>Chaque choix est vérifié : socket, mémoire, format du boîtier, taille de la carte graphique et puissance de l’alimentation.</p>
+</section>
 <main>
-  <section class="hero">
+  <section aria-label="Catalogue">
+    <div class="tabs" id="tabs"></div>
+    <div class="tools" id="tools"></div>
+    <div class="list" id="list"></div>
+  </section>
+  <aside aria-label="Résumé de la configuration">
+    <svg class="pc" viewBox="0 0 220 170" role="img" aria-label="Schéma des pièces choisies">
+      <rect id="v-case" class="p" x="10" y="8" width="200" height="154" rx="8"/>
+      <rect id="v-mb" class="p" x="24" y="20" width="100" height="100" rx="4"/>
+      <rect id="v-cpu" class="p" x="48" y="36" width="30" height="30" rx="3"/>
+      <circle id="v-cool" class="p" cx="63" cy="51" r="19"/>
+      <rect id="v-ram" class="p" x="92" y="30" width="8" height="46" rx="2"/>
+      <rect id="v-gpu" class="p" x="36" y="88" width="84" height="18" rx="3"/>
+      <rect id="v-sto" class="p" x="140" y="24" width="56" height="16" rx="3"/>
+      <rect id="v-psu" class="p" x="24" y="128" width="172" height="22" rx="3"/>
+    </svg>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
     <div>
-      <p class="tag">#buildwithus</p>
-      <h1>Ton PC, sans mauvaise surprise.</h1>
-      <p class="lead">Choisis tes pièces une par une : ButterFix vérifie à chaque étape que tout va ensemble, de la carte mère à l’alimentation.</p>
-      <div class="cta">
-        <a class="btn" href="configurateur.html">Configurer mon PC</a>
-        <a class="link" href="#avantages">Voir ce que ça vérifie</a>
+      <div class="seg" role="group" aria-label="Résolution de jeu" id="res"></div>
+      <div class="meter">
+        <div class="h"><span>Goulot d’étranglement</span><strong id="bn-val">–</strong></div>
+        <div class="bar"><div id="bn-bar"></div></div>
+        <p id="bn-txt"></p>
       </div>
     </div>
-  </section>
-
-  <section class="points" id="avantages" aria-label="Avantages">
-    <div>
-      <h2>Compatibilité vérifiée</h2>
-      <p>Socket, mémoire, format du boîtier, longueur de la carte graphique, puissance de l’alimentation. Chaque problème s’affiche avec sa raison.</p>
-    </div>
-    <div>
-      <h2>Goulot d’étranglement par résolution</h2>
-      <p>Vois si ton processeur bride ta carte graphique en 1080p, en 1440p ou en 4K, avant d’acheter.</p>
-    </div>
-    <div>
-      <h2>Une config, un lien</h2>
-      <p>Copie le lien de ta configuration pour la partager ou la retrouver plus tard. Aucun compte à créer.</p>
-    </div>
-  </section>
-
-  <section class="band" aria-label="Lancer le configurateur">
-    <div>
-      <h2>Prêt à monter ta configuration ?</h2>
-      <a class="btn" href="configurateur.html">Configurer mon PC</a>
-    </div>
-  </section>
+    <div class="meter"><div class="h"><span>Consommation</span><strong id="pw">0 W</strong></div></div>
+    <ul class="build" id="build"></ul>
+    <div class="total"><span>Total estimé</span><strong id="total">0 €</strong></div>
+    <button class="share" id="share">Copier le lien de ma config</button>
+  </aside>
 </main>
-
-<footer><span>ButterFix</span><span>#buildwithus</span></footer>
 <script>
-try{sessionStorage.setItem('bf','1')}catch(e){}
+// Catalogue ButterFix. Prix indicatifs en euros (à ajuster), scores = estimations relatives.
+// CPU : 100 = Ryzen 7 9800X3D en jeu. GPU : 100 = RTX 5090. Photos : images/<nom-du-produit>.webp
+function C(sock,rows){return rows.map(function(r,i){return{id:'c'+sock+i,n:r[0],p:r[1],w:r[2],s:r[3],sock:sock,sp:sock+' · '+r[4]+' cœurs'}})}
+function G(brand,grp,rows){return rows.map(function(r,i){return{id:'g'+grp.replace(/\W/g,'')+i,n:brand+' '+r[0],p:r[1],w:r[2],s:r[3],len:r[4],g:grp,sp:r[5]}})}
+function R(type,rows){return rows.map(function(r,i){return{id:'r'+type+i,n:r[0]+' '+type,p:r[1],w:r[2],type:type,g:type,sp:'Kit double canal'}})}
+function M(rows){return rows.map(function(r,i){return{id:'mx'+i,n:r[0],p:r[1],w:r[2],sock:r[3],ram:r[4],form:r[5],sp:r[3]+' · '+r[4]+' · '+(r[5]==='ATX'?'ATX':'Micro-ATX')}})}
+
+window.CAT={
+cpu:[].concat(
+C('AM4',[['Ryzen 5 3600',90,65,36,6],['Ryzen 5 3600X',100,95,38,6],['Ryzen 7 3700X',120,65,40,8],['Ryzen 7 3800X',130,105,41,8],['Ryzen 9 3900X',180,105,44,12],['Ryzen 9 3950X',250,105,46,16],
+['Ryzen 5 5500',80,65,44,6],['Ryzen 5 5600',100,65,50,6],['Ryzen 5 5600X',120,65,52,6],['Ryzen 5 5600GT',110,65,50,6],['Ryzen 7 5700X',150,65,55,8],['Ryzen 7 5700X3D',220,105,70,8],['Ryzen 7 5800X',160,105,58,8],['Ryzen 7 5800X3D',300,105,76,8],['Ryzen 9 5900X',230,105,60,12],['Ryzen 9 5950X',330,105,62,16]]),
+C('AM5',[['Ryzen 5 7500F',130,65,60,6],['Ryzen 5 7600',180,65,62,6],['Ryzen 5 7600X',200,105,66,6],['Ryzen 7 7700',250,65,70,8],['Ryzen 7 7700X',270,105,72,8],['Ryzen 7 7800X3D',380,120,88,8],['Ryzen 9 7900',300,65,70,12],['Ryzen 9 7900X',340,170,72,12],['Ryzen 9 7900X3D',420,120,84,12],['Ryzen 9 7950X',420,170,76,16],['Ryzen 9 7950X3D',550,120,90,16],
+['Ryzen 5 8600G',180,65,56,6],['Ryzen 7 8700G',270,65,66,8],
+['Ryzen 5 9600X',200,65,70,6],['Ryzen 7 9700X',290,65,76,8],['Ryzen 7 9800X3D',480,120,100,8],['Ryzen 7 9850X3D',520,120,104,8],['Ryzen 9 9900X',380,120,76,12],['Ryzen 9 9900X3D',560,120,92,12],['Ryzen 9 9950X',520,170,80,16],['Ryzen 9 9950X3D',680,170,96,16]]),
+C('LGA1200',[['Core i3-10100F',75,65,30,4],['Core i5-10400F',95,65,38,6],['Core i5-10600K',160,125,42,6],['Core i7-10700K',200,125,45,8],['Core i9-10900K',260,125,48,10],['Core i5-11400F',110,65,42,6],['Core i5-11600K',170,125,48,6],['Core i7-11700K',210,125,50,8],['Core i9-11900K',280,125,52,8]]),
+C('LGA1700',[['Core i3-12100F',90,60,45,4],['Core i5-12400F',130,65,52,6],['Core i5-12600K',190,125,62,10],['Core i7-12700K',250,125,66,12],['Core i9-12900K',330,125,70,16],
+['Core i5-13400F',180,65,58,10],['Core i5-13600K',270,125,74,14],['Core i7-13700K',340,125,80,16],['Core i9-13900K',450,125,86,24],
+['Core i3-14100F',110,60,47,4],['Core i5-14400F',190,65,58,10],['Core i5-14600K',290,125,77,14],['Core i7-14700K',380,125,82,20],['Core i9-14900K',500,125,88,24]]),
+C('LGA1851',[['Core Ultra 5 225F',180,65,66,10],['Core Ultra 5 245K',280,125,76,14],['Core Ultra 5 250K Plus',230,125,80,18],['Core Ultra 7 265K',340,125,82,20],['Core Ultra 7 270K Plus',330,125,86,24],['Core Ultra 9 285K',520,125,86,24]])
+),
+gpu:[].concat(
+G('Nvidia','RTX 50',[['RTX 5050 8 Go',260,130,13,230,'8 Go GDDR6'],['RTX 5060 8 Go',320,145,21,240,'8 Go GDDR7 · DLSS 4'],['RTX 5060 Ti 8 Go',400,180,26,245,'8 Go GDDR7'],['RTX 5060 Ti 16 Go',470,180,27,245,'16 Go GDDR7'],['RTX 5070 12 Go',620,250,37,300,'12 Go GDDR7'],['RTX 5070 Ti 16 Go',900,300,50,320,'16 Go GDDR7'],['RTX 5080 16 Go',1250,360,58,330,'16 Go GDDR7'],['RTX 5090 32 Go',3000,575,100,336,'32 Go GDDR7 · 4K extrême']]),
+G('Nvidia','RTX 40',[['RTX 4060 8 Go',300,115,18,245,'8 Go · DLSS 3'],['RTX 4060 Ti 8 Go',380,160,23,250,'8 Go'],['RTX 4070 12 Go',520,200,30,260,'12 Go'],['RTX 4070 Super 12 Go',620,220,36,300,'12 Go · 1440p'],['RTX 4070 Ti 12 Go',750,285,41,310,'12 Go'],['RTX 4070 Ti Super 16 Go',850,285,47,310,'16 Go'],['RTX 4080 16 Go',1000,320,53,310,'16 Go'],['RTX 4080 Super 16 Go',1100,320,54,310,'16 Go'],['RTX 4090 24 Go',2000,450,74,336,'24 Go · 4K']]),
+G('Nvidia','RTX 30',[['RTX 3050 8 Go',230,130,10,240,'8 Go'],['RTX 3060 12 Go',280,170,15,240,'12 Go · 1080p'],['RTX 3060 Ti 8 Go',330,200,21,240,'8 Go'],['RTX 3070 8 Go',380,220,24,250,'8 Go'],['RTX 3070 Ti 8 Go',420,290,26,270,'8 Go'],['RTX 3080 10 Go',500,320,34,285,'10 Go'],['RTX 3080 Ti 12 Go',600,350,39,285,'12 Go'],['RTX 3090 24 Go',800,350,40,313,'24 Go'],['RTX 3090 Ti 24 Go',900,450,45,330,'24 Go']]),
+G('Nvidia','RTX 20',[['RTX 2060 6 Go',190,160,12,230,'6 Go'],['RTX 2060 Super 8 Go',230,175,14,230,'8 Go'],['RTX 2070 8 Go',260,175,15,230,'8 Go'],['RTX 2070 Super 8 Go',300,215,17,250,'8 Go'],['RTX 2080 8 Go',330,215,19,265,'8 Go'],['RTX 2080 Super 8 Go',360,250,20,265,'8 Go'],['RTX 2080 Ti 11 Go',500,250,24,270,'11 Go']]),
+G('Nvidia','GTX 16',[['GTX 1650 4 Go',150,75,6,170,'4 Go · entrée de gamme'],['GTX 1650 Super 4 Go',160,100,8,200,'4 Go'],['GTX 1660 6 Go',170,120,8,230,'6 Go'],['GTX 1660 Super 6 Go',190,125,9,230,'6 Go'],['GTX 1660 Ti 6 Go',210,120,9,230,'6 Go']]),
+G('AMD','RX 9000',[['Radeon RX 9060 XT 8 Go',330,150,25,250,'8 Go GDDR6'],['Radeon RX 9060 XT 16 Go',400,160,26,250,'16 Go GDDR6'],['Radeon RX 9070 GRE 12 Go',520,220,32,290,'12 Go GDDR6'],['Radeon RX 9070 16 Go',600,220,40,300,'16 Go GDDR6'],['Radeon RX 9070 XT 16 Go',700,304,47,320,'16 Go · 1440p/4K']]),
+G('AMD','RX 7000',[['Radeon RX 7600 8 Go',250,165,17,240,'8 Go'],['Radeon RX 7600 XT 16 Go',320,190,20,270,'16 Go'],['Radeon RX 7700 XT 12 Go',400,245,29,280,'12 Go'],['Radeon RX 7800 XT 16 Go',520,263,34,267,'16 Go · qualité/prix'],['Radeon RX 7900 GRE 16 Go',560,260,38,280,'16 Go'],['Radeon RX 7900 XT 20 Go',700,315,44,320,'20 Go'],['Radeon RX 7900 XTX 24 Go',900,355,52,287,'24 Go']]),
+G('AMD','RX 6000',[['Radeon RX 6400 4 Go',150,53,3,170,'4 Go · sans alim. PCIe'],['Radeon RX 6500 XT 4 Go',150,107,5,190,'4 Go'],['Radeon RX 6600 8 Go',200,132,14,240,'8 Go'],['Radeon RX 6600 XT 8 Go',230,160,16,240,'8 Go'],['Radeon RX 6650 XT 8 Go',250,180,17,240,'8 Go'],['Radeon RX 6700 XT 12 Go',300,230,22,267,'12 Go'],['Radeon RX 6750 XT 12 Go',340,250,24,267,'12 Go'],['Radeon RX 6800 16 Go',380,250,28,267,'16 Go'],['Radeon RX 6800 XT 16 Go',450,300,33,267,'16 Go'],['Radeon RX 6900 XT 16 Go',520,300,35,267,'16 Go'],['Radeon RX 6950 XT 16 Go',600,335,38,267,'16 Go']]),
+G('AMD','RX 5000',[['Radeon RX 5500 XT 8 Go',160,130,7,240,'8 Go'],['Radeon RX 5600 XT 6 Go',190,150,12,240,'6 Go'],['Radeon RX 5700 8 Go',220,180,13,240,'8 Go'],['Radeon RX 5700 XT 8 Go',250,225,15,265,'8 Go']]),
+G('AMD','RX 500',[['Radeon RX 580 8 Go',120,185,6,240,'8 Go · entrée de gamme'],['Radeon RX 590 8 Go',140,225,7,245,'8 Go'] ])
+),
+ram:[].concat(
+R('DDR4',[['16 Go (2×8) 2666 MHz',70,15],['16 Go (2×8) 3000 MHz',75,15],['16 Go (2×8) 3200 MHz',80,15],['16 Go (2×8) 3600 MHz',90,15],['32 Go (2×16) 2666 MHz',130,15],['32 Go (2×16) 3200 MHz',140,15],['32 Go (2×16) 3600 MHz',150,15],['64 Go (2×32) 3200 MHz',280,20]]),
+R('DDR5',[['16 Go (2×8) 5200 MHz',110,15],['16 Go (2×8) 5600 MHz',120,15],['16 Go (2×8) 6000 MHz',130,15],['32 Go (2×16) 5200 MHz',190,15],['32 Go (2×16) 5600 MHz',200,15],['32 Go (2×16) 6000 MHz CL30',220,15],['32 Go (2×16) 6400 MHz',240,15],['64 Go (2×32) 5600 MHz',380,20],['64 Go (2×32) 6000 MHz',420,20],['64 Go (2×32) 6400 MHz',450,20],['96 Go (2×48) 6000 MHz',600,20],['128 Go (4×32) 5600 MHz',700,25]])
+),
+// Cartes mères ajoutées (en plus de celles déjà dans le configurateur)
+mb:M([['Carte mère B450 · ATX',95,25,'AM4','DDR4','ATX'],['Carte mère B550 · ATX',130,25,'AM4','DDR4','ATX'],['Carte mère X570 · ATX',170,30,'AM4','DDR4','ATX'],['Carte mère H510M · Micro-ATX',70,20,'LGA1200','DDR4','mATX'],['Carte mère B560M · Micro-ATX',100,20,'LGA1200','DDR4','mATX'],['Carte mère H610M DDR4 · Micro-ATX',90,20,'LGA1700','DDR4','mATX'],['Carte mère B760M DDR4 · Micro-ATX',110,20,'LGA1700','DDR4','mATX'],['Carte mère B760 DDR5 · ATX',150,25,'LGA1700','DDR5','ATX'],['Carte mère Z690 DDR5 · ATX',200,30,'LGA1700','DDR5','ATX'],
+['Carte mère Z790 DDR5 · ATX',260,35,'LGA1700','DDR5','ATX'],['Carte mère B650 · ATX',190,30,'AM5','DDR5','ATX'],['Carte mère B840 · Micro-ATX',110,25,'AM5','DDR5','mATX'],['Carte mère B850 · ATX',220,30,'AM5','DDR5','ATX'],['Carte mère X870E · ATX',400,35,'AM5','DDR5','ATX'],
+['Carte mère B860 · ATX',190,30,'LGA1851','DDR5','ATX'],['Carte mère Z890 · ATX',330,35,'LGA1851','DDR5','ATX']])
+};
+
+var k=0;
+function ST(g,lab,w,sp,rows){return rows.map(function(r){return{id:'st'+(k++),n:lab+' '+r[0],cap:r[0],p:r[1],w:w,g:g,sp:sp}})}
+CAT.sto=[].concat(
+ST('HDD','HDD 3,5"',8,'3,5" · 7200 tr/min',[['1 To',45],['2 To',60],['4 To',95],['8 To',160]]),
+ST('SSD SATA','SSD SATA 2,5"',3,'2,5" · SATA 6 Gb/s',[['500 Go',45],['1 To',75],['2 To',140],['4 To',280]]),
+ST('SSD NVMe M.2','SSD NVMe PCIe 4.0',6,'M.2 NVMe · PCIe 4.0',[['500 Go',40],['1 To',70],['2 To',130],['4 To',280]]),
+ST('SSD NVMe M.2','SSD NVMe PCIe 5.0',8,'M.2 NVMe · PCIe 5.0',[['1 To',120],['2 To',200],['4 To',400]]));
+function CO(g,rows){return rows.map(function(r){return{id:'cl'+(k++),n:r[0],p:r[1],w:r[2],max:r[3],h:r[4],g:g,sp:r[5]}})}
+CAT.cool=[].concat(
+CO('Ventirad simple tour',[['Ventirad d’origine (fourni avec le processeur)',0,4,65,70,'65 W · 70 mm'],['Deepcool AK400',30,5,220,155,'220 W · 155 mm'],['Arctic Freezer 36',35,5,200,159,'200 W · 159 mm'],['Noctua NH-U12S',72,5,200,158,'200 W · 158 mm'],['Thermalright Assassin X 120 R SE',20,5,180,148,'180 W · 148 mm']]),
+CO('Ventirad double tour',[['Thermalright Peerless Assassin 120 SE',38,6,260,155,'260 W · 155 mm'],['Deepcool AK620',60,6,260,160,'260 W · 160 mm'],['Scythe Fuma 3',50,6,250,154,'250 W · 154 mm'],['be quiet! Dark Rock Pro 5',110,6,270,168,'270 W · 168 mm'],['Noctua NH-D15 G2',150,6,300,168,'300 W · 168 mm']]),
+CO('Ventirad low-profile',[['Thermalright AXP90-X47',22,4,90,47,'90 W · 47 mm'],['Thermalright AXP120-X67',30,4,120,67,'120 W · 67 mm'],['Noctua NH-L9x65',55,4,95,65,'95 W · 65 mm'],['Noctua NH-L12S',70,5,130,70,'130 W · 70 mm']]));
+[[120,45,150],[240,80,250],[280,100,280],[360,120,320],[420,150,350]].forEach(function(a){CAT.cool.push({id:'cl'+(k++),n:'Watercooling AIO '+a[0]+' mm',p:a[1],w:15,max:a[2],rad:a[0],g:'AIO '+a[0]+' mm',sp:'Radiateur '+a[0]+' mm · '+a[2]+' W'})});
+[[280,300],[360,350],[420,420]].forEach(function(a){CAT.cool.push({id:'cl'+(k++),n:'Kit watercooling custom '+a[0]+' mm',p:a[1],w:25,max:400,rad:a[0],g:'Watercooling custom',sp:'Boucle personnalisée · radiateur '+a[0]+' mm'})});
+function CO2(g,rows){return rows.map(function(r){return{id:'cl'+(k++),n:r[0],p:r[1],w:5,max:r[2],h:r[3],g:g,sp:r[2]+' W · '+r[3]+' mm'}})}
+CAT.cool=CAT.cool.concat(
+CO2('Ventirad simple tour',[['Deepcool AG400',20,180,150],['Deepcool AK500',45,240,164],['Thermalright Assassin King 120 SE',25,200,148],['Arctic Freezer 36 A-RGB',40,210,159],['Arctic Freezer 34 eSports DUO',35,210,157],['Cooler Master Hyper 212 Black Edition',35,180,159],['Cooler Master Hyper 212 Halo',40,180,159],['Noctua NH-U12A',110,220,158],['Noctua NH-U12S Redux',45,180,158],['Noctua NH-U9S',70,170,125],['be quiet! Pure Rock 2',40,150,155],['Scythe Mugen 6',45,200,154],['Endorfy Fera 5',25,150,154]]),
+CO2('Ventirad double tour',[['Thermalright Phantom Spirit 120 SE',40,260,155],['Thermalright Silver Soul 135',35,230,135],['Deepcool AK620 Zero Dark',65,260,160],['Deepcool Assassin IV',95,280,164],['Noctua NH-D15 chromax.black',100,250,165],['Noctua NH-D15S',95,200,160],['be quiet! Dark Rock Elite',110,280,168],['be quiet! Dark Rock Pro 4',90,250,163],['Corsair A115',100,270,164],['Corsair A500',75,250,167],['Endorfy Fortis 5',45,230,155],['Scythe Fuma 2 Rev.B',50,220,153]]),
+CO2('Ventirad low-profile',[['Noctua NH-L9i-17xx (Intel)',50,95,37],['Noctua NH-L9a-AM5 (AMD)',55,95,37],['Noctua NH-L12 Ghost S1',75,130,70],['Thermalright AXP90-X36',18,70,36],['Thermalright AXP90-X53',23,100,53],['be quiet! Shadow Rock LP',45,130,75],['Scythe Big Shuriken 3',45,100,69],['ID-Cooling IS-40X V3',15,130,40],['ID-Cooling IS-50X',20,130,50]]));
+var GO=['Ventirad simple tour','Ventirad double tour','Ventirad low-profile'];
+CAT.cool.forEach(function(x,i){x.o=GO.indexOf(x.g)<0?9:GO.indexOf(x.g);x.i=i});
+CAT.cool.sort(function(a,b){return a.o-b.o||a.i-b.i});
+function CS(g,forms,rows){return rows.map(function(r){return{id:'cs'+(k++),n:r[0],p:r[1],w:10,forms:forms,gpuMax:r[2],cpuH:r[3],rads:r[4]?r[4].split(',').map(Number):[],psu:r[5].split(','),g:g,sp:g+' · GPU '+r[2]+' mm max'}})}
+CAT['case']=[].concat(
+CS('Mini-ITX',['ITX'],[['Cooler Master NR200P',100,330,155,'240,280','SFX'],['Fractal Design Ridge',130,335,70,'','SFX']]),
+CS('Micro-ATX',['ITX','mATX'],[['Cooler Master MasterBox Q300L',60,360,159,'240','ATX'],['Fractal Design Pop Mini Air',80,405,170,'240,280','ATX']]),
+CS('ATX moyen tour',['ITX','mATX','ATX'],[['NZXT H5 Flow',100,365,165,'120,240,280','ATX'],['Corsair 4000D Airflow',95,360,170,'120,240,280,360','ATX'],['Lian Li Lancool 216',100,392,180,'240,280,360','ATX'],['Fractal Design North',150,355,170,'240,280,360','ATX'],['Lian Li O11 Dynamic EVO',165,420,167,'240,280,360','ATX'],['be quiet! Pure Base 500DX',100,369,190,'240,280,360','ATX']]),
+CS('E-ATX grand tour',['ITX','mATX','ATX','EATX'],[['Corsair 7000D Airflow',250,450,190,'120,240,280,360,420','ATX'],['Fractal Design Meshify 2 XL',230,549,185,'240,280,360,420','ATX'],['Phanteks Enthoo Pro 2',160,503,195,'240,280,360,420','ATX']]));
+CAT['case']=CAT['case'].concat(
+CS('Mini-ITX',['ITX'],[['Lian Li A4-H2O',110,322,55,'240','SFX'],['Fractal Design Terra',200,322,77,'','SFX'],['Ssupd Meshlicious',150,336,70,'280','SFX'],['Lian Li Q58',90,320,67,'','SFX']]),
+CS('Micro-ATX',['ITX','mATX'],[['Cooler Master NR400',55,346,166,'240','ATX'],['Thermaltake S100',60,330,170,'240','ATX'],['Lian Li Lancool 205M',60,365,163,'240,280','ATX'],['Deepcool CH360',90,320,180,'240,280','ATX']]),
+CS('ATX moyen tour',['ITX','mATX','ATX'],[['Corsair 3000D Airflow',70,360,170,'240,280,360','ATX'],['Corsair 5000D Airflow',170,420,170,'120,240,280,360','ATX'],['Corsair iCUE 5000X RGB',200,420,170,'240,280,360','ATX'],['NZXT H6 Flow',130,365,163,'240,280,360','ATX'],['NZXT H7 Flow',140,400,185,'240,280,360','ATX'],['NZXT H9 Flow',190,435,167,'240,280,360','ATX'],['Lian Li Lancool 215',95,384,176,'240,280,360','ATX'],['Lian Li O11 Vision',150,422,167,'240,280,360','ATX'],['Fractal Design Meshify 2',160,467,185,'240,280,360,420','ATX'],['Fractal Design Torrent',200,461,188,'240,280,360,420','ATX'],['Fractal Design Pop Air',90,405,170,'240,280,360','ATX'],['Phanteks Eclipse G360A',80,400,162,'240,280,360','ATX'],['Phanteks NV5',110,440,185,'240,280,360','ATX'],['Montech Air 903 Max',70,400,170,'240,280,360','ATX'],['Deepcool CC560',45,370,163,'240,280,360','ATX'],['Deepcool CH510',80,380,175,'240,280,360','ATX'],['Cooler Master MasterBox TD500 Mesh',90,410,165,'240,280,360','ATX'],['Cooler Master HAF 500',110,410,167,'240,280,360','ATX'],['Hyte Y60',200,422,180,'240,280,360','ATX'],['Thermaltake View 270 Plus',90,360,160,'240,280','ATX']]),
+CS('E-ATX grand tour',['ITX','mATX','ATX','EATX'],[['Lian Li O11 Dynamic XL',240,420,167,'240,280,360,420','ATX'],['Thermaltake Tower 900',230,400,190,'240,280,360,420','ATX'],['be quiet! Dark Base Pro 901',280,472,180,'240,280,360,420','ATX'],['Fractal Design Define 7 XL',250,491,185,'240,280,360,420','ATX'],['Cooler Master HAF 700',400,490,190,'240,280,360,420','ATX']]));
+var GC=['Mini-ITX','Micro-ATX','ATX moyen tour','E-ATX grand tour'];
+CAT['case'].forEach(function(x,i){x.o=GC.indexOf(x.g);x.i=i});
+CAT['case'].sort(function(a,b){return a.o-b.o||a.i-b.i});
+var PW={450:['Bronze'],550:['Bronze','Gold'],650:['Bronze','Gold'],750:['Bronze','Gold','Platinum'],850:['Gold','Platinum'],1000:['Gold','Platinum','Titanium'],1200:['Gold','Platinum','Titanium'],1600:['Platinum','Titanium']};
+CAT.psu=[];Object.keys(PW).forEach(function(wt){PW[wt].forEach(function(c){CAT.psu.push({id:'ps'+wt+c,n:'Alimentation '+wt+' W 80+ '+c,p:Math.round((25+wt*.1)*({Bronze:.9,Gold:1,Platinum:1.3,Titanium:1.6})[c]),cap:+wt,g:wt+' W',g2:'80+ '+c,sp:'80+ '+c+' · '+wt+' W'})})});
+var BRN=['Cooler Master','Fractal Design','be quiet!','Lian Li','Thermalright','Thermaltake','ID-Cooling','Noctua','Deepcool','Arctic','Scythe','Endorfy','Corsair','NZXT','Phanteks','Montech','Hyte','Ssupd'];
+function brandOf(n){for(var i=0;i<BRN.length;i++)if(n.indexOf(BRN[i])===0)return BRN[i];return n.split(' ')[0]}
+CAT.cool.forEach(function(x){if(!x.rad)x.g2=/origine/.test(x.n)?'Fourni':brandOf(x.n)});
+CAT['case'].forEach(function(x){x.g2=brandOf(x.n)});
+function byBrand(a,b){return a.o-b.o||(a.g2||'').localeCompare(b.g2||'')||a.i-b.i}
+CAT.cool.sort(byBrand);CAT['case'].sort(byBrand);
+</script>
+<script>
+// ---- Données : ajoute tes pièces ici. Champ optionnel img:"url" pour une photo. ----
+var CATS=[{k:'cpu',t:'Processeur'},{k:'mb',t:'Carte mère'},{k:'gpu',t:'Carte graphique'},{k:'ram',t:'Mémoire'},{k:'sto',t:'Stockage'},{k:'cool',t:'Refroidissement'},{k:'case',t:'Boîtier'},{k:'psu',t:'Alimentation'}];
+var D={
+cpu:[
+{id:'c1',n:'Core i3-10100F',p:75,w:65,sock:'LGA1200',s:35,sp:'LGA1200 · 4 cœurs'},
+{id:'c2',n:'Core i5-12400F',p:130,w:65,sock:'LGA1700',s:55,sp:'LGA1700 · 6 cœurs'},
+{id:'c3',n:'Core i5-13600K',p:290,w:125,sock:'LGA1700',s:82,sp:'LGA1700 · 14 cœurs'},
+{id:'c4',n:'Core i7-14700K',p:410,w:125,sock:'LGA1700',s:92,sp:'LGA1700 · 20 cœurs'},
+{id:'c5',n:'Ryzen 5 3600',p:85,w:65,sock:'AM4',s:45,sp:'AM4 · 6 cœurs'},
+{id:'c6',n:'Ryzen 5 5600X',p:135,w:65,sock:'AM4',s:60,sp:'AM4 · 6 cœurs'},
+{id:'c7',n:'Ryzen 7 5800X3D',p:280,w:105,sock:'AM4',s:85,sp:'AM4 · 3D V-Cache'},
+{id:'c8',n:'Ryzen 7 7800X3D',p:420,w:120,sock:'AM5',s:98,sp:'AM5 · 3D V-Cache'},
+{id:'c9',n:'Ryzen 7 9800X3D',p:490,w:120,sock:'AM5',s:100,sp:'AM5 · Gaming haut de gamme'}],
+mb:[
+{id:'m6',n:'MSI H510M-A PRO',p:70,w:20,sock:'LGA1200',ram:'DDR4',form:'mATX',sp:'LGA1200 · DDR4 · Micro-ATX'},
+{id:'m1',n:'MSI B450 TOMAHAWK MAX',p:95,w:25,sock:'AM4',ram:'DDR4',form:'ATX',sp:'AM4 · DDR4 · ATX'},
+{id:'m2',n:'Gigabyte B550 AORUS ELITE',p:130,w:25,sock:'AM4',ram:'DDR4',form:'ATX',sp:'AM4 · DDR4 · PCIe 4.0 · ATX'},
+{id:'m3',n:'ASUS TUF B650-PLUS WIFI',p:190,w:30,sock:'AM5',ram:'DDR5',form:'ATX',sp:'AM5 · DDR5 · WiFi · ATX'},
+{id:'m4',n:'ASUS PRIME H610M-D4',p:90,w:20,sock:'LGA1700',ram:'DDR4',form:'mATX',sp:'LGA1700 · DDR4 · Micro-ATX'},
+{id:'m5',n:'MSI MAG Z790 TOMAHAWK',p:260,w:35,sock:'LGA1700',ram:'DDR5',form:'ATX',sp:'LGA1700 · DDR5 · ATX'}],
+gpu:[
+{id:'g1',n:'Nvidia GTX 1650 4 Go',p:150,w:75,s:20,len:200,sp:'4 Go GDDR5 · entrée de gamme'},
+{id:'g2',n:'Nvidia RTX 3060 12 Go',p:290,w:170,s:50,len:240,sp:'12 Go GDDR6 · 1080p'},
+{id:'g3',n:'Nvidia RTX 4060 8 Go',p:330,w:115,s:62,len:245,sp:'8 Go · DLSS 3'},
+{id:'g4',n:'Nvidia RTX 4070 Super',p:650,w:220,s:85,len:300,sp:'12 Go GDDR6X · 1440p'},
+{id:'g5',n:'Nvidia RTX 4090 24 Go',p:1850,w:450,s:100,len:336,sp:'24 Go · 4K'},
+{id:'g6',n:'AMD Radeon RX 7800 XT',p:540,w:263,s:82,len:267,sp:'16 Go GDDR6 · rapport qualité/prix'}],
+ram:[
+{id:'r1',n:'16 Go (2×8) DDR4 3200',p:52,w:15,type:'DDR4',sp:'Kit double canal'},
+{id:'r2',n:'32 Go (2×16) DDR4 3600',p:79,w:15,type:'DDR4',sp:'DDR4 haute fréquence'},
+{id:'r3',n:'32 Go (2×16) DDR5 6000',p:125,w:15,type:'DDR5',sp:'Standard DDR5'},
+{id:'r4',n:'64 Go (2×32) DDR5 6400',p:230,w:20,type:'DDR5',sp:'Création et multitâche'}],
+sto:[
+{id:'s1',n:'SSD NVMe 500 Go',p:40,w:5,sp:'M.2 · rapide'},
+{id:'s2',n:'Crucial P3 1 To',p:70,w:6,sp:'M.2 · lecture 3500 Mo/s'},
+{id:'s3',n:'Samsung 990 PRO 2 To',p:175,w:8,sp:'M.2 · performances maximales'},
+{id:'s4',n:'Seagate Barracuda 4 To',p:95,w:8,sp:'Disque dur · stockage de masse'}],
+cool:[
+{id:'cl1',n:'Ventirad d’origine',p:25,w:4,max:65,sp:'Silencieux · jusqu’à 65 W'},
+{id:'cl2',n:'Thermalright Assassin 120',p:40,w:5,max:220,sp:'Double tour · jusqu’à 220 W'},
+{id:'cl3',n:'Watercooling AIO 240 mm',p:90,w:15,max:250,sp:'Liquide · jusqu’à 250 W'},
+{id:'cl4',n:'Watercooling AIO 360 mm',p:160,w:20,max:300,sp:'Liquide · jusqu’à 300 W'}],
+'case':[
+{id:'cs1',n:'Micro-ATX Mini Tower',p:75,w:8,forms:['mATX'],gpuMax:290,sp:'Micro-ATX · GPU 290 mm max'},
+{id:'cs2',n:'NZXT H5 Flow',p:110,w:10,forms:['ATX','mATX'],gpuMax:365,sp:'ATX · façade ventilée · GPU 365 mm'},
+{id:'cs3',n:'Corsair 4000D Airflow',p:95,w:10,forms:['ATX','mATX'],gpuMax:360,sp:'ATX · flux d’air · GPU 360 mm'},
+{id:'cs4',n:'Lian Li O11 Dynamic EVO',p:165,w:15,forms:['ATX','mATX'],gpuMax:420,sp:'ATX · double chambre · GPU 420 mm'}],
+psu:[
+{id:'p1',n:'MSI MAG 650W Bronze',p:70,cap:650,sp:'80+ Bronze'},
+{id:'p2',n:'Corsair RM750e 750W Gold',p:115,cap:750,sp:'80+ Gold · modulaire'},
+{id:'p3',n:'Seasonic Focus 850W Gold',p:145,cap:850,sp:'80+ Gold · 10 ans de garantie'}]
+};
+if(window.CAT){D.cpu=CAT.cpu;D.gpu=CAT.gpu;D.ram=CAT.ram;D.mb=CAT.mb;D.sto=CAT.sto;D.cool=CAT.cool;D['case']=CAT['case'];D.psu=CAT.psu}
+var BR={gn:[['ASUS',1.08],['MSI',1.05],['Gigabyte',1.03],['Zotac',.98],['Palit',.97],['PNY',.97],['Inno3D',.98]],
+ga:[['Sapphire',1.05],['PowerColor',1.02],['XFX',1],['ASRock',.99],['Gigabyte',1.03],['ASUS',1.08]],
+ram:[['Corsair Vengeance',1.1],['G.Skill Ripjaws',1],['Kingston Fury Beast',.97],['Crucial',.95],['TeamGroup T-Force',.93],['Patriot Viper',.92]],
+mb:[['ASUS',1.1],['MSI',1],['Gigabyte',1],['ASRock',.92]],
+hdd:[['Seagate Barracuda',1],['WD Blue',1.05],['Toshiba P300',.97]],
+sata:[['Samsung 870 EVO',1.15],['Crucial MX500',1],['WD Blue SA510',.95],['Kingston A400',.85]],
+n4:[['Samsung 990 EVO Plus',1.05],['WD_BLACK SN850X',1.2],['Crucial P3 Plus',.9],['Kingston NV3',.85],['Lexar NM790',.92]],
+n5:[['Crucial T705',1.2],['Samsung 9100 PRO',1.15],['WD_BLACK SN8100',1.1],['Corsair MP700 PRO',1.1]],
+aio:[['Arctic Liquid Freezer III',1],['Corsair iCUE',1.5],['Corsair Nautilus',.95],['NZXT Kraken',1.6],['Deepcool LS',.9],['MSI MAG CoreLiquid',1.1],['Thermalright Frozen Warframe',.85],['Cooler Master MasterLiquid',1.15],['be quiet! Pure Loop 2',1.2],['Lian Li Galahad II',1.5],['Fractal Design Lumen',1.2],['Thermaltake TH',1.1],['Endorfy Navis',.9],['ASUS ROG Ryuo',1.9]],
+cust:[['Alphacool',1],['EK',1.15],['Corsair Hydro X',1.2],['Bitspower',1.3],['Watercool',1.4],['Thermaltake Pacific',1.1]],
+psu:{Bronze:[['Corsair CX',1,'ATX','non modulaire',450,750],['Corsair CX-M',1.05,'ATX','semi-modulaire',450,750],['MSI MAG A-BN',.95,'ATX','non modulaire',450,750],['be quiet! System Power 10',1.05,'ATX','non modulaire',450,850],['Cooler Master MWE Bronze V2',.95,'ATX','non modulaire',450,750],['Thermaltake Smart BX1',.9,'ATX','non modulaire',450,750]],
+Gold:[['Corsair RMe',1,'ATX','full modulaire',650,1000],['Corsair RMx',1.15,'ATX','full modulaire',650,1200],['Seasonic Focus GX',1.1,'ATX','full modulaire',550,1000],['be quiet! Pure Power 12 M',1,'ATX','full modulaire',550,1200],['MSI MAG A-GL',.95,'ATX','full modulaire',650,1000],['ASUS TUF Gaming Gold',1.05,'ATX','full modulaire',550,1000],['Thermaltake Toughpower GF A3',1,'ATX','full modulaire',650,1000],['Cooler Master MWE Gold V2',.95,'ATX','full modulaire',650,1250],['NZXT C Gold',1.1,'ATX','full modulaire',650,1000],['Gigabyte P-GM',.92,'ATX','semi-modulaire',550,850],['Corsair SF-L',1.2,'SFX','full modulaire',650,850],['Cooler Master V SFX Gold',1.1,'SFX','full modulaire',650,850]],
+Platinum:[['Corsair HXi',1.2,'ATX','full modulaire',750,1500],['Seasonic Focus PX',1.15,'ATX','full modulaire',650,850],['Seasonic Prime PX',1.4,'ATX','full modulaire',750,1300],['be quiet! Straight Power 12',1.25,'ATX','full modulaire',750,1500],['ASUS ROG Thor II',1.5,'ATX','full modulaire',850,1600],['Thermaltake Toughpower PF3',1.15,'ATX','full modulaire',850,1650],['Cooler Master V Platinum',1.15,'ATX','full modulaire',850,1300],['Corsair SF Platinum',1.35,'SFX','full modulaire',750,1000]],
+Titanium:[['Corsair AXi',1.4,'ATX','full modulaire',1000,1600],['Seasonic Prime TX',1.3,'ATX','full modulaire',750,1600],['be quiet! Dark Power 13',1.35,'ATX','full modulaire',750,1000],['ASUS ROG Thor Titanium',1.5,'ATX','full modulaire',1000,1600]]}};
+function mk(it,list,nm,lab){it.vl=lab;it.vs=list.map(function(b){var v={};for(var k in it)if(k!=='vs')v[k]=it[k];v.id=it.id+'-'+slug(b[0]);v.base=it.id;v.n=nm(b[0],it,b);v.p=Math.round(it.p*b[1]);if(b[2])v.ptype=b[2];return v})}
+D.gpu.forEach(function(g){mk(g,/^Nvidia/.test(g.n)?BR.gn:BR.ga,function(b,i){return b+' '+i.n})});
+D.ram.forEach(function(r){mk(r,BR.ram,function(b,i){return b+' '+i.n})});
+D.mb.forEach(function(m){mk(m,BR.mb,function(b,i){return b+' '+i.n.replace('Carte mère ','')})});
+D.sto.forEach(function(x){mk(x,BR[x.g==='HDD'?'hdd':x.g==='SSD SATA'?'sata':/5\.0/.test(x.n)?'n5':'n4'],function(b,i){return b+' '+i.cap},'modèles')});
+D.cool.forEach(function(x){if(x.rad)mk(x,x.g==='Watercooling custom'?BR.cust:BR.aio,function(b,i){return b+' '+i.n.replace('Watercooling ','').replace('Kit watercooling ','Kit ')},'marques')});
+D.psu.forEach(function(x){var c=x.g2.replace('80+ ',''),l=BR.psu[c].filter(function(a){return x.cap>=a[4]&&x.cap<=a[5]});
+  if(l.length)mk(x,l,function(b,i,r){return b+' '+i.cap+' W · '+r[3]},'modèles');else x.vs=null});
+D.psu=D.psu.filter(function(x){return x.vs});
+function slug(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+var opened={},filt2={},filt={},q="",sortBy="",RES={'1080p':1.0,'1440p':1.25,'4K':1.6}, res='1080p', tab='cpu', S={};
+var $=function(i){return document.getElementById(i)};
+function fmt(n){return n.toLocaleString('fr-FR')+' €'}
+function power(st){var t=0;for(var k in st){if(st[k]&&st[k].w)t+=st[k].w}return t}
+
+// ---- Règles de compatibilité : chacune renvoie {cats, msg} ou rien ----
+function problems(st){
+  var o=[],c=st.cpu,m=st.mb,r=st.ram,g=st.gpu,cs=st['case'],cl=st.cool,ps=st.psu,w=power(st);
+  if(c&&m&&c.sock!==m.sock)o.push({cats:['cpu','mb'],msg:'Socket '+c.sock+' ≠ '+m.sock});
+  if(m&&r&&m.ram!==r.type)o.push({cats:['mb','ram'],msg:'Carte mère '+m.ram+', mémoire '+r.type});
+  if(m&&cs&&cs.forms.indexOf(m.form)<0)o.push({cats:['mb','case'],msg:'Carte mère '+m.form+' trop grande pour ce boîtier'});
+  if(g&&cs&&g.len>cs.gpuMax)o.push({cats:['gpu','case'],msg:'Carte graphique de '+g.len+' mm, boîtier limité à '+cs.gpuMax+' mm'});
+  if(c&&cl&&cl.max<c.w)o.push({cats:['cool','cpu'],msg:'Refroidissement limité à '+cl.max+' W, processeur à '+c.w+' W'});
+  if(cl&&cs&&cl.h&&cl.h>cs.cpuH)o.push({cats:['cool','case'],msg:'Ventirad de '+cl.h+' mm, boîtier limité à '+cs.cpuH+' mm'});
+  if(cl&&cs&&cl.rad&&cs.rads.indexOf(cl.rad)<0)o.push({cats:['cool','case'],msg:'Radiateur '+cl.rad+' mm non pris en charge par ce boîtier'});
+  if(ps&&cs&&ps.ptype&&cs.psu.indexOf(ps.ptype)<0)o.push({cats:['psu','case'],msg:'Ce boîtier n’accepte pas une alimentation '+ps.ptype});
+  if(ps&&ps.cap<w)o.push({cats:['psu'],msg:'Alimentation de '+ps.cap+' W pour '+w+' W'});
+  return o;
+}
+function warnings(st){
+  var w=power(st),ps=st.psu,o=[];
+  if(ps&&ps.cap>=w&&ps.cap<w*1.25)o.push('Alimentation juste : visez '+(Math.ceil(w*1.25/50)*50)+' W');
+  return o;
+}
+function reason(cat,item){
+  var t={};for(var k in S)t[k]=S[k];t[cat]=item;
+  var p=problems(t);
+  for(var i=0;i<p.length;i++){if(p[i].cats.indexOf(cat)>=0)return p[i].msg}
+  return null;
+}
+
+// ---- Goulot d’étranglement : le CPU bride-t-il le GPU, selon la résolution ? ----
+function bottleneck(){
+  var c=S.cpu,g=S.gpu;
+  if(!c||!g)return {v:null,txt:'Choisissez un processeur et une carte graphique (avec sa marque).'};
+  var need=25+0.75*g.s,eff=c.s*RES[res],pct=eff>=need?0:Math.round((1-eff/need)*100);
+  if(pct>=10)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+' : environ '+pct+' % de ses performances ne seront pas exploitées.'};
+  if(eff>need*1.5)return {v:pct,txt:'Aucun goulot. Le processeur est très au-dessus des besoins de cette carte en '+res+' : une carte plus puissante serait mieux exploitée.'};
+  return {v:pct,txt:'Bon équilibre entre processeur et carte graphique en '+res+'.'};
+}
+
+// ---- Affichage ----
+function drawTabs(){
+  $('tabs').innerHTML='';
+  CATS.forEach(function(c){
+    var b=document.createElement('button');b.className='tab';
+    b.setAttribute('aria-current',c.k===tab);
+    b.innerHTML='<i class="'+(S[c.k]?'done':'')+'"></i>'+c.t;
+    b.onclick=function(){tab=c.k;drawTabs();drawTools();drawList()};
+    $('tabs').appendChild(b);
+  });
+}
+function drawTools(){
+  var bar=$('tools');bar.innerHTML='';q='';sortBy='';
+  function row(list,all,cur,set){
+    if(list.length<2)return;
+    [all].concat(list).forEach(function(g){var b=document.createElement('button');b.className='chip';b.textContent=g;b.setAttribute('aria-pressed',cur===g);b.onclick=function(){set(g);drawTools();drawList()};bar.appendChild(b)});
+    var br=document.createElement('span');br.style.flexBasis='100%';bar.appendChild(br);
+  }
+  var gs=[],g2=[],f=filt[tab]||'Tous';
+  D[tab].forEach(function(it){var g=it.g||it.sock;if(g&&gs.indexOf(g)<0)gs.push(g);if(it.g2&&(f==='Tous'||g===f)&&g2.indexOf(it.g2)<0)g2.push(it.g2)});
+  row(gs,'Tous',f,function(g){filt[tab]=g;filt2[tab]=null});
+  row(g2,'Toutes',filt2[tab]||'Toutes',function(g){filt2[tab]=g});
+  if(D[tab].length>8){
+    var inp=document.createElement('input');inp.type='search';inp.placeholder='Rechercher';inp.setAttribute('aria-label','Rechercher une pièce');
+    inp.oninput=function(){q=inp.value.toLowerCase();drawList()};bar.appendChild(inp);
+    var sel=document.createElement('select');sel.setAttribute('aria-label','Trier');
+    [['','Tri par défaut'],['pa','Prix croissant'],['pd','Prix décroissant'],['s','Performance']].forEach(function(o){var op=document.createElement('option');op.value=o[0];op.textContent=o[1];sel.appendChild(op)});
+    sel.onchange=function(){sortBy=sel.value;drawList()};bar.appendChild(sel);
+  }
+}
+function drawList(){
+  var box=$('list');box.innerHTML='';
+  var f=filt[tab]||'Tous',f2=filt2[tab]||'Toutes';
+  var items=D[tab].filter(function(it){return(f==='Tous'||(it.g||it.sock)===f)&&(f2==='Toutes'||it.g2===f2)&&(it.n.toLowerCase().indexOf(q)>=0||(it.vs||[]).some(function(v){return v.n.toLowerCase().indexOf(q)>=0}))});
+  if(sortBy==='pa')items.sort(function(a,b){return a.p-b.p});
+  if(sortBy==='pd')items.sort(function(a,b){return b.p-a.p});
+  if(sortBy==='s')items.sort(function(a,b){return(b.s||0)-(a.s||0)});
+  if(!items.length)box.innerHTML='<p class="s" style="color:var(--mut)">Aucune pièce ne correspond.</p>';
+  var lastH='';
+  items.forEach(function(it){
+    if(!sortBy){var hl=[f==='Tous'?(it.g||it.sock):null,it.g2].filter(Boolean).join(' · ');
+      if(hl&&hl!==lastH){var h=document.createElement('h3');h.className='grp';h.textContent=hl;box.appendChild(h);lastH=hl}}
+    var b=document.createElement('button'),why=reason(tab,it),vs=it.vs,cur=S[tab],on=cur&&(cur===it||cur.base===it.id);
+    var price=vs?'dès '+fmt(Math.min.apply(null,vs.map(function(v){return v.p}))):fmt(it.p);
+    b.className='card';b.setAttribute('aria-pressed',!!on);if(vs)b.setAttribute('aria-expanded',opened[tab]===it.id);
+    b.innerHTML='<span class="l"><img src="'+(it.img||'images/'+slug(it.n)+'.webp')+'" alt="" loading="lazy" onerror="this.remove()"><span><span class="n">'+it.n+'</span><br><span class="s">'+it.sp+(vs?' · '+vs.length+' '+(it.vl||'marques')+' au choix':'')+'</span>'+(why?'<div class="r">Incompatible : '+why+'</div>':'')+'</span></span><span class="p">'+price+'</span>';
+    b.onclick=function(){
+      if(vs){
+        if(!(S[tab]&&S[tab].base===it.id)){S[tab]=vs.slice().sort(function(a,b){return a.p-b.p})[0];opened[tab]=it.id;update();drawTabs()}
+        else opened[tab]=opened[tab]===it.id?null:it.id;
+      }else{S[tab]=(S[tab]===it)?null:it;update();drawTabs()}
+      drawList()};
+    box.appendChild(b);
+    if(vs&&opened[tab]===it.id){
+      var d=document.createElement('div');d.className='vars';
+      vs.forEach(function(v){
+        var vb=document.createElement('button');vb.className='var';vb.setAttribute('aria-pressed',S[tab]===v);
+        vb.innerHTML='<span class="l"><img src="images/'+slug(v.n)+'.webp" alt="" loading="lazy" onerror="this.remove()">'+v.n+'</span><b>'+fmt(v.p)+'</b>';
+        vb.onclick=function(){S[tab]=(S[tab]===v)?null:v;update();drawList();drawTabs()};d.appendChild(vb);
+      });
+      box.appendChild(d);
+    }
+  });
+}
+function update(){
+  var total=0,w=power(S),keys=Object.keys(D),n=0;
+  $('build').innerHTML='';
+  CATS.forEach(function(c){
+    var it=S[c.k];$('v-'+c.k).setAttribute('class','p'+(it?' on':''));
+    if(!it)return;n++;total+=it.p;
+    var li=document.createElement('li');
+    li.innerHTML='<span>'+it.n+'</span><span>'+fmt(it.p)+' <button aria-label="Retirer '+it.n+'">✕</button></span>';
+    li.querySelector('button').onclick=function(){S[c.k]=null;update();drawList();drawTabs()};
+    $('build').appendChild(li);
+  });
+  $('total').textContent=fmt(total);$('pw').textContent=w+' W';
+  var p=problems(S),wr=warnings(S),st=$('status');
+  if(!n){st.className='status';st.innerHTML='<b>Aucune pièce choisie</b>Commencez par le processeur.'}
+  else if(p.length){st.className='status bad';st.innerHTML='<b>'+p.length+' incompatibilité'+(p.length>1?'s':'')+'</b><ul>'+p.map(function(x){return '<li>'+x.msg+'</li>'}).join('')+'</ul>'}
+  else{st.className='status ok';st.innerHTML='<b>Aucune incompatibilité</b>'+(wr.length?'<ul>'+wr.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>':'')}
+  var b=bottleneck();
+  $('bn-val').textContent=b.v===null?'–':b.v+' %';$('bn-bar').style.width=(b.v||0)+'%';$('bn-txt').textContent=b.txt;
+  var ids=CATS.map(function(c){return S[c.k]?S[c.k].id:''}).join(',');
+  try{history.replaceState(null,'',n?'#b='+ids:location.pathname)}catch(e){}
+}
+function drawRes(){
+  $('res').innerHTML='';
+  Object.keys(RES).forEach(function(r){
+    var b=document.createElement('button');b.textContent=r;b.setAttribute('aria-pressed',r===res);
+    b.onclick=function(){res=r;drawRes();update()};$('res').appendChild(b);
+  });
+}
+$('share').onclick=function(){
+  var b=$('share');
+  navigator.clipboard.writeText(location.href).then(function(){b.textContent='Lien copié'},function(){b.textContent='Copiez l’adresse de la page'});
+  setTimeout(function(){b.textContent='Copier le lien de ma config'},2000);
+};
+// Charger une config depuis le lien
+(function(){
+  var m=location.hash.match(/b=([^&]*)/);if(!m)return;
+  var ids=m[1].split(',');
+  CATS.forEach(function(c,i){D[c.k].forEach(function(it){if(it.id===ids[i])S[c.k]=it;(it.vs||[]).forEach(function(v){if(v.id===ids[i])S[c.k]=v})})});
+})();
+drawRes();drawTabs();drawTools();drawList();update();
 </script>
 </body>
 </html>
