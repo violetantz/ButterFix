@@ -326,4 +326,81 @@
                 { id: "cpu_r7_9800x3d", brand: "AMD", model: "Ryzen 7 9800X3D", price: 490, socket: "AM5", power: 120 },
                 { id: "cpu_r9_9950x", brand: "AMD", model: "Ryzen 9 9950X", price: 680, socket: "AM5", power: 170 }
             ],
-            rams:
+            rams: [
+                { id: "ram_8gb_2666", brand: "Generic", model: "8GB DDR4 2666MHz", price: 25 },
+                { id: "ram_16gb_3200", brand: "Corsair", model: "16GB (2x8) DDR4 3200MHz", price: 52 },
+                { id: "ram_32gb_3600", brand: "Kingston", model: "32GB (2x16) DDR4 3600MHz", price: 79 },
+                { id: "ram_32gb_ddr5_6000", brand: "Corsair", model: "32GB (2x16) DDR5 6000MHz", price: 125 },
+                { id: "ram_64gb_ddr5_6400", brand: "G.Skill", model: "64GB (2x32) DDR5 6400MHz", price: 230 }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const cpuSelect = document.getElementById('select-cpu');
+            const gpuSelect = document.getElementById('select-gpu');
+            const ramSelect = document.getElementById('select-ram');
+
+            if (cpuSelect && pcCatalogComplete.cpus) {
+                pcCatalogComplete.cpus.forEach(cpu => {
+                    let opt = document.createElement('option');
+                    opt.value = cpu.price;
+                    opt.dataset.power = cpu.power;
+                    opt.textContent = `${cpu.brand} ${cpu.model} (${cpu.socket}) - ${cpu.price} EUR`;
+                    cpuSelect.appendChild(opt);
+                });
+            }
+
+            if (gpuSelect && pcCatalogComplete.gpus) {
+                pcCatalogComplete.gpus.forEach(gpu => {
+                    let opt = document.createElement('option');
+                    opt.value = gpu.price;
+                    opt.dataset.power = gpu.power;
+                    opt.textContent = `${gpu.brand} ${gpu.model} - ${gpu.price} EUR`;
+                    gpuSelect.appendChild(opt);
+                });
+            }
+
+            if (ramSelect && pcCatalogComplete.rams) {
+                pcCatalogComplete.rams.forEach(ram => {
+                    let opt = document.createElement('option');
+                    opt.value = ram.price;
+                    opt.dataset.power = 15;
+                    opt.textContent = `${ram.brand} ${ram.model} - ${ram.price} EUR`;
+                    ramSelect.appendChild(opt);
+                });
+            }
+
+            function updateConfig() {
+                let cpuPrice = parseFloat(cpuSelect.value) || 0;
+                let gpuPrice = parseFloat(gpuSelect.value) || 0;
+                let ramPrice = parseFloat(ramSelect.value) || 0;
+
+                let cpuPower = cpuSelect.selectedIndex > 0 ? parseInt(cpuSelect.options[cpuSelect.selectedIndex].dataset.power) : 0;
+                let gpuPower = gpuSelect.selectedIndex > 0 ? parseInt(gpuSelect.options[gpuSelect.selectedIndex].dataset.power) : 0;
+                let ramPower = ramSelect.selectedIndex > 0 ? 15 : 0;
+
+                let totalPrice = cpuPrice + gpuPrice + ramPrice;
+                let totalPower = cpuPower + gpuPower + ramPower + 50;
+
+                document.getElementById('total-price').textContent = totalPrice + ' EUR';
+                document.getElementById('total-power').textContent = totalPower + ' W';
+            }
+
+            if(cpuSelect) cpuSelect.addEventListener('change', updateConfig);
+            if(gpuSelect) gpuSelect.addEventListener('change', updateConfig);
+            if(ramSelect) ramSelect.addEventListener('change', updateConfig);
+        });
+
+        // Défilement fluide
+        document.addEventListener('click', function(e) {
+            if(e.target.matches('.scroll-link')) {
+                e.preventDefault();
+                const target = document.querySelector(e.target.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
