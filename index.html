@@ -71,7 +71,7 @@
         .hero {
             position: relative;
             width: 100%;
-            height: 60vh;
+            height: 40vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -87,17 +87,17 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(8, 8, 12, 0.4), #08080c);
+            background: linear-gradient(to bottom, rgba(8, 8, 12, 0.5), #08080c);
             z-index: 1;
         }
 
         .hero-content {
             position: relative;
             z-index: 2;
-            margin-top: 15vh;
+            margin-top: 5vh;
         }
 
-        /* Layout Configurateur 2 Colonnes */
+        /* Layout 2 Colonnes */
         #configurateur {
             padding: 2rem 2rem 6rem;
             max-width: 1400px;
@@ -112,13 +112,23 @@
             align-items: start;
         }
 
-        /* Colonne Formulaire / Composants */
         .components-panel {
             background: rgba(15, 15, 25, 0.85);
             border: 1px solid #374151;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 12px;
             backdrop-filter: blur(10px);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        /* Style de la barre de défilement pour le panneau */
+        .components-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .components-panel::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
         }
 
         .form-group {
@@ -126,8 +136,7 @@
         }
 
         .form-group label {
-            display: flex;
-            justify-content: space-between;
+            display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: #e5e7eb;
@@ -152,7 +161,7 @@
             border-color: #a855f7;
         }
 
-        /* Colonne Rendu 3D & Stats */
+        /* Aperçu et Panneau de contrôle */
         .preview-panel {
             position: sticky;
             top: 100px;
@@ -168,36 +177,25 @@
 
         .pc-case-preview {
             width: 100%;
-            height: 320px;
+            height: 220px;
             background: #000;
             border: 2px dashed #374151;
             border-radius: 8px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(124, 58, 237, 0.1);
+            box-shadow: inset 0 0 30px rgba(124, 58, 237, 0.15);
         }
 
         .pc-case-preview img {
             max-width: 80%;
             max-height: 80%;
             object-fit: contain;
-            transition: all 0.5s ease;
         }
 
-        .rgb-effect {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        /* Badges & Compatibility Indicators */
         .status-badge {
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 700;
@@ -211,19 +209,12 @@
             border: 1px solid #10b981;
         }
 
-        .status-warning {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-            border: 1px solid #f59e0b;
-        }
-
         .status-error {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
             border: 1px solid #ef4444;
         }
 
-        /* Bottleneck Bar */
         .metric-card {
             background: #08080c;
             padding: 1rem;
@@ -278,92 +269,85 @@
         <a href="#" class="nav-logo">ButterFix</a>
         <ul class="nav-links">
             <li><a href="#configurateur">Configurateur</a></li>
-            <li><a href="#comparateur">Comparateur</a></li>
         </ul>
     </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1 style="font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem;">CONFIGURATEUR PC 3D</h1>
-            <p style="color: #9ca3af; font-size: 1.1rem;">#BUILDWITHUS — Testez la compatibilité & le bottleneck en direct</p>
+            <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR PC BUTTERFIX</h1>
+            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Compatibilité & Bottleneck en direct</p>
         </div>
     </section>
 
     <section id="configurateur">
         <div class="builder-grid">
             
-            <!-- FORMULAIRE COMPOSANTS -->
+            <!-- FORMULAIRE DE TOUTES LES CATÉGORIES -->
             <div class="components-panel">
+                <h3 style="color: #a855f7; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px; border-bottom: 1px solid #374151; padding-bottom: 0.5rem;">Sélectionnez vos composants</h3>
                 
                 <div class="form-group">
-                    <label>Processeur (CPU) <span id="cpu-socket-tag" style="color:#a855f7;"></span></label>
-                    <select id="select-cpu"><option value="">-- Sélectionner un CPU --</option></select>
+                    <label for="select-cpu">Processeur (CPU)</label>
+                    <select id="select-cpu"><option value="">-- Choisir un processeur --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Carte Mère <span id="mb-socket-tag" style="color:#a855f7;"></span></label>
-                    <select id="select-motherboard"><option value="">-- Sélectionner une Carte Mère --</option></select>
+                    <label for="select-motherboard">Carte Mère</label>
+                    <select id="select-motherboard"><option value="">-- Choisir une carte mère --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Carte Graphique (GPU)</label>
-                    <select id="select-gpu"><option value="">-- Sélectionner une Carte Graphique --</option></select>
+                    <label for="select-gpu">Carte Graphique (GPU)</label>
+                    <select id="select-gpu"><option value="">-- Choisir une carte graphique --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Mémoire RAM</label>
-                    <select id="select-ram"><option value="">-- Sélectionner la RAM --</option></select>
+                    <label for="select-ram">Mémoire RAM</label>
+                    <select id="select-ram"><option value="">-- Choisir de la RAM --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Stockage SSD</label>
-                    <select id="select-storage"><option value="">-- Sélectionner le Stockage --</option></select>
+                    <label for="select-storage">Stockage SSD</label>
+                    <select id="select-storage"><option value="">-- Choisir un SSD --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Refroidissement</label>
-                    <select id="select-cooling"><option value="">-- Sélectionner le Refroidissement --</option></select>
+                    <label for="select-cooling">Refroidissement (Ventirad / AIO)</label>
+                    <select id="select-cooling"><option value="">-- Choisir le refroidissement --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Boîtier PC</label>
-                    <select id="select-case"><option value="">-- Sélectionner le Boîtier --</option></select>
+                    <label for="select-case">Boîtier PC</label>
+                    <select id="select-case"><option value="">-- Choisir un boîtier --</option></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Alimentation (PSU)</label>
-                    <select id="select-psu"><option value="">-- Sélectionner l'Alimentation --</option></select>
+                    <label for="select-psu">Alimentation (PSU)</label>
+                    <select id="select-psu"><option value="">-- Choisir une alimentation --</option></select>
                 </div>
-
             </div>
 
-            <!-- APERÇU RENDU + STATS COMPATIBILITÉ & BOTTLENECK -->
+            <!-- PANNEAU APERÇU + STATS -->
             <div class="preview-panel">
-                
                 <div class="pc-case-preview">
-                    <div class="rgb-effect"></div>
-                    <img id="case-visual" src="logo.jpg" alt="Aperçu Boîtier" style="opacity: 0.5;">
-                    <p id="preview-text" style="position: absolute; bottom: 10px; font-size: 0.75rem; color: #9ca3af;">Aperçu du Montage</p>
+                    <img id="case-visual" src="logo.jpg" alt="Logo ButterFix">
                 </div>
 
-                <!-- Badge Compatibilité -->
                 <div id="compatibility-badge" class="status-badge status-ok">
                     ✓ Configuration Compatible (100%)
                 </div>
 
-                <!-- Indicateur de Bottleneck -->
                 <div class="metric-card">
                     <div class="metric-header">
-                        <span>Bottleneck Estimé (Goulot d'étranglement)</span>
+                        <span>Bottleneck (Goulot d'étranglement)</span>
                         <span id="bottleneck-val" style="color: #a855f7; font-weight: bold;">0%</span>
                     </div>
                     <div class="progress-bar-bg">
                         <div id="bottleneck-bar" class="progress-bar-fill"></div>
                     </div>
-                    <p id="bottleneck-desc" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.4rem;">Sélectionnez un CPU et un GPU pour calculer le bottleneck.</p>
+                    <p id="bottleneck-desc" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.4rem;">Sélectionnez un CPU et un GPU.</p>
                 </div>
 
-                <!-- Puissance / Consommation -->
                 <div class="metric-card">
                     <div class="metric-header">
                         <span>Consommation Électrique</span>
@@ -371,15 +355,181 @@
                     </div>
                 </div>
 
-                <!-- Prix Total -->
                 <div class="total-price-box">
                     <span style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem;">Total Estimé</span>
                     <span id="total-price" style="font-size: 2rem; font-weight: 800; color: #a855f7;">0 €</span>
                 </div>
-
             </div>
 
         </div>
     </section>
 
-    <!-- SCRIPT LOGIQUE AVANCÉE -->
+    <!-- SCRIPT JS COMPLET -->
+    <script>
+        (function() {
+            var cpus = [
+                { name: "Intel Core i3-10100F (LGA1200)", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35 },
+                { name: "Intel Core i5-12400F (LGA1700)", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55 },
+                { name: "Intel Core i5-13600K (LGA1700)", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82 },
+                { name: "Intel Core i7-14700K (LGA1700)", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92 },
+                { name: "AMD Ryzen 5 3600 (AM4)", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45 },
+                { name: "AMD Ryzen 5 5600X (AM4)", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60 },
+                { name: "AMD Ryzen 7 5800X3D (AM4)", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85 },
+                { name: "AMD Ryzen 7 7800X3D (AM5)", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98 },
+                { name: "AMD Ryzen 7 9800X3D (AM5)", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100 }
+            ];
+
+            var motherboards = [
+                { name: "MSI B450 TOMAHAWK MAX (AM4 - DDR4)", price: 95, power: 25, socket: "AM4", ramType: "DDR4" },
+                { name: "Gigabyte B550 AORUS ELITE (AM4 - DDR4)", price: 130, power: 25, socket: "AM4", ramType: "DDR4" },
+                { name: "ASUS TUF GAMING B650-PLUS (AM5 - DDR5)", price: 190, power: 30, socket: "AM5", ramType: "DDR5" },
+                { name: "ASUS PRIME H610M (LGA1700 - DDR4)", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4" },
+                { name: "MSI MAG Z790 TOMAHAWK (LGA1700 - DDR5)", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5" }
+            ];
+
+            var gpus = [
+                { name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20 },
+                { name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50 },
+                { name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62 },
+                { name: "Nvidia RTX 4070 Super 12GB", price: 650, power: 220, score: 85 },
+                { name: "Nvidia RTX 4080 Super 16GB", price: 1050, power: 320, score: 95 },
+                { name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100 },
+                { name: "AMD Radeon RX 6700 XT", price: 340, power: 230, score: 60 },
+                { name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82 }
+            ];
+
+            var rams = [
+                { name: "Corsair 16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4" },
+                { name: "Kingston 32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4" },
+                { name: "Corsair 32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5" },
+                { name: "G.Skill 64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5" }
+            ];
+
+            var storages = [
+                { name: "Crucial P3 1TB NVMe M.2", price: 70, power: 6 },
+                { name: "Samsung 990 PRO 2TB NVMe M.2", price: 175, power: 8 }
+            ];
+
+            var coolings = [
+                { name: "Thermalright Peerless Assassin 120", price: 40, power: 5 },
+                { name: "Watercooling AIO 360mm RGB", price: 160, power: 20 }
+            ];
+
+            var cases = [
+                { name: "NZXT H5 Flow RGB", price: 110, power: 10 },
+                { name: "Corsair 4000D Airflow", price: 95, power: 10 },
+                { name: "Lian Li O11 Dynamic EVO", price: 165, power: 15 }
+            ];
+
+            var psus = [
+                { name: "MSI MAG 650W 80+ Bronze", price: 70, capacity: 650 },
+                { name: "Corsair RM750e 750W Gold Modular", price: 115, capacity: 750 },
+                { name: "Seasonic Focus GX 850W Gold", price: 145, capacity: 850 }
+            ];
+
+            var cpuSelect = document.getElementById('select-cpu');
+            var mbSelect = document.getElementById('select-motherboard');
+            var gpuSelect = document.getElementById('select-gpu');
+            var ramSelect = document.getElementById('select-ram');
+            var storageSelect = document.getElementById('select-storage');
+            var coolingSelect = document.getElementById('select-cooling');
+            var caseSelect = document.getElementById('select-case');
+            var psuSelect = document.getElementById('select-psu');
+
+            function fillSelect(select, array) {
+                for (var i = 0; i < array.length; i++) {
+                    var opt = document.createElement('option');
+                    opt.value = i;
+                    opt.innerHTML = array[i].name + ' — ' + array[i].price + ' €';
+                    select.appendChild(opt);
+                }
+            }
+
+            fillSelect(cpuSelect, cpus);
+            fillSelect(mbSelect, motherboards);
+            fillSelect(gpuSelect, gpus);
+            fillSelect(ramSelect, rams);
+            fillSelect(storageSelect, storages);
+            fillSelect(coolingSelect, coolings);
+            fillSelect(caseSelect, cases);
+            fillSelect(psuSelect, psus);
+
+            function updateCalculator() {
+                var selectedCpu = cpuSelect.value !== "" ? cpus[parseInt(cpuSelect.value)] : null;
+                var selectedMb = mbSelect.value !== "" ? motherboards[parseInt(mbSelect.value)] : null;
+                var selectedGpu = gpuSelect.value !== "" ? gpus[parseInt(gpuSelect.value)] : null;
+                var selectedRam = ramSelect.value !== "" ? rams[parseInt(ramSelect.value)] : null;
+                var selectedStorage = storageSelect.value !== "" ? storages[parseInt(storageSelect.value)] : null;
+                var selectedCooling = coolingSelect.value !== "" ? coolings[parseInt(coolingSelect.value)] : null;
+                var selectedCase = caseSelect.value !== "" ? cases[parseInt(caseSelect.value)] : null;
+                var selectedPsu = psuSelect.value !== "" ? psus[parseInt(psuSelect.value)] : null;
+
+                var price = 0;
+                var power = 0;
+
+                if (selectedCpu) { price += selectedCpu.price; power += selectedCpu.power; }
+                if (selectedMb) { price += selectedMb.price; power += selectedMb.power; }
+                if (selectedGpu) { price += selectedGpu.price; power += selectedGpu.power; }
+                if (selectedRam) { price += selectedRam.price; power += selectedRam.power; }
+                if (selectedStorage) { price += selectedStorage.price; power += selectedStorage.power; }
+                if (selectedCooling) { price += selectedCooling.price; power += selectedCooling.power; }
+                if (selectedCase) { price += selectedCase.price; power += selectedCase.power; }
+                if (selectedPsu) { price += selectedPsu.price; }
+
+                document.getElementById('total-price').innerHTML = price + ' €';
+                document.getElementById('power-val').innerHTML = power + ' W';
+
+                // Compatibilité
+                var badge = document.getElementById('compatibility-badge');
+                var error = null;
+
+                if (selectedCpu && selectedMb && selectedCpu.socket !== selectedMb.socket) {
+                    error = 'Socket Incompatible (' + selectedCpu.socket + ' vs ' + selectedMb.socket + ')';
+                } else if (selectedMb && selectedRam && selectedMb.ramType !== selectedRam.ramType) {
+                    error = 'RAM Incompatible (' + selectedMb.ramType + ' vs ' + selectedRam.ramType + ')';
+                } else if (selectedPsu && selectedPsu.capacity < power) {
+                    error = 'Alimentation trop faible (' + selectedPsu.capacity + 'W pour ' + power + 'W)';
+                }
+
+                if (error) {
+                    badge.className = 'status-badge status-error';
+                    badge.innerHTML = '❌ ' + error;
+                } else {
+                    badge.className = 'status-badge status-ok';
+                    badge.innerHTML = '✓ Configuration Compatible (100%)';
+                }
+
+                // Bottleneck
+                var bBar = document.getElementById('bottleneck-bar');
+                var bVal = document.getElementById('bottleneck-val');
+                var bDesc = document.getElementById('bottleneck-desc');
+
+                if (selectedCpu && selectedGpu) {
+                    var diff = Math.abs(selectedCpu.score - selectedGpu.score);
+                    var bPercent = Math.min(Math.round(diff), 100);
+
+                    bBar.style.width = bPercent + '%';
+                    bVal.innerHTML = bPercent + '%';
+
+                    if (bPercent < 15) {
+                        bDesc.innerHTML = 'Excellent équilibre entre le processeur et la carte graphique.';
+                    } else if (selectedCpu.score < selectedGpu.score) {
+                        bDesc.innerHTML = 'Le processeur limite les performances de la carte graphique.';
+                    } else {
+                        bDesc.innerHTML = 'La carte graphique limite le processeur en haute résolution.';
+                    }
+                } else {
+                    bBar.style.width = '0%';
+                    bVal.innerHTML = '0%';
+                    bDesc.innerHTML = 'Sélectionnez un CPU et un GPU pour calculer le bottleneck.';
+                }
+            }
+
+            var allSelects = [cpuSelect, mbSelect, gpuSelect, ramSelect, storageSelect, coolingSelect, caseSelect, psuSelect];
+            for (var j = 0; j < allSelects.length; j++) {
+                allSelects[j].onchange = updateCalculator;
+            }
+        })();
+    </script>
+</body>
+</html>
