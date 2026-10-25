@@ -1,670 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ButterFix — Visual PC Builder</title>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ButterFix — Configure ton PC sans mauvaise surprise</title>
+<meta name="description" content="Configurateur PC avec vérification de compatibilité, goulot d'étranglement par résolution et lien de partage.">
+<script>try{if(sessionStorage.getItem('bf'))document.documentElement.className='seen'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0c16; --panel:#140b30; --line:#37296b; --brand:#1f0063;
+  --text:#f3f0fa; --mut:#b4adca; --violet:#6d3df0; --accent:#b8a4ff;
+  --display:'Bricolage Grotesque','Trebuchet MS',sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Papillon animé : les deux ailes battent, puis il se pose en fond */
+:root{--sx:-24vw;--fo:.4}
+.bg{position:fixed;inset:0;z-index:-1;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;overflow:hidden}
+.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 6%,rgba(14,12,22,.45) 52%,transparent 80%)}
+.fly{position:relative;width:min(860px,110vw);aspect-ratio:775/521;margin-right:-4vw;perspective:1400px;opacity:var(--fo);filter:drop-shadow(0 0 26px rgba(109,61,240,.55));animation:settle 3.4s cubic-bezier(.3,.1,.2,1) both}
+.wing{position:absolute;top:0;height:100%;width:50.2%;will-change:transform}
+.wing.l{left:0;transform-origin:100% 55%;animation:flapL .55s ease-in-out .3s 4,idleL 8s ease-in-out 3s infinite}
+.wing.r{right:0;transform-origin:0% 55%;animation:flapR .55s ease-in-out .3s 4,idleR 8s ease-in-out 3s infinite}
+@keyframes flapL{0%,100%{transform:rotateY(0)}50%{transform:rotateY(62deg)}}
+@keyframes flapR{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-62deg)}}
+@keyframes idleL{0%,100%{transform:rotateY(0)}50%{transform:rotateY(14deg)}}
+@keyframes idleR{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-14deg)}}
+@keyframes settle{0%{opacity:0;transform:translateX(var(--sx)) scale(1.25)}12%{opacity:1}62%{opacity:1;transform:translateX(var(--sx)) scale(1.25)}100%{opacity:var(--fo);transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero>div{animation:fadeUp .9s ease-out 2.3s both}
+.tag{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,2.6vw,2rem);color:var(--accent);margin-bottom:.8rem;letter-spacing:.02em;text-shadow:0 0 22px rgba(109,61,240,.9);animation:tagIn 1s cubic-bezier(.2,.8,.2,1) 3.2s both}
+@keyframes tagIn{from{opacity:0;transform:scale(.8);letter-spacing:.35em}to{opacity:1;transform:none;letter-spacing:.02em}}
+.seen .fly,.seen .wing,.seen .hero>div,.seen .tag{animation:none}
 
-        body {
-            background-color: #08080c;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        /* Navbar */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 3rem;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            z-index: 10;
-            background: linear-gradient(to bottom, rgba(8,8,12,0.9), transparent);
-        }
-
-        .nav-logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #9ca3af;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-links a:hover {
-            color: #a855f7;
-        }
-
-        /* Hero */
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 35vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background-image: url('logo.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(8, 8, 12, 0.5), #08080c);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            margin-top: 5vh;
-        }
-
-        /* Layout 2 Colonnes */
-        #configurateur {
-            padding: 2rem 2rem 6rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .builder-grid {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        /* Panneau Sélection Visuelle */
-        .components-panel {
-            background: rgba(15, 15, 25, 0.85);
-            border: 1px solid #374151;
-            padding: 2rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            min-height: 400px;
-        }
-
-        .category-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .category-title {
-            color: #a855f7;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1.5px;
-            margin-bottom: 1rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 1px solid #374151;
-        }
-
-        /* Liste verticale style Marketplace */
-        .cards-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            max-height: 380px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .cards-grid::-webkit-scrollbar {
-            width: 5px;
-        }
-        .cards-grid::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 3px;
-        }
-
-        /* Carte Composant en Ligne */
-        .component-card {
-            background: #111118;
-            border: 1px solid #222230;
-            border-radius: 8px;
-            padding: 0.9rem 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            gap: 1rem;
-        }
-
-        .component-card:hover {
-            border-color: #a855f7;
-            background: #161622;
-            transform: translateX(2px);
-        }
-
-        .component-card.selected {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.08);
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
-        }
-
-        .card-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-        }
-
-        .component-card img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-            background: #000;
-            border-radius: 6px;
-            border: 1px solid #374151;
-            padding: 3px;
-            flex-shrink: 0;
-        }
-
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-        }
-
-        .component-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .component-details {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #1f2937;
-            color: #9ca3af;
-            font-size: 0.72rem;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            border: 1px solid #374151;
-        }
-
-        .tag-highlight {
-            background: rgba(168, 85, 247, 0.15);
-            color: #c084fc;
-            border-color: rgba(168, 85, 247, 0.4);
-        }
-
-        .component-price {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #34d399;
-            background: rgba(52, 211, 153, 0.1);
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
-            border: 1px solid rgba(52, 211, 153, 0.2);
-            flex-shrink: 0;
-        }
-
-        .info-msg {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            font-style: italic;
-            padding: 1.5rem;
-            background: #08080c;
-            border: 1px dashed #374151;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        /* Aperçu et Panneau latéral */
-        .preview-panel {
-            position: sticky;
-            top: 100px;
-            background: rgba(15, 15, 25, 0.9);
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .pc-case-preview {
-            width: 100%;
-            height: 200px;
-            background: #000;
-            border: 2px dashed #374151;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(124, 58, 237, 0.15);
-        }
-
-        .pc-case-preview img {
-            max-width: 85%;
-            max-height: 85%;
-            object-fit: contain;
-        }
-
-        .status-badge {
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .status-ok {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            border: 1px solid #10b981;
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid #ef4444;
-        }
-
-        .metric-card {
-            background: #08080c;
-            padding: 0.85rem 1rem;
-            border-radius: 6px;
-            border: 1px solid #1f2937;
-        }
-
-        .metric-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #9ca3af;
-            margin-bottom: 0.4rem;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 8px;
-            background: #1f2937;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #10b981, #a855f7);
-            transition: width 0.4s ease;
-        }
-
-        .total-price-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #374151;
-            padding-top: 1rem;
-        }
-
-        @media (max-width: 900px) {
-            .builder-grid {
-                grid-template-columns: 1fr;
-            }
-            .preview-panel {
-                position: static;
-            }
-        }
-    </style>
+header{display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;padding:1.2rem 1.5rem}
+.logo{font-family:var(--display);font-weight:800;font-size:1.4rem;text-decoration:none}
+.logo span{color:var(--accent)}
+nav a{color:var(--mut);text-decoration:none;font-weight:600;margin-left:1.5rem}
+nav a:hover{color:var(--text)}
+.hero{max-width:1280px;margin:0 auto;padding:1rem 1.5rem 3rem;display:flex;align-items:center;min-height:calc(100vh - 80px)}
+.hero>div{max-width:620px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.02em}
+.lead{color:var(--mut);font-size:1.15rem;margin-top:1.2rem;max-width:46ch}
+.cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-top:2rem}
+.btn{background:var(--brand);color:#fff;border:1px solid var(--accent);font-weight:700;font-size:1.05rem;padding:.9rem 1.6rem;border-radius:10px;text-decoration:none}
+.btn:hover{background:#2c0b8a}
+.link{color:var(--accent);font-weight:600}
+.points{max-width:1280px;margin:0 auto;padding:3rem 1.5rem 4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;border-top:1px solid var(--line)}
+.points h2{font-family:var(--display);font-size:1.35rem;margin-bottom:.5rem}
+.points div{border-left:3px solid var(--violet);padding-left:1.1rem}
+.points p{color:var(--mut)}
+.band{max-width:1280px;margin:0 auto;padding:0 1.5rem 4rem}
+.band div{background:var(--brand);border:1px solid var(--violet);border-radius:16px;padding:2.2rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.band .btn{background:var(--accent);color:#14061f}
+.band .btn:hover{background:#d3c6ff}
+.band h2{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);max-width:22ch;line-height:1.1}
+footer{max-width:1280px;margin:0 auto;padding:1.5rem;color:var(--mut);border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+@media(max-width:900px){
+  :root{--sx:0;--fo:.28}
+  .bg{justify-content:center;align-items:flex-start;padding-top:10vh}
+  .fly{width:140vw;margin-right:0}
+  .bg::after{background:linear-gradient(180deg,rgba(14,12,22,.2),var(--bg) 85%)}
+  .points{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.fly,.wing,.hero>div,.tag{animation:none}}
+</style>
 </head>
 <body>
+<div class="bg" aria-hidden="true">
+  <div class="fly"><img class="wing l" src="papillon-gauche.webp" alt=""><img class="wing r" src="papillon-droite.webp" alt=""></div>
+</div>
 
-    <header>
-        <a href="#" class="nav-logo">ButterFix</a>
-        <ul class="nav-links">
-            <li><a href="#configurateur">Configurateur</a></li>
-        </ul>
-    </header>
+<header>
+  <a class="logo" href="./">Butter<span>Fix</span></a>
+  <nav aria-label="Navigation principale"><a href="#avantages">Avantages</a><a href="configurateur.html">Configurateur</a></nav>
+</header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 style="font-size: 2rem; color: #fff; margin-bottom: 0.3rem;">CONFIGURATEUR VISUEL BUTTERFIX</h1>
-            <p style="color: #9ca3af; font-size: 0.95rem;">#BUILDWITHUS — Style Marketplace Pro</p>
-        </div>
-    </section>
+<main>
+  <section class="hero">
+    <div>
+      <p class="tag">#buildwithus</p>
+      <h1>Ton PC, sans mauvaise surprise.</h1>
+      <p class="lead">Choisis tes pièces une par une : ButterFix vérifie à chaque étape que tout va ensemble, de la carte mère à l’alimentation.</p>
+      <div class="cta">
+        <a class="btn" href="configurateur.html">Configurer mon PC</a>
+        <a class="link" href="#avantages">Voir ce que ça vérifie</a>
+      </div>
+    </div>
+  </section>
 
-    <section id="configurateur">
-        <div class="builder-grid">
-            
-            <!-- CONTENEUR DU CATALOGUE -->
-            <div class="components-panel" id="catalog-container"></div>
+  <section class="points" id="avantages" aria-label="Avantages">
+    <div>
+      <h2>Compatibilité vérifiée</h2>
+      <p>Socket, mémoire, format du boîtier, longueur de la carte graphique, puissance de l’alimentation. Chaque problème s’affiche avec sa raison.</p>
+    </div>
+    <div>
+      <h2>Goulot d’étranglement par résolution</h2>
+      <p>Vois si ton processeur bride ta carte graphique en 1080p, en 1440p ou en 4K, avant d’acheter.</p>
+    </div>
+    <div>
+      <h2>Une config, un lien</h2>
+      <p>Copie le lien de ta configuration pour la partager ou la retrouver plus tard. Aucun compte à créer.</p>
+    </div>
+  </section>
 
-            <!-- APERÇU + STATS -->
-            <div class="preview-panel">
-                <div class="pc-case-preview">
-                    <img id="case-visual" src="logo.jpg" alt="Aperçu PC">
-                </div>
+  <section class="band" aria-label="Lancer le configurateur">
+    <div>
+      <h2>Prêt à monter ta configuration ?</h2>
+      <a class="btn" href="configurateur.html">Configurer mon PC</a>
+    </div>
+  </section>
+</main>
 
-                <div id="compatibility-badge" class="status-badge status-ok">
-                    ✓ Configuration Compatible (100%)
-                </div>
-
-                <div class="metric-card">
-                    <div class="metric-header">
-                        <span>Bottleneck (Goulot)</span>
-                        <span id="bottleneck-val" style="color: #a855f7; font-weight: bold;">0%</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div id="bottleneck-bar" class="progress-bar-fill"></div>
-                    </div>
-                    <p id="bottleneck-desc" style="font-size: 0.72rem; color: #6b7280; margin-top: 0.4rem;">Sélectionnez un CPU et un GPU.</p>
-                </div>
-
-                <div class="metric-card">
-                    <div class="metric-header">
-                        <span>Consommation</span>
-                        <span id="power-val" style="color: #fff; font-weight: bold;">0 W</span>
-                    </div>
-                </div>
-
-                <div class="total-price-box">
-                    <span style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem;">Total Estimé</span>
-                    <span id="total-price" style="font-size: 1.8rem; font-weight: 800; color: #a855f7;">0 €</span>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SCRIPT JS AVEC IMAGES CIBLÉES PAR COMPOSANT -->
-    <script>
-        // Images dédiées par catégorie/type de matériel
-        var imgCpu = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&auto=format&fit=crop&q=80";
-        var imgMb = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&auto=format&fit=crop&q=80";
-        var imgGpu = "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=200&auto=format&fit=crop&q=80";
-        var imgRam = "https://images.unsplash.com/photo-1562976540-1e02c414c1c9?w=200&auto=format&fit=crop&q=80";
-        var imgStorage = "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=200&auto=format&fit=crop&q=80";
-        var imgCooling = "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=200&auto=format&fit=crop&q=80";
-        var imgCase = "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200&auto=format&fit=crop&q=80";
-        var imgPsu = "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=200&auto=format&fit=crop&q=80";
-
-        var cpusData = [
-            { id: "c1", name: "Core i3-10100F", price: 75, power: 65, socket: "LGA1200", ramType: "DDR4", score: 35, spec: "Socket LGA1200 • 4 Cœurs", img: imgCpu },
-            { id: "c2", name: "Core i5-12400F", price: 130, power: 65, socket: "LGA1700", ramType: "DDR4", score: 55, spec: "Socket LGA1700 • 6 Cœurs", img: imgCpu },
-            { id: "c3", name: "Core i5-13600K", price: 290, power: 125, socket: "LGA1700", ramType: "DDR5", score: 82, spec: "Socket LGA1700 • 14 Cœurs", img: imgCpu },
-            { id: "c4", name: "Core i7-14700K", price: 410, power: 125, socket: "LGA1700", ramType: "DDR5", score: 92, spec: "Socket LGA1700 • 20 Cœurs", img: imgCpu },
-            { id: "c5", name: "Ryzen 5 3600", price: 85, power: 65, socket: "AM4", ramType: "DDR4", score: 45, spec: "Socket AM4 • 6 Cœurs", img: imgCpu },
-            { id: "c6", name: "Ryzen 5 5600X", price: 135, power: 65, socket: "AM4", ramType: "DDR4", score: 60, spec: "Socket AM4 • 6 Cœurs • Gaming", img: imgCpu },
-            { id: "c7", name: "Ryzen 7 5800X3D", price: 280, power: 105, socket: "AM4", ramType: "DDR4", score: 85, spec: "Socket AM4 • 3D V-Cache", img: imgCpu },
-            { id: "c8", name: "Ryzen 7 7800X3D", price: 420, power: 120, socket: "AM5", ramType: "DDR5", score: 98, spec: "Socket AM5 • Haut de gamme", img: imgCpu },
-            { id: "c9", name: "Ryzen 7 9800X3D", price: 490, power: 120, socket: "AM5", ramType: "DDR5", score: 100, spec: "Socket AM5 • Ultime Gaming", img: imgCpu }
-        ];
-
-        var motherboardsData = [
-            { id: "m1", name: "MSI B450 TOMAHAWK MAX", price: 95, power: 25, socket: "AM4", ramType: "DDR4", spec: "Socket AM4 • DDR4", img: imgMb },
-            { id: "m2", name: "Gigabyte B550 AORUS ELITE", price: 130, power: 25, socket: "AM4", ramType: "DDR4", spec: "Socket AM4 • PCIe 4.0", img: imgMb },
-            { id: "m3", name: "ASUS TUF B650-PLUS WIFI", price: 190, power: 30, socket: "AM5", ramType: "DDR5", spec: "Socket AM5 • DDR5 • WiFi", img: imgMb },
-            { id: "m4", name: "ASUS PRIME H610M D4", price: 90, power: 20, socket: "LGA1700", ramType: "DDR4", spec: "Socket LGA1700 • Micro-ATX", img: imgMb },
-            { id: "m5", name: "MSI MAG Z790 TOMAHAWK", price: 260, power: 35, socket: "LGA1700", ramType: "DDR5", spec: "Socket LGA1700 • DDR5", img: imgMb }
-        ];
-
-        var gpusData = [
-            { id: "g1", name: "Nvidia GTX 1650 4GB", price: 150, power: 75, score: 20, spec: "4GB GDDR5 • Entrée de gamme", img: imgGpu },
-            { id: "g2", name: "Nvidia RTX 3060 12GB", price: 290, power: 170, score: 50, spec: "12GB GDDR6 • Idéal 1080p", img: imgGpu },
-            { id: "g3", name: "Nvidia RTX 4060 8GB", price: 330, power: 115, score: 62, spec: "DLSS 3 • Ray Tracing", img: imgGpu },
-            { id: "g4", name: "Nvidia RTX 4070 Super", price: 650, power: 220, score: 85, spec: "12GB GDDR6X • 1440p Gaming", img: imgGpu },
-            { id: "g5", name: "Nvidia RTX 4090 24GB", price: 1850, power: 450, score: 100, spec: "24GB • Performances Extrêmes", img: imgGpu },
-            { id: "g6", name: "AMD Radeon RX 7800 XT", price: 540, power: 263, score: 82, spec: "16GB GDDR6 • Excellent Rapport Q/P", img: imgGpu }
-        ];
-
-        var ramsData = [
-            { id: "r1", name: "16GB (2x8) DDR4 3200MHz", price: 52, power: 15, ramType: "DDR4", spec: "Kit Dual Channel", img: imgRam },
-            { id: "r2", name: "32GB (2x16) DDR4 3600MHz", price: 79, power: 15, ramType: "DDR4", spec: "Haute Fréquence DDR4", img: imgRam },
-            { id: "r3", name: "32GB (2x16) DDR5 6000MHz", price: 125, power: 15, ramType: "DDR5", spec: "Standard Actuel DDR5", img: imgRam },
-            { id: "r4", name: "64GB (2x32) DDR5 6400MHz", price: 230, power: 20, ramType: "DDR5", spec: "Gros Multitâche / Creator", img: imgRam }
-        ];
-
-        var storagesData = [
-            { id: "s1", name: "SSD NVMe 500GB", price: 40, power: 5, spec: "Format M.2 • Rapide", img: imgStorage },
-            { id: "s2", name: "Crucial P3 1TB NVMe", price: 70, power: 6, spec: "1 To • Lecture 3500 Mo/s", img: imgStorage },
-            { id: "s3", name: "Samsung 990 PRO 2TB", price: 175, power: 8, spec: "2 To • Performances Maximales", img: imgStorage },
-            { id: "s4", name: "Seagate Barracuda 4TB HDD", price: 95, power: 8, spec: "Disque Dur Mécanique • Stockage de masse", img: imgStorage }
-        ];
-
-        var coolingsData = [
-            { id: "cl1", name: "Ventirad Standard", price: 25, power: 4, spec: "Silencieux et compact", img: imgCooling },
-            { id: "cl2", name: "Thermalright Assassin 120", price: 40, power: 5, spec: "Double tour performant", img: imgCooling },
-            { id: "cl3", name: "Watercooling AIO 240mm", price: 90, power: 15, spec: "Refroidissement Liquide RGB", img: imgCooling },
-            { id: "cl4", name: "Watercooling AIO 360mm", price: 160, power: 20, spec: "3 Ventilateurs • Haut de gamme", img: imgCooling }
-        ];
-
-        var casesData = [
-            { id: "cs1", name: "Micro-ATX Mini Tower", price: 75, power: 8, spec: "Compact et épuré", img: imgCase },
-            { id: "cs2", name: "NZXT H5 Flow RGB", price: 110, power: 10, spec: "Façade ventilée • Design moderne", img: imgCase },
-            { id: "cs3", name: "Corsair 4000D Airflow", price: 95, power: 10, spec: "Grandes performances de flux d'air", img: imgCase },
-            { id: "cs4", name: "Lian Li O11 Dynamic EVO", price: 165, power: 15, spec: "Double chambre • Verre trempé", img: imgCase }
-        ];
-
-        var psusData = [
-            { id: "p1", name: "MSI MAG 650W Bronze", price: 70, capacity: 650, spec: "Certification 80+ Bronze", img: imgPsu },
-            { id: "p2", name: "Corsair RM750e 750W Gold", price: 115, capacity: 750, spec: "80+ Gold • Entièrement modulaire", img: imgPsu },
-            { id: "p3", name: "Seasonic Focus 850W Gold", price: 145, capacity: 850, spec: "80+ Gold • Fiabilité légendaire", img: imgPsu }
-        ];
-
-        var selectedState = {
-            cpu: null,
-            motherboard: null,
-            gpu: null,
-            ram: null,
-            storage: null,
-            cooling: null,
-            pcCase: null,
-            psu: null
-        };
-
-        function render() {
-            var container = document.getElementById('catalog-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            function createSection(titleText, items, categoryKey) {
-                var section = document.createElement('div');
-                section.className = 'category-section';
-
-                var title = document.createElement('div');
-                title.className = 'category-title';
-                title.textContent = titleText;
-                section.appendChild(title);
-
-                var grid = document.createElement('div');
-                grid.className = 'cards-grid';
-
-                if (categoryKey === 'motherboard') {
-                    if (!selectedState.cpu) {
-                        var msg = document.createElement('div');
-                        msg.className = 'info-msg';
-                        msg.textContent = '⚠️ Veuillez d’abord sélectionner un Processeur (CPU) pour afficher les cartes mères compatibles.';
-                        grid.appendChild(msg);
-                        section.appendChild(grid);
-                        container.appendChild(section);
-                        return;
-                    } else {
-                        items = items.filter(function(mb) {
-                            return mb.socket === selectedState.cpu.socket;
-                        });
-                        if (items.length === 0) {
-                            var msg = document.createElement('div');
-                            msg.className = 'info-msg';
-                            msg.textContent = '❌ Aucune carte mère compatible pour le socket ' + selectedState.cpu.socket;
-                            grid.appendChild(msg);
-                            section.appendChild(grid);
-                            container.appendChild(section);
-                            return;
-                        }
-                    }
-                }
-
-                for (var i = 0; i < items.length; i++) {
-                    var item = items[i];
-                    var card = document.createElement('div');
-                    card.className = 'component-card';
-
-                    if (selectedState[categoryKey] === item) {
-                        card.classList.add('selected');
-                    }
-
-                    card.innerHTML = 
-                        '<div class="card-left">' +
-                            '<img src="' + item.img + '" alt="' + item.name + '">' +
-                            '<div class="card-info">' +
-                                '<div class="component-name">' + item.name + '</div>' +
-                                '<div class="component-details">' +
-                                    '<span class="tag tag-highlight">' + (item.spec || 'Composant PC') + '</span>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="component-price">' + item.price + ' €</div>';
-
-                    (function(cat, itm) {
-                        card.onclick = function() {
-                            if (selectedState[cat] === itm) {
-                                selectedState[cat] = null;
-                            } else {
-                                selectedState[cat] = itm;
-                                if (cat === 'cpu' && selectedState.motherboard) {
-                                    if (selectedState.motherboard.socket !== itm.socket) {
-                                        selectedState.motherboard = null;
-                                    }
-                                }
-                            }
-                            render();
-                            updateStats();
-                        };
-                    })(categoryKey, item);
-
-                    grid.appendChild(card);
-                }
-
-                section.appendChild(grid);
-                container.appendChild(section);
-            }
-
-            createSection("1. Processeur (CPU)", cpusData, 'cpu');
-            createSection("2. Carte Mère", motherboardsData, 'motherboard');
-            createSection("3. Carte Graphique (GPU)", gpusData, 'gpu');
-            createSection("4. Mémoire RAM", ramsData, 'ram');
-            createSection("5. Stockage SSD & HDD", storagesData, 'storage');
-            createSection("6. Refroidissement", coolingsData, 'cooling');
-            createSection("7. Boîtier PC", casesData, 'pcCase');
-            createSection("8. Alimentation (PSU)", psusData, 'psu');
-        }
-
-        function updateStats() {
-            var totalPrice = 0;
-            var totalPower = 0;
-
-            var keys = Object.keys(selectedState);
-            for (var i = 0; i < keys.length; i++) {
-                var item = selectedState[keys[i]];
-                if (item) {
-                    totalPrice += item.price;
-                    if (item.power) totalPower += item.power;
-                }
-            }
-
-            document.getElementById('total-price').innerHTML = totalPrice + ' €';
-            document.getElementById('power-val').innerHTML = totalPower + ' W';
-
-            var badge = document.getElementById('compatibility-badge');
-            var cpu = selectedState.cpu;
-            var mb = selectedState.motherboard;
-            var ram = selectedState.ram;
-            var psu = selectedState.psu;
-
-            var error = null;
-
-            if (cpu && mb && cpu.socket !== mb.socket) {
-                error = 'Socket Incompatible (' + cpu.socket + ' vs ' + mb.socket + ')';
-            } else if (mb && ram && mb.ramType !== ram.ramType) {
-                error = 'RAM Incompatible (' + mb.ramType + ' vs ' + ram.ramType + ')';
-            } else if (psu && psu.capacity < totalPower) {
-                error = 'Alimentation insuffisante (' + psu.capacity + 'W pour ' + totalPower + 'W)';
-            }
-
-            if (error) {
-                badge.className = 'status-badge status-error';
-                badge.innerHTML = '❌ ' + error;
-            } else {
-                badge.className = 'status-badge status-ok';
-                badge.innerHTML = '✓ Configuration Compatible (100%)';
-            }
-
-            var gpu = selectedState.gpu;
-            var bBar = document.getElementById('bottleneck-bar');
-            var bVal = document.getElementById('bottleneck-val');
-            var bDesc = document.getElementById('bottleneck-desc');
-
-            if (cpu && gpu) {
-                var diff = Math.abs(cpu.score - gpu.score);
-                var bPercent = Math.min(Math.round(diff), 100);
-
-                    bBar.style.width = bPercent + '%';
-                    bVal.innerHTML = bPercent + '%';
-
-                if (bPercent < 15) {
-                    bDesc.innerHTML = 'Excellent équilibre entre le CPU et le GPU.';
-                } else if (cpu.score < gpu.score) {
-                    bDesc.innerHTML = 'Le processeur bridera la carte graphique.';
-                } else {
-                    bDesc.innerHTML = 'La carte graphique sera limitée par le CPU en haute résolution.';
-                }
-            } else {
-                bBar.style.width = '0%';
-                bVal.innerHTML = '0%';
-                bDesc.innerHTML = 'Sélectionnez un CPU et un GPU.';
-            }
-        }
-
-        render();
-        updateStats();
-    </script>
+<footer><span>ButterFix</span><span>#buildwithus</span></footer>
+<script>
+try{sessionStorage.setItem('bf','1')}catch(e){}
+</script>
 </body>
 </html>
