@@ -328,10 +328,11 @@ function reason(cat,item){
 function bottleneck(){
   var c=S.cpu,g=S.gpu;
   if(!c||!g)return {v:null,txt:'Choisissez un processeur et une carte graphique (avec sa marque).'};
-  var need=30+0.7*g.s,eff=c.s*RES[res],pct=eff>=need?0:Math.round((1-eff/need)*100);
-  if(pct>=5)return {v:pct,txt:'Le processeur limite la carte graphique en '+res+' : environ '+pct+' % de ses performances ne seront pas exploitées.'};
-  if(eff>need*1.5)return {v:pct,txt:'Aucun goulot. Le processeur est très au-dessus des besoins de cette carte en '+res+' : une carte plus puissante serait mieux exploitée.'};
-  return {v:pct,txt:'Bon équilibre entre processeur et carte graphique en '+res+'.'};
+  var need=30+0.7*g.s,ratio=c.s*RES[res]/need;
+  if(ratio<0.95){var p=Math.round((1-ratio)*100);return {v:p,s:'CPU',txt:'Le processeur limite la carte graphique en '+res+' : environ '+p+' % de ses performances ne seront pas exploitées.'}}
+  var u=Math.max(0,Math.round((1-1/ratio)*100));
+  if(ratio<=1.35)return {v:u,s:'GPU',txt:'Bon équilibre en '+res+'. La carte graphique reste légèrement le facteur limitant, ce qui est normal en jeu.'};
+  return {v:u,s:'GPU',txt:'La carte graphique limite : le processeur est sous-exploité d’environ '+u+' % en '+res+'. Normal en jeu, mais une carte plus puissante serait mieux exploitée.'};
 }
 
 // ---- Affichage ----
@@ -415,7 +416,7 @@ function update(){
   else if(p.length){st.className='status bad';st.innerHTML='<b>'+p.length+' incompatibilité'+(p.length>1?'s':'')+'</b><ul>'+p.map(function(x){return '<li>'+x.msg+'</li>'}).join('')+'</ul>'}
   else{st.className='status ok';st.innerHTML='<b>Aucune incompatibilité</b>'+(wr.length?'<ul>'+wr.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>':'')}
   var b=bottleneck();
-  $('bn-val').textContent=b.v===null?'–':b.v+' %';$('bn-bar').style.width=(b.v||0)+'%';$('bn-txt').textContent=b.txt;
+  $('bn-val').textContent=b.v===null?'–':b.v+' % · '+b.s;$('bn-bar').style.width=(b.v||0)+'%';$('bn-txt').textContent=b.txt;
   var ids=CATS.map(function(c){return S[c.k]?S[c.k].id:''}).join(',');
   try{history.replaceState(null,'',n?'#b='+ids:location.pathname)}catch(e){}
 }
