@@ -36,6 +36,32 @@ main{max-width:1280px;margin:0 auto;padding:0 1.5rem 4rem;display:grid;grid-temp
 .tab[aria-current="true"]{background:var(--brand);border-color:var(--accent);color:#fff}
 .tab i{width:8px;height:8px;border-radius:50%;background:var(--line)}
 .tab i.done{background:var(--ok)}
+.view3d{display:none;position:relative;height:250px;border:1px solid var(--line);border-radius:10px;background:radial-gradient(ellipse at 50% 40%,#1c1238,var(--bg));cursor:grab;overflow:hidden}
+.legend{display:none;flex-wrap:wrap;gap:.35rem;margin-top:-.4rem}
+.lg{display:flex;align-items:center;gap:.4rem;padding:.25rem .6rem;border:1px solid var(--line);border-radius:999px;font-size:.78rem;color:var(--mut);font-weight:600}
+.lg i{display:block;width:.65rem;height:.65rem;border-radius:50%;background:var(--c)}
+.lg:hover,.lg[aria-pressed="true"]{color:var(--text);border-color:var(--c,var(--accent))}
+.lg.off{opacity:.4}
+.lg-note{width:100%;margin:.1rem 0 0;font-size:.75rem;color:var(--mut)}
+.view3d canvas{display:block;width:100%!important;height:100%!important}
+#v3msg{position:absolute;left:0;right:0;bottom:.6rem;margin:0;text-align:center;color:var(--mut);font-size:.78rem;pointer-events:none;padding:0 1rem}
+.easy{width:calc(100% - 3rem);max-width:1232px;margin:0 auto 1.5rem;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem}
+.easy h2{font-family:var(--display);font-size:1.4rem}
+.easy p{color:var(--mut)}
+.easy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin:1rem 0}
+.easy label{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem;color:var(--mut);font-weight:600}
+.easy .chk{flex-direction:row;align-items:center;gap:.5rem}
+.easy input[type=number],.easy select{background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:.5rem .7rem;font:inherit}
+.go{background:var(--brand);color:#fff;border:1px solid var(--accent);font-weight:700;padding:.7rem 1.4rem;border-radius:8px}
+.go:hover{background:#2c0b8a}
+#easy-msg{color:var(--text);margin-top:.8rem}
+.og{font-family:var(--display);font-size:1.15rem;margin:1.4rem 0 .4rem;color:var(--accent)}
+.oi{border-left:3px solid var(--violet);padding:.1rem 0 .1rem .9rem;margin:.7rem 0}
+.oi strong{display:block}
+.oi p{margin:.15rem 0}
+.oi a{color:var(--accent);margin-right:.9rem;font-weight:600}
+.oi code{background:var(--bg);padding:.1rem .4rem;border-radius:4px;font-size:.85rem;overflow-wrap:anywhere}
+#opt-out{margin-top:1rem}
 .tools{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
 .chip{padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);color:var(--mut);font-size:.82rem;font-weight:600}
 .chip:hover{color:var(--text)}
@@ -95,6 +121,22 @@ svg.pc .p.on{fill:rgba(109,61,240,.6);stroke:var(--violet-t)}
   <h1>Monte ton PC, pièce par pièce</h1>
   <p>Chaque choix est vérifié : socket, mémoire, format du boîtier, taille de la carte graphique et puissance de l’alimentation.</p>
 </section>
+<section class="easy" aria-labelledby="easy-t">
+  <h2 id="easy-t">Mode débutant</h2>
+  <p>Indique ton budget et le jeu visé : on compose la config pour toi, puis tu peux tout modifier.</p>
+  <div class="easy-grid">
+    <label>Budget (€)<input id="budget" type="number" min="400" step="50" value="1000"></label>
+    <label>Qualité visée<select id="q"><option>1080p standard</option><option selected>1080p élevé</option><option>1440p élevé</option><option>4K ultra</option></select></label>
+    <label>Carte graphique<select id="gb"><option value="all">Peu importe</option><option>Nvidia</option><option>AMD</option></select></label>
+    <label>Processeur<select id="cb"><option value="all">Peu importe</option><option>AMD</option><option>Intel</option></select></label>
+    <label>Boîtier<select id="box"><option value="all">Peu importe</option><option value="compact">Compact</option><option value="atx">ATX moyen tour</option></select></label>
+    <label>RAM minimum<select id="ramn"><option value="16">16 Go</option><option value="32">32 Go</option><option value="64">64 Go</option></select></label>
+    <label>Stockage minimum<select id="ston"><option value="500">500 Go</option><option value="1000">1 To</option><option value="2000">2 To</option></select></label>
+    <label class="chk"><input id="silent" type="checkbox"> Silencieux</label>
+  </div>
+  <button class="go" id="compose" type="button">Composer ma config</button>
+  <p id="easy-msg" role="status" aria-live="polite"></p>
+</section>
 <main>
   <section aria-label="Catalogue">
     <div class="tabs" id="tabs"></div>
@@ -102,7 +144,7 @@ svg.pc .p.on{fill:rgba(109,61,240,.6);stroke:var(--violet-t)}
     <div class="list" id="list"></div>
   </section>
   <aside aria-label="Résumé de la configuration">
-    <svg class="pc" viewBox="0 0 220 170" role="img" aria-label="Schéma des pièces choisies">
+    <svg class="pc" id="pcsvg" viewBox="0 0 220 170" role="img" aria-label="Schéma des pièces choisies">
       <rect id="v-case" class="p" x="10" y="8" width="200" height="154" rx="8"/>
       <rect id="v-mb" class="p" x="24" y="20" width="100" height="100" rx="4"/>
       <rect id="v-cpu" class="p" x="48" y="36" width="30" height="30" rx="3"/>
@@ -112,6 +154,8 @@ svg.pc .p.on{fill:rgba(109,61,240,.6);stroke:var(--violet-t)}
       <rect id="v-sto" class="p" x="140" y="24" width="56" height="16" rx="3"/>
       <rect id="v-psu" class="p" x="24" y="128" width="172" height="22" rx="3"/>
     </svg>
+    <div id="view3d" class="view3d"><p id="v3msg">Choisis des pièces pour voir ton PC en 3D. Glisse pour le faire tourner.</p></div>
+    <div id="legend" class="legend"></div>
     <div id="status" class="status" role="status" aria-live="polite"></div>
     <div>
       <div class="seg" role="group" aria-label="Résolution de jeu" id="res"></div>
@@ -127,6 +171,13 @@ svg.pc .p.on{fill:rgba(109,61,240,.6);stroke:var(--violet-t)}
     <button class="share" id="share">Copier le lien de ma config</button>
   </aside>
 </main>
+<section class="easy" id="opt" aria-labelledby="opt-t">
+  <h2 id="opt-t">Guide d’optimisation personnalisé</h2>
+  <p>À partir des pièces que tu as choisies : réglages du BIOS, undervolt, USB, Windows, logiciels utiles et pilotes officiels.</p>
+  <button class="go" id="mkguide" type="button">Générer mon guide</button>
+  <div id="opt-out" role="region" aria-live="polite"></div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // Catalogue ButterFix. Prix indicatifs en euros (à ajuster), scores = estimations relatives.
 // CPU : 100 = Ryzen 7 9800X3D en jeu. GPU : 100 = RTX 5090. Photos : images/<nom-du-produit>.webp
@@ -335,6 +386,242 @@ function bottleneck(){
   return {v:u,s:'GPU',txt:'La carte graphique limite : le processeur est sous-exploité d’environ '+u+' % en '+res+'. Normal en jeu, mais une carte plus puissante serait mieux exploitée.'};
 }
 
+// ---- Mode débutant : compose une config selon budget, qualité et restrictions ----
+var QUAL={'1080p standard':{r:'1080p',min:15,cap:24,c:40},'1080p élevé':{r:'1080p',min:26,cap:40,c:50},'1440p élevé':{r:'1440p',min:37,cap:58,c:55},'4K ultra':{r:'4K',min:50,cap:101,c:55}};
+function opts(cat){var o=[];D[cat].forEach(function(it){if(it.vs)o=o.concat(it.vs);else o.push(it)});return o.sort(function(a,b){return a.p-b.p})}
+function okWith(T,cat,it){var t={};for(var k in T)t[k]=T[k];t[cat]=it;return !problems(t).some(function(p){return p.cats.indexOf(cat)>=0})}
+function gbOf(it){var m=(it.cap||it.n).match(/(\d+)\s*(To|Go)/);return m?(m[2]==='To'?m[1]*1000:+m[1]):0}
+function pick(T,cat,f){return opts(cat).filter(function(it){return f(it)&&okWith(T,cat,it)})[0]||null}
+function sum(T){var t=0;for(var k in T)if(T[k])t+=T[k].p;return t}
+function build(g,o){
+  var T={gpu:g},q=QUAL[o.q],need=30+0.7*g.s;
+  T.cpu=pick(T,'cpu',function(c){return(o.cb==='AMD'?/^Ryzen/.test(c.n):o.cb==='Intel'?/^Core/.test(c.n):true)&&c.s>=q.c&&c.s*RES[q.r]/need>=1});if(!T.cpu)return null;
+  T.mb=pick(T,'mb',function(m){return o.box!=='compact'||m.form==='mATX'});if(!T.mb)return null;
+  T.ram=pick(T,'ram',function(r){return gbOf(r)>=o.ram});if(!T.ram)return null;
+  T['case']=pick(T,'case',function(c){return o.box==='compact'?(c.g==='Mini-ITX'||c.g==='Micro-ATX'):o.box==='atx'?c.g==='ATX moyen tour':true});if(!T['case'])return null;
+  T.cool=pick(T,'cool',function(c){if(/origine|low-profile/.test(c.n+c.g)||c.g==='Watercooling custom')return false;return o.silent?/double tour|AIO (240|280|360|420)/.test(c.g):true});if(!T.cool)return null;
+  T.sto=pick(T,'sto',function(s){return s.g==='SSD NVMe M.2'&&gbOf(s)>=o.sto});if(!T.sto)return null;
+  var w=power(T);T.psu=pick(T,'psu',function(p){return p.cap>=Math.ceil(w*1.25)});if(!T.psu)return null;
+  return T;
+}
+function plan(o){
+  var q=QUAL[o.q],best=null,min=null;
+  var gs=opts('gpu').filter(function(g){return g.s>=q.min&&g.s<=q.cap&&(o.gb==='all'||g.n.indexOf(o.gb)>=0)});
+  for(var i=gs.length-1;i>=0;i--){var T=build(gs[i],o);if(!T)continue;var t=sum(T);if(min===null||t<min)min=t;if(!best&&t<=o.b)best=T}
+  if(best){ // le budget restant améliore la RAM, puis le stockage
+    [['ram',32,'ram'],['sto',1000,'sto'],['sto',2000,'sto']].forEach(function(u){
+      if(u[0]==='ram'&&o.ram>=32)return;
+      var n=pick(best,u[0],function(it){return gbOf(it)>=u[1]&&(u[0]!=='sto'||it.g==='SSD NVMe M.2')});
+      if(!n||gbOf(n)<=gbOf(best[u[0]]))return;
+      var t={};for(var k in best)t[k]=best[k];t[u[0]]=n;
+      if(sum(t)<=o.b&&!problems(t).length)best=t;
+    });
+  }
+  return {T:best,min:min,total:best?sum(best):0};
+}
+function compose(){
+  var o={q:$('q').value,b:+$('budget').value,gb:$('gb').value,cb:$('cb').value,box:$('box').value,ram:+$('ramn').value,sto:+$('ston').value,silent:$('silent').checked};
+  var r=plan(o),m=$('easy-msg');
+  if(!r.T){m.textContent=r.min===null?'Aucune configuration compatible avec ces restrictions : essaie d’en retirer une.':'Avec ces critères, il faut au minimum environ '+fmt(r.min)+'.';return}
+  S={};for(var k in r.T)S[k]=r.T[k];res=QUAL[o.q].r;
+  m.textContent='Configuration composée : '+fmt(r.total)+' sur '+fmt(o.b)+'. Il te reste '+fmt(o.b-r.total)+'. Tu peux tout modifier dans le catalogue ci-dessous.';
+  drawRes();drawTabs();drawList();update();
+}
+
+// ---- Rendu 3D réaliste (three.js) : éclairage PBR, ombres, ventilateurs, ailettes ----
+var V3=null;
+function init3D(){
+  if(V3!==null)return V3;
+  try{
+    var el=$('view3d');if(!window.THREE||!el)return(V3=false);
+    var w=el.clientWidth||340,h=250;
+    var r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(window.devicePixelRatio||1,2));r.setSize(w,h);
+    r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.outputEncoding=THREE.sRGBEncoding;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.15;
+    el.appendChild(r.domElement);
+    var sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(30,w/h,1,600);
+    try{var pm=new THREE.PMREMGenerator(r),es=new THREE.Scene();
+      es.add(new THREE.Mesh(new THREE.BoxGeometry(120,120,120),new THREE.MeshBasicMaterial({color:0x2b2150,side:THREE.BackSide})));
+      [[0,50,0,70,2,70,0xffffff],[-55,0,10,2,50,50,0xb89cff],[55,5,25,2,40,40,0xffe9d6]].forEach(function(p){var m=new THREE.Mesh(new THREE.BoxGeometry(p[3],p[4],p[5]),new THREE.MeshBasicMaterial({color:p[6]}));m.position.set(p[0],p[1],p[2]);es.add(m)});
+      sc.environment=pm.fromScene(es,.03).texture}catch(x){}
+    sc.add(new THREE.HemisphereLight(0xc4a0ff,0x120a24,.5));
+    var dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(35,55,70);dl.castShadow=true;dl.shadow.mapSize.set(1024,1024);dl.shadow.bias=-.0005;
+    var sh=dl.shadow.camera;sh.left=-50;sh.right=50;sh.top=50;sh.bottom=-50;sh.near=1;sh.far=220;sc.add(dl);
+    var g=new THREE.Group();sc.add(g);g.rotation.y=-.6;
+    var drag=false,lx=0,auto=true,c2=r.domElement;
+    c2.onpointerdown=function(e){drag=true;lx=e.clientX;auto=false;try{c2.setPointerCapture(e.pointerId)}catch(x){}};
+    c2.onpointermove=function(e){if(drag){g.rotation.y=Math.max(-1.5,Math.min(1.5,g.rotation.y+(e.clientX-lx)*.01));lx=e.clientX}};
+    c2.onpointerup=function(){drag=false};
+    (function loop(){requestAnimationFrame(loop);if(auto)g.rotation.y=-.6+Math.sin(Date.now()/2800)*.25;r.render(sc,cam)})();
+    el.style.display='block';$('pcsvg').style.display='none';
+    V3={g:g,cam:cam};buildLegend();
+    return V3;
+  }catch(e){return(V3=false)}
+}
+var CN=null;
+function mat(col,ex){var o=Object.assign({color:col,roughness:.5,metalness:.3},ex||{});delete o.ns;delete o.nt;return new THREE.MeshStandardMaterial(o)}
+function tag(m,ex){if(ex&&(ex.ns||ex.nt))return;if(m.material&&m.material.emissive)m.userData={cat:CN,e0:[m.material.emissive.getHex(),m.material.emissiveIntensity]}}
+function put(g,m,x,y,z,ex){tag(m,ex);m.position.set(x,y,z);m.castShadow=m.receiveShadow=!(ex&&ex.ns);g.add(m);return m}
+function bx(g,x,y,z,w,h,d,col,ex){return put(g,new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(col,ex)),x,y,z,ex)}
+function rb(g,x,y,z,w,h,d,col,rad,ex){ // boîte à coins arrondis
+  var s=new THREE.Shape(),a=w/2,b=h/2,r=Math.min(rad,a,b),P=Math.PI;
+  s.moveTo(-a+r,-b);s.lineTo(a-r,-b);s.absarc(a-r,-b+r,r,-P/2,0,false);s.lineTo(a,b-r);s.absarc(a-r,b-r,r,0,P/2,false);s.lineTo(-a+r,b);s.absarc(-a+r,b-r,r,P/2,P,false);s.lineTo(-a,-b+r);s.absarc(-a+r,-b+r,r,P,P*1.5,false);
+  var geo=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:false,curveSegments:6});geo.translate(0,0,-d/2);
+  return put(g,new THREE.Mesh(geo,mat(col,ex)),x,y,z,ex);
+}
+function cyl(g,x,y,z,rad,len,col,ex){var m=put(g,new THREE.Mesh(new THREE.CylinderGeometry(rad,rad,len,28),mat(col,Object.assign({roughness:.4,metalness:.5},ex||{}))),x,y,z,ex);m.rotation.x=Math.PI/2;return m}
+function tube(g,pts,col){var c=new THREE.CatmullRomCurve3(pts.map(function(p){return new THREE.Vector3(p[0],p[1],p[2])}));var m=new THREE.Mesh(new THREE.TubeGeometry(c,24,.55,8,false),mat(col,{roughness:.6}));m.castShadow=true;tag(m);g.add(m)}
+function fan(g,x,y,z,col){ // ventilateur 120 mm, axe dirigé vers l'avant du boîtier
+  var f=new THREE.Group();f.position.set(x,y,z);f.rotation.y=Math.PI/2;
+  bx(f,0,0,0,12,12,2.5,0x0f0d16);
+  var rg=new THREE.Mesh(new THREE.TorusGeometry(5.2,.22,8,36),mat(col,{emissive:col,emissiveIntensity:.9}));rg.position.z=1.3;tag(rg);f.add(rg);
+  cyl(f,0,0,1.2,1.7,1,0x1a1722);
+  for(var i=0;i<9;i++){var a=i*Math.PI*2/9,b=bx(f,Math.cos(a)*3.3,Math.sin(a)*3.3,1.1,3.2,1.5,.12,0x191620,{ns:1});b.rotation.z=a}
+  g.add(f);
+}
+function tower(g,x,y,z,w,h,th){ // pile d'ailettes + plaque supérieure
+  for(var i=0;i<24;i++)bx(g,x,y-h/2+i*h/23,z,w,.1,th,0xb4bacb,{metalness:.9,roughness:.25});
+  bx(g,x,y,z+th/2+.15,w,h,.3,0x1a1722,{metalness:.6,roughness:.35});
+  bx(g,x,y,z-th/2+.4,w-.6,3.6,.8,0xb87333,{metalness:.9,roughness:.3});
+}
+function render3D(){
+  var v=init3D();if(!v)return;
+  var g=v.g,n=0;CN='case';for(var k in S)if(S[k])n++;
+  $('v3msg').style.display=n?'none':'block';
+  while(g.children.length){var c=g.children.pop();c.traverse(function(o){if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()})}
+  var cs=S['case'],mb=S.mb,gp=S.gpu,cl=S.cool,rm=S.ram,ps=S.psu,st=S.sto;
+  var SZ={'Mini-ITX':[36,38,24],'Micro-ATX':[42,44,24],'ATX moyen tour':[47,49,24],'E-ATX grand tour':[54,57,26]};
+  var d=cs?SZ[cs.g]:SZ['ATX moyen tour'],L=d[0],H=d[1],D=d[2],ACC=0xb8a4ff;
+  v.cam.position.set(0,H*.12,Math.max(L,H*1.15)*1.85);v.cam.lookAt(0,-1,0);
+  var fl=new THREE.Mesh(new THREE.CylinderGeometry(Math.max(L,H)*.9,Math.max(L,H)*.9,.4,48),mat(0x0d0a16,{roughness:.9,metalness:0}));fl.position.y=-H/2-.4;fl.receiveShadow=true;g.add(fl);
+  g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,D)),new THREE.LineBasicMaterial({color:ACC,transparent:true,opacity:cs?.9:.3})));
+  bx(g,0,0,-D/2+.1,L,H,.2,0x15121f,{transparent:true,opacity:cs?1:.35,nt:1});
+  bx(g,0,-H/2,0,L,.3,D,0x14111d,{nt:1});bx(g,0,H/2,0,L,.3,D,0x14111d,{nt:1});
+  bx(g,0,0,D/2,L,H,.1,0x6d3df0,{transparent:true,opacity:cs?.07:.03,metalness:0,ns:1});
+  var pl=new THREE.PointLight(0x6d3df0,1,80);pl.position.set(0,0,5);g.add(pl);
+  var z0=-D/2+.4,f=mb?mb.form:'ATX',mw=f==='ITX'?17:24.4,mh=f==='ATX'?30.5:f==='ITX'?17:24.4;
+  var mx=-L/2+2.5+mw/2,my=H/2-2.5-mh/2,cx=mx-2,cy=my+mh/2-9,gt=gp?(gp.s<20?2.2:gp.s<40?3.5:gp.s<70?4.5:5.5):4,gy=Math.max(my-mh*.12,-H/2+8.6+gt/2+1);
+  if(cs){var nf=cs.g==='Mini-ITX'?1:cs.g==='Micro-ATX'?2:3;for(var i=0;i<nf;i++)fan(g,L/2-1.5,H/2-7.5-i*12.6,0,ACC);fan(g,-L/2+1.5,cy+1,0,0x6d3df0)}
+  CN='mb';if(mb){
+    var PC={ASUS:0x23232d,MSI:0x2b1717,Gigabyte:0x1b2332,ASRock:0x1a2a2a},pc=0x1c1c26;for(var b in PC)if(mb.n.indexOf(b)===0)pc=PC[b];
+    bx(g,mx,my,z0+.1,mw,mh,.2,pc);
+    bx(g,mx-mw/2+2.2,my+mh/2-5,z0+1.3,3.5,10,2.2,0x3a3a48,{metalness:.7,roughness:.3});bx(g,mx-2,my+mh/2-1.8,z0+1.3,10,3.2,2.2,0x3a3a48,{metalness:.7,roughness:.3});
+    bx(g,mx+4,my-mh/2+9,z0+.9,6,6,1.4,0x2c2c3a,{metalness:.7});
+    bx(g,mx-mw/2+3+4.5,gy-gt/2-.4,z0+.8,9,.6,1.2,0x15151a);
+    bx(g,mx-mw/2+1.2,cy-1,z0+2.2,2.4,13,4,0x1d1d26,{metalness:.6});
+  }
+  CN='ram';if(rm){
+    var RC={'G.Skill':[0x1a1a1a,0xe02030],Corsair:[0x15151a,0xf2c230],Kingston:[0x222230,0xc0172c],Crucial:[0x16161a,0xe87722],TeamGroup:[0x1c1c24,0xd63a3a],Patriot:[0x1c1c20,0xd91b1b]},col=[0x1c1c24,0x6d3df0];
+    for(var key in RC)if(rm.n.indexOf(key)>=0)col=RC[key];
+    var cnt=+((rm.n.match(/\((\d)×/)||[0,2])[1]);
+    for(var i=0;i<cnt;i++){var sx=mx+mw/2-10+i*1.5;rb(g,sx,cy,z0+1.9,.9,13.3,3.4,col[0],.15,{metalness:.6,roughness:.35});bx(g,sx,cy+5.8,z0+1.9,1,2.2,3.5,col[1],{emissive:col[1],emissiveIntensity:.6})}
+  }
+  CN='cool';if(cl){
+    var zc=z0+.5;
+    if(cl.rad){
+      var lr=cl.rad===120?15.5:cl.rad/10+3.5,rx=L/2-lr/2-1,ry=H/2-1.6,rz=z0+6.5;
+      cyl(g,cx,cy,zc+1.6,3.4,3.2,0x2a2a38,{metalness:.7});cyl(g,cx,cy,zc+3.3,2.4,.3,0x6d3df0,{emissive:0x6d3df0,emissiveIntensity:.8});
+      bx(g,rx,ry,rz,lr,2.7,12.2,0x24242e,{metalness:.6});
+      tube(g,[[cx-1.5,cy+3,zc+2],[cx-1,(cy+ry)/2,zc+5],[rx-lr/2+2,ry-1.5,rz+1]],0x101018);
+      tube(g,[[cx+1.5,cy+3,zc+2],[cx+2,(cy+ry)/2,zc+6],[rx-lr/2+5,ry-1.5,rz-1]],0x101018);
+      if(cl.g==='Watercooling custom'){var rs=cyl(g,L/2-6,H/2-14,rz,2.4,13,0x2ad4ff,{emissive:0x2ad4ff,emissiveIntensity:.5,transparent:true,opacity:.8});rs.rotation.x=0;tube(g,[[L/2-6,H/2-8,rz],[L/2-6,ry,rz]],0x2ad4ff)}
+    }else{
+      var th=(cl.h||155)/10,dual=/double/.test(cl.g||''),zt=zc+th/2;
+      if(dual){tower(g,cx-4.6,cy,zt,3.5,12.5,th);tower(g,cx+4.6,cy,zt,3.5,12.5,th);bx(g,cx,cy,zt,2.2,12,th-1,0x16161c)}
+      else{tower(g,cx-2.5,cy,zt,4.5,12.5,th);bx(g,cx+1.4,cy,zt,2.5,12,th-1,0x16161c)}
+    }
+  }
+  CN='gpu';if(gp){
+    var gl=gp.len/10,gx=-L/2+2.5+gl/2,amd=/AMD/.test(gp.n),sc2=amd?0xed1c24:0x76b900;
+    rb(g,gx,gy,z0+6.4,gl,gt,12,0x1d1d26,Math.min(.8,gt/2-.01),{roughness:.35,metalness:.6});
+    bx(g,gx,gy,z0+12.45,gl-1,gt-.6,.15,sc2,{emissive:sc2,emissiveIntensity:.8});
+    bx(g,-L/2+2.1,gy,z0+6.4,.3,gt+.8,12,0x9aa0b4,{metalness:.9,roughness:.3});
+  }
+  CN='psu';if(ps){
+    var sfx=ps.ptype==='SFX',pd=sfx?[12.5,6.3,12]:[16,8.6,15],CC={Bronze:0xcd7f32,Gold:0xffd24a,Platinum:0xc8d0e0,Titanium:0x8aa0b8},cc=CC[(ps.g2||'').replace('80+ ','')]||0x6d3df0;
+    rb(g,-L/2+pd[0]/2+.5,-H/2+pd[1]/2+.3,z0+pd[2]/2,pd[0],pd[1],pd[2],0x14141c,.5,{roughness:.55});
+    bx(g,-L/2+pd[0]/2+.5,-H/2+pd[1]/2+.3,z0+pd[2]+.05,pd[0]-1.5,.8,.1,cc,{emissive:cc,emissiveIntensity:.6});
+  }
+  CN='sto';if(st){
+    if(st.g==='SSD NVMe M.2'){bx(g,cx-3,cy-8.5,z0+.35,8,2.2,.3,0x2a2a38);bx(g,cx-3,cy-8.5,z0+.55,5,1.6,.1,0x6d3df0,{emissive:0x6d3df0,emissiveIntensity:.4})}
+    else if(st.g==='HDD')bx(g,L/2-9,-H/2+7,z0+3,14.7,10,2.6,0x3a3a46,{metalness:.7});
+    else bx(g,L/2-7,-H/2+5,z0+3,10,7,.9,0x2a2a38,{metalness:.6});
+  }
+  refreshLegend();tint();
+}
+
+// ---- Légende des couleurs du rendu 3D ----
+var LEG=[['cool','Refroidissement',0x3dd6c6],['mb','Carte mère',0x5b8cff],['gpu','Carte graphique',0xff5d8f],['ram','RAM',0x7ee081],['sto','Stockage',0xb18cff],['psu','Alimentation',0xff9a62],['case','Boîtier et ventilateurs',0xe8e8f0]],hov=null,pin=null,allT=false;
+function tint(){
+  if(!V3)return;
+  V3.g.traverse(function(o){var u=o.userData;if(!u||!u.cat||!o.material||!o.material.emissive)return;
+    var c=LEG.filter(function(l){return l[0]===u.cat})[0],act=pin||hov,m=o.material;
+    if(act===u.cat){m.emissive.setHex(c[2]);m.emissiveIntensity=1.1}
+    else if(allT){m.emissive.setHex(c[2]);m.emissiveIntensity=act?.2:.5}
+    else{m.emissive.setHex(u.e0[0]);m.emissiveIntensity=u.e0[1]}});
+}
+function refreshLegend(){LEG.forEach(function(l){var b=$('lg-'+l[0]);if(!b)return;b.className='lg'+(S[l[0]]?'':' off');b.setAttribute('aria-pressed',pin===l[0])})}
+function buildLegend(){
+  var Lg=$('legend');Lg.innerHTML='';Lg.style.display='flex';
+  LEG.forEach(function(l){var b=document.createElement('button');b.id='lg-'+l[0];b.type='button';b.style.setProperty('--c','#'+('000000'+l[2].toString(16)).slice(-6));b.innerHTML='<i></i>'+l[1];
+    b.onmouseenter=b.onfocus=function(){hov=l[0];tint()};b.onmouseleave=b.onblur=function(){hov=null;tint()};
+    b.onclick=function(){pin=pin===l[0]?null:l[0];refreshLegend();tint()};Lg.appendChild(b)});
+  var a=document.createElement('button');a.className='lg';a.type='button';a.textContent='Tout colorer';a.setAttribute('aria-pressed',false);
+  a.onclick=function(){allT=!allT;a.setAttribute('aria-pressed',allT);tint()};Lg.appendChild(a);
+  var p=document.createElement('p');p.className='lg-note';p.textContent='Le processeur est sous le refroidissement. Survole ou touche une couleur pour repérer la pièce.';Lg.appendChild(p);
+}
+// ---- Guide d'optimisation personnalisé (selon les pièces choisies) ----
+function guide(){
+  var c=S.cpu,m=S.mb,r=S.ram,g=S.gpu,n=0;for(var k in S)if(S[k])n++;
+  if(!c&&!g&&!m)return '<p>Choisis au moins un processeur, une carte mère ou une carte graphique pour générer ton guide.</p>';
+  var amd=c&&/^Ryzen/.test(c.n),intel=c&&/^Core/.test(c.n),zen2=amd&&/Ryzen \d 3\d{3}/.test(c.n),x3d=c&&/X3D/.test(c.n),dual=c&&/(7900X3D|7950X3D|9900X3D|9950X3D)/.test(c.n),raptor=intel&&/Core i\d-1[34]\d{3}/.test(c.n),ultra=intel&&/Ultra/.test(c.n),nv=g&&/Nvidia/.test(g.n);
+  var ddr=r?r.type:(m?m.ram:null),mbb=m&&['ASUS','MSI','Gigabyte','ASRock'].filter(function(b){return m.n.indexOf(b)===0})[0];
+  var SUP={ASUS:'https://www.asus.com/support/',MSI:'https://www.msi.com/support',Gigabyte:'https://www.gigabyte.com/Support',ASRock:'https://www.asrock.com/support/index.asp'};
+  function i(h,t,l){return{h:h,t:t,l:l||[]}}
+  var secs=[
+  ['1. Dans le BIOS',[
+    i('Mets le BIOS à jour','Avant tout réglage, installe la dernière version du BIOS depuis le site du fabricant de ta carte mère.'+(raptor?' C’est indispensable avec les Core de 13e et 14e génération : les BIOS récents (microcode 0x12B ou plus récent) corrigent des problèmes d’instabilité liés aux tensions.':'')+(ultra?' Les premiers BIOS des Core Ultra étaient moins performants : les versions récentes améliorent les résultats.':''),mbb?[['Support '+mbb,SUP[mbb]]]:[]),
+    ddr&&i('Active le profil mémoire ('+(amd&&ddr==='DDR5'?'EXPO ou XMP':amd?'XMP, appelé DOCP chez certaines marques':'XMP')+')','Sans lui, ta RAM tourne à une fréquence de base bien plus lente que celle annoncée. Après l’avoir activé, vérifie la fréquence dans le Gestionnaire des tâches > Performances > Mémoire.'),
+    r&&i('Mémoire en double canal','Avec 2 barrettes, installe-les dans les emplacements indiqués par le manuel (souvent A2 et B2), pas côte à côte.'),
+    i('Resizable BAR','Active « Above 4G Decoding » puis « Resizable BAR » dans le BIOS : utile avec une carte graphique récente.'),
+    amd&&!zen2&&i('Curve Optimizer (undervolt du processeur)','Dans le BIOS, section Precision Boost Overdrive > Curve Optimizer : applique un décalage négatif de 10 sur tous les cœurs, teste la stabilité, puis augmente par paliers de 5. Si le PC plante, reviens en arrière.'+(x3d?' Les processeurs X3D supportent mal les tensions élevées : privilégie cette méthode à un overclocking manuel.':'')+(dual?' Avec deux blocs de cœurs, vérifie que les jeux tournent bien sur celui à cache 3D (voir Process Lasso plus bas).':'')),
+    zen2&&i('Ryzen 3000','Il n’y a pas de Curve Optimizer sur cette génération : les meilleurs gains viennent de la mémoire (profil XMP) et d’un bon refroidissement.'),
+    intel&&i('Limites de puissance et tensions','Utilise le profil « Intel Default Settings » du BIOS plutôt que les réglages « sans limite » de certaines cartes mères.'+(raptor?' Ne touche aux tensions qu’après avoir mis le BIOS à jour.':'')+' Si ton BIOS le permet, un petit décalage de tension négatif (par pas de 0,02 V) peut baisser les températures : teste la stabilité à chaque étape.')
+  ]],
+  ['2. Carte graphique',g?[
+    i('Pilote propre','Installe le pilote le plus récent depuis le site officiel. Si tu changes de marque de carte, désinstalle l’ancien pilote avec DDU en mode sans échec.',[[nv?'Pilotes Nvidia':'Pilotes AMD',nv?'https://www.nvidia.com/Download/index.aspx':'https://www.amd.com/en/support/download/drivers.html'],['DDU','https://www.wagnardsoft.com/']]),
+    i('Undervolt de la carte graphique',(nv?'Avec MSI Afterburner, ouvre l’éditeur de courbe (Ctrl+F), fixe un point autour de 900 à 950 mV à une fréquence proche de celle d’origine, applique, puis teste. ':'Dans le logiciel Adrenalin, onglet Performances > Réglage, baisse la tension du GPU par paliers de 25 mV. ')+'Plus simple : baisse la limite de puissance à 85-90 %, tu perds très peu de performances et la carte chauffe moins. Un plantage veut dire qu’il faut revenir en arrière.',[['MSI Afterburner','https://www.msi.com/Landing/afterburner/graphics-cards']]),
+    i('Latence et fluidité','Active '+(nv?'NVIDIA Reflex':'Radeon Anti-Lag')+' dans les jeux qui le proposent. Limite les images par seconde 3 à 4 en dessous de la fréquence de ton écran, avec G-Sync ou FreeSync, pour une meilleure régularité.')
+  ]:[]],
+  ['3. USB et périphériques',[
+    i('Branche tes périphériques au bon endroit','Souris et clavier directement derrière le PC, jamais sur un hub ni en façade. '+(amd?'Sur les cartes mères AMD, certains ports arrière sont reliés directement au processeur : beaucoup de joueurs y mettent leur souris. ':intel?'Sur les cartes mères Intel, les ports USB passent en général par le chipset : il n’y a pas de port « processeur » à chercher. ':'')+'Le gain réel est faible et pas toujours mesurable : des tests rapportés sur des forums ne trouvent parfois aucune différence de latence, tout au plus un suivi de souris un peu plus régulier. Compare par toi-même.'),
+    amd&&i('Savoir sur quel contrôleur est ta souris','Gestionnaire de périphériques > Affichage > Périphériques par connexion, puis repère ta souris. Un contrôleur « USB3 XHCI » portant le nom de la plateforme AMD est souvent celui relié au processeur, mais le schéma des ports du manuel de ta carte mère fait foi. Essaie les ports arrière un par un.',[['USB Device Tree Viewer','https://www.uwe-sieber.de/usbtreeview_e.html']]),
+    i('Lister tes contrôleurs USB','Dans PowerShell (lecture seule, ne modifie rien) : <code>Get-CimInstance Win32_USBController | Select-Object Name</code>')
+  ]],
+  ['4. Windows : latence et régularité',[
+    i('Mode Jeu','Paramètres > Jeux > Mode Jeu : à activer.'),
+    i('Plan d’alimentation','Choisis « Performances élevées »'+(amd?'. Installe aussi le pilote chipset AMD, qui ajoute un plan d’alimentation adapté à ton processeur':'')+'.'),
+    i('Capture en arrière-plan','Désactive la Xbox Game Bar et l’enregistrement en arrière-plan si tu ne t’en sers pas.'),
+    i('Souris','Désactive « Améliorer la précision du pointeur » dans les paramètres de la souris pour un mouvement constant.'),
+    i('Démarrage','Gestionnaire des tâches > Démarrage : désactive ce qui n’est pas utile.'),
+    i('Planification GPU accélérée (HAGS)','Teste avec et sans, et garde ce qui est le plus fluide dans tes jeux : l’effet varie selon les configurations.'),
+    i('À ne pas faire','Ne désactive ni Windows Defender ni les protections de sécurité pour gagner des images par seconde : le gain est faible et le risque est réel.')
+  ]],
+  ['5. Logiciels utiles',[
+    i('Process Lasso','Gère les priorités et l’affinité des processus (fonction ProBalance), pour garder les tâches de fond loin de ton jeu'+(dual?' et pour lancer tes jeux sur le bloc de cœurs à cache 3D de ton '+c.n:'')+'. Il existe une version gratuite et une licence payante : vérifie les conditions sur le site.',[['Bitsum','https://bitsum.com/']]),
+    i('ParkControl','Du même éditeur : règle la mise en veille des cœurs (core parking) et le plan d’alimentation. L’effet dépend du processeur : mesure avant et après plutôt que de supposer.',[['Bitsum','https://bitsum.com/']]),
+    i('Outils de mesure','HWiNFO pour les températures et les tensions, OCCT pour tester la stabilité, LatencyMon pour la latence du système, CapFrameX pour la régularité des images.',[['HWiNFO','https://www.hwinfo.com/'],['OCCT','https://www.ocbase.com/'],['LatencyMon','https://www.resplendence.com/latencymon'],['CapFrameX','https://www.capframex.com/']])
+  ]],
+  ['6. Pilotes officiels',[
+    i('Où les télécharger','Prends toujours les pilotes sur les sites des fabricants. Pour le chipset, utilise le site AMD ou Intel, et pour le Wi-Fi, le son et le réseau, la page de support de ta carte mère. Termine par Windows Update.',[[amd?'Pilotes AMD':'Pilotes Intel',amd?'https://www.amd.com/en/support/download/drivers.html':'https://www.intel.com/content/www/us/en/download-center/home.html']].concat(mbb?[['Support '+mbb,SUP[mbb]]]:[]))
+  ]],
+  ['7. Valider chaque changement',[
+    i('Un réglage à la fois','Après chaque modification : 20 à 30 minutes dans OCCT ou Cinebench, puis ton jeu favori pendant une heure. Au moindre plantage, écran noir ou redémarrage, reviens au réglage précédent.')
+  ]]];
+  var html='<p>Guide généré pour : '+[c,m,r,g].filter(Boolean).map(function(x){return x.n}).join(' · ')+'. Les gains varient d’une machine à l’autre, ne modifie qu’un réglage à la fois et note l’ancienne valeur. ButterFix ne garantit aucun gain d’images par seconde.</p>';
+  secs.forEach(function(s){var it=s[1].filter(Boolean);if(!it.length)return;html+='<h3 class="og">'+s[0]+'</h3>'+it.map(function(x){return '<div class="oi"><strong>'+x.h+'</strong><p>'+x.t+'</p>'+(x.l.length?'<p>'+x.l.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener noreferrer">'+l[0]+'</a>'}).join('')+'</p>':'')+'</div>'}).join('')});
+  return html;
+}
+
 // ---- Affichage ----
 function drawTabs(){
   $('tabs').innerHTML='';
@@ -419,6 +706,7 @@ function update(){
   $('bn-val').textContent=b.v===null?'–':b.v+' % · '+b.s;$('bn-bar').style.width=(b.v||0)+'%';$('bn-txt').textContent=b.txt;
   var ids=CATS.map(function(c){return S[c.k]?S[c.k].id:''}).join(',');
   try{history.replaceState(null,'',n?'#b='+ids:location.pathname)}catch(e){}
+  render3D();
 }
 function drawRes(){
   $('res').innerHTML='';
@@ -438,6 +726,8 @@ $('share').onclick=function(){
   var ids=m[1].split(',');
   CATS.forEach(function(c,i){D[c.k].forEach(function(it){if(it.id===ids[i])S[c.k]=it;(it.vs||[]).forEach(function(v){if(v.id===ids[i])S[c.k]=v})})});
 })();
+$('compose').onclick=compose;
+$('mkguide').onclick=function(){$('opt-out').innerHTML=guide()};
 drawRes();drawTabs();drawTools();drawList();update();
 </script>
 </body>
